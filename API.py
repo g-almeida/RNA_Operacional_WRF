@@ -4,13 +4,22 @@ import datetime
 
 
 def api_niteroi(api_type='chuva'):
-    """
+    """    
     Retorna um DataFrame com os dados da API do Niterói.
 
     'api_type' pode ser 'chuva' ou 'tempo'.
     'estacao' pode ser 'Barreto 1'
-    """
 
+    Parameters
+    ----------
+    api_type : str, optional
+        'chuva' or 'tempo', by default 'chuva'
+
+    Returns
+    -------
+    updated_data : pandas.DataFrame
+        [description]
+    """
     api = requests.get('http://svidaniteroi.com.br/'+ api_type +'_api')
 
     with open(api_type + '.csv', 'w') as f:
