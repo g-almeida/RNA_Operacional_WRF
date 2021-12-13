@@ -1,23 +1,13 @@
-    """
-        Script designated to treat the output of the WRF model.
-            The Functions in this section are able to select the interval of time. And also formats each of the desired files.
-    """
+"""
+    Script designated to treat the output of the WRF model.
+        The Functions in this section are able to select the interval of time. And also formats each of the desired files.
+"""
 
 import os
 import shutil
 import datetime
 import pandas as pd
-
-origin_path = "/home/data/PMN/WRF_extrai_rn/"
-destination_path = "/home/data/PMN/WRF_Barreto_10-7_20-10/"
-
-files = os.listdir(origin_path)
-
-# Filtering Barreto files.
-barreto_list = []
-for cada in files:
-  if 'Barreto' in cada and 'Zone' not in cada:
-    barreto_list.append(cada)
+from zipfile import ZipFile
 
 
 def files_date_filter(start_date, end_date):
@@ -44,16 +34,6 @@ def files_date_filter(start_date, end_date):
       start_date+=datetime.timedelta(days=1)
 
     return datefilter
-  
-date = datetime.datetime(2021,7,10)
-date2 = datetime.datetime(2021,10,20)
-datefilter = files_date_filter(date, date2)
-
-for file in files:
-  if file in datefilter:
-    # First path is the WRF provided data
-    # Second path is the destination path for the filtered data (station and date)
-    shutil.move(origin_path+ file, destination_path)
 
 
 #  -----------   Files treatment
@@ -74,16 +54,70 @@ def adaptingTXT(path):
   
   return data
 
-# creating the directory inside the repository
-os.makedirs('/home/github/Climatology/PMN/files/OctoberWRF')
+#                 ------- Barreto's October case
 
-path = destination_path
-for cada in os.listdir(path):
-  path2 = path+cada
+#     Data will be unzipped from extrai_rna.zip to ./files/extrai_rna/ and then filtered for the october month
+#     The files will be renamed to the format: 'Barreto_YYYYMMDD.txt'
+#     The filtered files will be moved to the folder ./files/OctoberWRF/
+
+try:
+  october_path = './files/Jul_OctWRF/'
+  os.makedirs(october_path)
+except:
+  print('Jul_OctWRF folder already exists')
+  exit()
+
+try:
+  origin_path = "./files/extrai_rn.zip"
+  destination_path = "./files/"
+  after_zip_path = destination_path + "extrai_rn/"
+  os.makedirs(destination_path)
+except:
+  print('Folder extrai_rna already exists')
+
+
+
+with ZipFile(origin_path, 'r') as zipObj:
+  zipObj.extractall(destination_path)
+
+print('Files unzipped')
+
+files = os.listdir(after_zip_path)
+print(files)
+# Filtering Barreto files.
+barreto_list = []
+for cada in files:
+  if 'Barreto' in cada and 'Zone' not in cada:
+    barreto_list.append(cada)
+
+
+# This is when the files are filtered by time
+
+date = datetime.datetime(2021,7,10)
+date2 = datetime.datetime(2021,10,20)
+datefilter = files_date_filter(date, date2)
+
+# Moving the filtered files to the folder ./files/OctoberWRF/
+try:
+  for file in files:
+    if file in datefilter:
+      # First path is the WRF provided data
+      # Second path is the destination path for the filtered data (station and date)
+      print('moving ' + after_zip_path+file + 'to' + october_path)
+      shutil.move(after_zip_path+ file, october_path)
+except:
+  print('The files have already been filtered.')
+
+
+# treatment for each file on ./file/OctoberWRF
+for cada in os.listdir(october_path):
+  
+  path2 = october_path+cada
   print(path2)
   csv = adaptingTXT(path2)
- 
-  csv.to_csv('/home/github/Climatology/PMN/files/OctoberWRF/'+cada[:-3]+'csv')
+  print('transforming ' + path2 +"to" + october_path + cada[:-3]+'.csv')
+  csv.to_csv(october_path+cada[:-3]+'csv')
+  os.remove(path2)
 
-
+shutil.rmtree(after_zip_path)
 # Check the concatening stuff on filtering notebook on colab from glmalmeida@id.uff.br
