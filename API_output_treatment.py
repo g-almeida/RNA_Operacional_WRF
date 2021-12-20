@@ -31,9 +31,11 @@ def leitura_dados_observados(path, sheet_name=None):
     else:
         obs = pd.read_csv(path)
         obs['Hora Leitura'] = pd.to_datetime(obs['Hora Leitura'])
-        
+    
+    # Convertendo do fuso de Brasília para UTC (BR + 3hrs)
+    obs['Hora Leitura'] = obs['Hora Leitura'].apply(lambda x: x + datetime.timedelta(hours=3)) 
+    
     hourly_obs = obs.where(obs['Hora Leitura'].dt.minute==0).dropna()
-
     hourly_obs_acum01 = hourly_obs[['Hora Leitura', '01 h']]
     
     return hourly_obs_acum01
