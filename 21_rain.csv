@@ -1,0 +1,31 @@
+,Lat,lon,estação,cidade,data,chuva 15m,chuva 1h,chuva 4h,chuva 24h,chuva 96h,chuva 30d,atual ou atrasado,fonte do dado
+0,-22.936875,-43.03176,Maravista,Niterói,09/01/2022 21:00,0.0,0.2,1.0,5.0,61.0,218.8,atual,Defesa Civil Niteroi
+1,-22.953173517216324,-43.08194159730999,Piratininga,Niterói,09/01/2022 21:00,0.2,0.2,1.4,3.4,53.6,223.2,atual,Defesa Civil Niteroi
+2,-22.953173517216324,-43.08194159730999,Piratininga 2,Niterói,09/01/2022 21:00,0.0,0.2,1.8,4.0,37.2,199.4,atual,Defesa Civil Niteroi
+3,-22.91650500000001,-43.09123,São Francisco 1,Niterói,09/01/2022 21:00,0.0,0.2,0.8,3.4,46.2,198.6,atual,Defesa Civil Niteroi
+4,-22.934162,-43.10028499999999,Preventório,Niterói,09/01/2022 21:00,0.0,0.2,1.2,3.2,45.6,205.6,atual,Defesa Civil Niteroi
+5,-22.86396,-43.09919,Barreto 1,Niterói,09/01/2022 21:15,0.0,0.0,1.2,7.2,63.4,226.0,atual,Defesa Civil Niteroi
+6,-22.885602,-43.10485999999999,Boa Vista,Niterói,09/01/2022 21:00,0.0,0.0,1.4,9.0,38.8,199.8,atual,Defesa Civil Niteroi
+7,-22.88261000000001,-43.06575,Caramujo,Niterói,09/01/2022 21:00,0.0,0.0,0.6,12.0,65.4,198.8,atual,Defesa Civil Niteroi
+8,-22.93444093816999,-43.0062389300875,Engenho do Mato,Niterói,09/01/2022 21:00,0.0,0.0,0.6,2.2,77.4,214.2,atual,Defesa Civil Niteroi
+9,-22.93444093816999,-43.0062389300875,Itaipú,Niterói,09/01/2022 21:00,0.0,0.0,1.6,4.2,71.4,199.8,atual,Defesa Civil Niteroi
+10,-22.933416930265047,-43.11481475230219,Jurujuba,Niterói,09/01/2022 21:00,0.0,0.0,1.2,3.0,45.8,208.2,atual,Defesa Civil Niteroi
+11,-22.91361200000001,-43.072442,Maceió,Niterói,09/01/2022 21:00,0.0,0.0,1.0,5.8,56.6,230.0,atual,Defesa Civil Niteroi
+12,-22.88195500000003,-43.031365,Maria Paula,Niterói,09/01/2022 21:00,0.0,0.0,0.0,3.8,43.2,196.6,atual,Defesa Civil Niteroi
+13,-22.884696999999992,-43.12599699999997,Morro da Penha,Niterói,09/01/2022 21:00,0.0,0.0,1.2,4.6,46.0,319.0,atual,Defesa Civil Niteroi
+14,-22.90558200000001,-43.12609199999999,Morro do Palácio,Niterói,09/01/2022 21:00,0.0,0.0,0.2,0.8,19.6,128.4,atual,Defesa Civil Niteroi
+15,-22.89655800000001,-43.102017,Pé Pequeno,Niterói,09/01/2022 21:00,0.0,0.0,1.0,7.0,45.2,214.4,atual,Defesa Civil Niteroi
+16,-22.89142,-42.997197,Rio do Ouro,Niterói,09/01/2022 21:00,0.0,0.0,0.4,4.2,67.2,196.4,atual,Defesa Civil Niteroi
+17,-22.897155000000005,-43.05958,Sapê,Niterói,09/01/2022 21:00,0.0,0.0,1.0,14.8,78.0,277.4,atual,Defesa Civil Niteroi
+18,-22.86391725882606,-43.08125495311178,Tenente Jardim,Niterói,09/01/2022 21:00,0.0,0.0,1.2,8.6,64.0,231.4,atual,Defesa Civil Niteroi
+19,-22.93444093816999,-43.0062389300875,Várzea das Moças,Niterói,09/01/2022 21:00,0.0,0.0,0.2,2.6,0.0,116.4,atual,Defesa Civil Niteroi
+20,-22.89413000000003,-43.109463,Bairro de Fátima,Niterói,09/01/2022 21:00,0.0,0.0,0.8,4.0,4.0,118.4,atual,Defesa Civil Niteroi
+21,-22.880417000000005,-43.076725,Bonfim 2,Niterói,09/01/2022 21:00,0.0,0.0,0.8,6.8,58.2,241.6,atual,Defesa Civil Niteroi
+22,-22.87358300000003,-43.09178799999997,Coronel Leôncio,Niterói,09/01/2022 21:00,0.0,0.0,1.0,8.4,63.6,237.6,atual,Defesa Civil Niteroi
+23,-22.906973,-43.071013,Igrejinha,Niterói,09/01/2022 21:00,0.0,0.0,0.8,7.2,57.6,277.4,atual,Defesa Civil Niteroi
+24,-22.891437000000003,-43.085833,Morro do Bumba,Niterói,09/01/2022 21:00,0.0,0.0,0.0,10.0,26.8,163.0,atual,Defesa Civil Niteroi
+25,-22.873048,-43.068902,Morro do Castro,Niterói,09/01/2022 21:00,0.0,0.0,0.8,8.6,58.8,196.0,atual,Defesa Civil Niteroi
+26,-22.899628,-43.11845999999999,Morro do Estado,Niterói,09/01/2022 21:15,0.0,0.0,2.2,8.2,57.4,324.0,atual,Defesa Civil Niteroi
+27,-22.876405000000005,-43.04637,Santa Bárbara 2,Niterói,09/01/2022 21:00,0.0,0.0,0.8,10.2,97.0,247.2,atual,Defesa Civil Niteroi
+28,-22.902903,-43.08673799999999,Travessa Beltrão,Niterói,09/01/2022 21:00,0.0,0.0,0.8,6.0,48.8,228.0,atual,Defesa Civil Niteroi
+29,-22.912318000000013,-43.10239199999999,Cavalão,Niterói,09/01/2022 21:00,0.0,0.2,1.0,2.6,38.0,212.6,atual,Defesa Civil Niteroi

@@ -1,0 +1,31 @@
+,Lat,lon,estação,cidade,data,chuva 15m,chuva 1h,chuva 4h,chuva 24h,chuva 96h,chuva 30d,atual ou atrasado,fonte do dado
+0,-22.936875,-43.03176,Maravista,Niterói,31/12/2021 18:00,0.0,0.4,2.8,21.4,43.2,195.2,atual,Defesa Civil Niteroi
+1,-22.89142,-42.997197,Rio do Ouro,Niterói,31/12/2021 18:00,0.0,0.4,4.2,16.0,26.8,163.2,atual,Defesa Civil Niteroi
+2,-22.897155000000005,-43.05958,Sapê,Niterói,31/12/2021 17:30,0.2,0.4,3.8,42.2,51.8,231.8,atual,Defesa Civil Niteroi
+3,-22.86396,-43.09919,Barreto 1,Niterói,31/12/2021 18:15,0.0,0.2,2.0,37.0,53.2,197.0,atual,Defesa Civil Niteroi
+4,-22.88261000000001,-43.06575,Caramujo,Niterói,31/12/2021 18:00,0.2,0.2,3.2,41.4,49.8,159.4,atual,Defesa Civil Niteroi
+5,-22.93444093816999,-43.0062389300875,Itaipú,Niterói,31/12/2021 18:00,0.0,0.2,1.6,24.6,37.2,174.2,atual,Defesa Civil Niteroi
+6,-22.91361200000001,-43.072442,Maceió,Niterói,31/12/2021 18:00,0.2,0.2,2.2,49.6,55.8,217.2,atual,Defesa Civil Niteroi
+7,-22.88195500000003,-43.031365,Maria Paula,Niterói,31/12/2021 18:00,0.0,0.2,3.6,18.2,30.4,188.8,atual,Defesa Civil Niteroi
+8,-22.953173517216324,-43.08194159730999,Piratininga,Niterói,31/12/2021 18:00,0.0,0.2,1.6,44.4,56.4,212.6,atual,Defesa Civil Niteroi
+9,-22.953173517216324,-43.08194159730999,Piratininga 2,Niterói,31/12/2021 18:00,0.2,0.2,1.4,31.6,57.4,204.2,atual,Defesa Civil Niteroi
+10,-22.93444093816999,-43.0062389300875,Várzea das Moças,Niterói,31/12/2021 18:00,0.0,0.2,2.0,8.4,24.8,95.6,atual,Defesa Civil Niteroi
+11,-22.880417000000005,-43.076725,Bonfim 2,Niterói,31/12/2021 18:00,0.0,0.2,2.0,52.4,62.4,213.0,atual,Defesa Civil Niteroi
+12,-22.87358300000003,-43.09178799999997,Coronel Leôncio,Niterói,31/12/2021 18:15,0.0,0.2,1.8,44.0,56.8,206.8,atual,Defesa Civil Niteroi
+13,-22.873048,-43.068902,Morro do Castro,Niterói,31/12/2021 18:00,0.2,0.2,3.2,34.4,43.4,159.4,atual,Defesa Civil Niteroi
+14,-22.899628,-43.11845999999999,Morro do Estado,Niterói,31/12/2021 18:15,0.2,0.2,1.6,39.4,57.0,916.0,atual,Defesa Civil Niteroi
+15,-22.876405000000005,-43.04637,Santa Bárbara 2,Niterói,31/12/2021 18:00,0.2,0.2,2.6,21.6,30.2,195.6,atual,Defesa Civil Niteroi
+16,-22.902903,-43.08673799999999,Travessa Beltrão,Niterói,31/12/2021 18:00,0.0,0.2,2.0,41.8,44.8,808.0,atual,Defesa Civil Niteroi
+17,-22.885602,-43.10485999999999,Boa Vista,Niterói,31/12/2021 18:00,0.0,0.0,1.4,28.2,37.4,196.4,atual,Defesa Civil Niteroi
+18,-22.912318000000013,-43.10239199999999,Cavalão,Niterói,31/12/2021 18:00,0.0,0.0,1.0,21.8,26.6,204.0,atual,Defesa Civil Niteroi
+19,-22.933416930265047,-43.11481475230219,Jurujuba,Niterói,31/12/2021 18:00,0.0,0.0,0.8,21.8,36.2,203.2,atual,Defesa Civil Niteroi
+20,-22.884696999999992,-43.12599699999997,Morro da Penha,Niterói,31/12/2021 18:00,0.0,0.0,1.0,18.4,27.8,200.8,atual,Defesa Civil Niteroi
+21,-22.90558200000001,-43.12609199999999,Morro do Palácio,Niterói,31/12/2021 18:00,0.0,0.0,0.4,6.2,8.0,134.8,atual,Defesa Civil Niteroi
+22,-22.89655800000001,-43.102017,Pé Pequeno,Niterói,31/12/2021 18:00,0.0,0.0,1.6,26.4,33.8,200.8,atual,Defesa Civil Niteroi
+23,-22.91650500000001,-43.09123,São Francisco 1,Niterói,31/12/2021 18:00,0.0,0.0,1.4,24.4,32.4,185.0,atual,Defesa Civil Niteroi
+24,-22.86391725882606,-43.08125495311178,Tenente Jardim,Niterói,31/12/2021 18:00,0.0,0.0,2.0,55.0,67.8,197.4,atual,Defesa Civil Niteroi
+25,-22.89413000000003,-43.109463,Bairro de Fátima,Niterói,31/12/2021 18:00,0.0,0.0,0.0,0.0,1.2,126.2,atual,Defesa Civil Niteroi
+26,-22.906973,-43.071013,Igrejinha,Niterói,31/12/2021 18:00,0.0,0.0,2.0,47.2,54.4,265.2,atual,Defesa Civil Niteroi
+27,-22.891437000000003,-43.085833,Morro do Bumba,Niterói,31/12/2021 18:00,0.0,0.0,0.0,36.2,39.8,165.4,atual,Defesa Civil Niteroi
+28,-22.934162,-43.10028499999999,Preventório,Niterói,31/12/2021 18:00,0.0,0.0,0.6,24.6,39.0,1222.0,atual,Defesa Civil Niteroi
+29,-22.93444093816999,-43.0062389300875,Engenho do Mato,Niterói,31/12/2021 18:00,0.2,0.4,3.6,17.8,39.4,162.2,atual,Defesa Civil Niteroi
