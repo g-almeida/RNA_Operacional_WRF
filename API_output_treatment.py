@@ -56,3 +56,15 @@ concat_list = [novembro18_maio21, junho21, julho21, agosto21, setembro21, outubr
 
 full = pd.concat(concat_list)
 full.to_csv('./files/full_series_Barreto_18-21.csv')
+
+#  ------ Bringing the API and concatening with the old files
+
+# For this to work, we will need values for december-21, january-22, february-22. 
+# Actual data until the API date, otherwise we will have dates with missing values.
+
+from API import api_niteroi
+
+precip_now = api_niteroi('chuva') # this returns a csv file
+
+# next step will be to concat the dataframes ( full + precip_now )
+
