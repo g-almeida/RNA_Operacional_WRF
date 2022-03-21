@@ -191,7 +191,7 @@ def wrf_formatting(wrf_data, initial_date, final_date):
 
 #   -------------  Observed data treatment
 
-# obs_path = 'UTC_series_Barreto_18-21.csv'
+# obs_path = 'UTC_series_Barreto_18-21.csv' - config file
 obs_path = input('Enter the file name of the observed data: \n Usually "UTC_series_Barreto_18-21.csv" ')
 obs = pd.read_csv('./files/' + obs_path).drop('Unnamed: 0', axis=1)
 obs = obs.rename(columns={'Hora Leitura': 'Data', '01 h':'precipitacao_obsevada'})
@@ -207,7 +207,7 @@ obs = obs.drop('DATA-HORA', axis=1)
 obs.sort_values('Datetime', inplace=True)
 
 
-    # dates input
+    # dates input - config file
       # example: initial date=2021-08-04, final_date=2021-10-20
 
 st_date_input_ = input('Enter the initial date for observed data (yyyy-mm-dd): ')
@@ -322,6 +322,6 @@ New_Aug_Out['temp_prev_ptoNE']=corrected_wrf['temp']['Pto NE'].values
 New_Aug_Out['temp_prev_ptoSW']=corrected_wrf['temp']['Pto SW'].values
 New_Aug_Out['temp_prev_ptoNW']=corrected_wrf['temp']['Pto NW'].values
 
-# pre_input_name format example: 'UTC_AugOut_WRF_obs.csv''
+# pre_input_name format example: 'UTC_AugOut_WRF_obs.csv''  - config file
 pre_input_name = input("All done! \n\nPlease, enter the name of the file you want to save the data: \n (Format example: 'UTC_AugOut_WRF_obs.csv'")
 New_Aug_Out.to_csv("./files/inputs/pre-input/"+ pre_input_name)

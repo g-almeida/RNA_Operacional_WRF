@@ -1,0 +1,15 @@
+#Extraction_folder
+extraction_folder,extracted_files
+
+#rna_zip_file
+extrai_rna,extrai_rn.zip
+
+#Observed_data_path
+Obs_Path,UTC_series_Barreto_18-21.csv
+
+#Dates
+Initial_Date,2021-08-04
+Final_Date,2021-10-20
+
+#pre_input_filename
+pre_input_name,UTC_AugOut_WRF_obs.csv

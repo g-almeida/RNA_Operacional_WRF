@@ -29,3 +29,21 @@ Para ilustrar a ideia geral do seu commit, use o guia de emojis.
 :construction: [construction] quando o trabalho estiver incompleto  
 :pencil: [pencil] pequenas/ outras atualizações (melhoria de formatação, por exemplo)  
 :ok_hand: [ok_hand] mudanças feitas durante code review  
+
+
+
+### . Pre-process Pipeline
+
+- Observed data
+    main script: "API.py"
+        responsible for bringing the hour observed data from the server.
+    secondary script: "API_output_treatment.py"
+        Brings together the once saved data from Barreto 1.xlsx and concats with the new values from the API.
+        For this to work, we will need values for december-21, january-22, february-22. 
+
+- WRF_output_treatment.py:
+    inputs: 
+        - extrai_rn.zip (WRF forecast compressed folder)
+        - observed data (from )
+
+
