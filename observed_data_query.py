@@ -1,4 +1,7 @@
 """This script is meant to be hourly run on the lab server.
+It will query the API and update the database with the new data.
+
+For now, the database is a local csv file. Located inside the repository "./files/obs_data/hourly_data.csv"
 """
 
 import datetime
