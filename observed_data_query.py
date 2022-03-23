@@ -12,18 +12,21 @@ sys.path.append("/home/lammoc/Gabriel/RNA_Operacional_WRF")
 import API as obs
 now = datetime.datetime.now()
 
+# needs to be set for working properly on cron
+path = '/home/lammoc/Gabriel/RNA_Operacional_WRF/files/obs_data/hourly_data.csv'
+
 # commented due to application on CRON
 #if str(now.minute) == '1':
     
 new_data = obs.api_niteroi('chuva')#.drop(' ', axis=1)
 try:
-old_data = pd.read_csv('./files/obs_data/hourly_data.csv')        
-concat_data = pd.concat([old_data, new_data])
+	old_data = pd.read_csv(path)        
+	concat_data = pd.concat([old_data, new_data])
 except:
-print('No old data found, creating new one')
-concat_data = new_data    
+	print('No old data found, creating new one')
+	concat_data = new_data    
 
 concat_data = concat_data[['Lat', 'lon', 'estação', 'cidade', 'data', 'chuva 15m', 'chuva 1h', 'chuva 4h', 'chuva 24h', 'chuva 96h', 'chuva 30d', 'atual ou atrasado','fonte do dado']]
-concat_data.to_csv('./files/obs_data/hourly_data.csv')
+concat_data.to_csv(path)
 
 print(now)

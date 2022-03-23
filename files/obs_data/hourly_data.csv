@@ -89,33 +89,123 @@
 87,-22.876405000000005,-43.04637,Santa Bárbara 2,Niterói,21/03/2022 20:15,0.0,0.0,0.0,15.8,15.8,40.6,atual,Defesa Civil Niteroi
 88,-22.902903,-43.08673799999999,Travessa Beltrão,Niterói,21/03/2022 20:15,0.0,0.0,0.0,28.8,28.8,34.0,atual,Defesa Civil Niteroi
 89,-22.86396,-43.09919,Barreto 1,Niterói,21/03/2022 20:15,0.0,0.0.1,0.4,15.6,15.6.1,20.6,atual,Defesa Civil Niteroi
-0,-22.885602,-43.10485999999999,Boa Vista,Niterói,21/03/2022 20:15,0.0,0.0,0.2,7.8,7.8,10.2,atual,Defesa Civil Niteroi
-1,-22.88261000000001,-43.06575,Caramujo,Niterói,21/03/2022 20:15,0.0,0.0,0.0,15.0,15.0,35.2,atual,Defesa Civil Niteroi
-2,-22.912318000000013,-43.10239199999999,Cavalão,Niterói,21/03/2022 20:15,0.0,0.0,0.0,23.4,23.4,28.8,atual,Defesa Civil Niteroi
-3,-22.93444093816999,-43.0062389300875,Engenho do Mato,Niterói,21/03/2022 20:15,0.0,0.0,0.0,23.0,23.4,53.4,atual,Defesa Civil Niteroi
-4,-22.93444093816999,-43.0062389300875,Itaipú,Niterói,21/03/2022 20:15,0.0,0.0,0.0,9.8,9.8,47.4,atual,Defesa Civil Niteroi
-5,-22.933416930265047,-43.11481475230219,Jurujuba,Niterói,21/03/2022 20:15,0.0,0.0,0.0,22.0,22.0,28.6,atual,Defesa Civil Niteroi
-6,-22.91361200000001,-43.072442,Maceió,Niterói,21/03/2022 20:15,0.0,0.0,0.0,19.6,19.6,36.0,atual,Defesa Civil Niteroi
-7,-22.936875,-43.03176,Maravista,Niterói,21/03/2022 20:15,0.0,0.0,0.0,16.2,17.2,37.8,atual,Defesa Civil Niteroi
-8,-22.88195500000003,-43.031365,Maria Paula,Niterói,21/03/2022 20:15,0.0,0.0,0.4,15.6,16.8,54.2,atual,Defesa Civil Niteroi
-9,-22.884696999999992,-43.12599699999997,Morro da Penha,Niterói,21/03/2022 20:15,0.0,0.0,0.2,10.6,10.6,23.4,atual,Defesa Civil Niteroi
-10,-22.90558200000001,-43.12609199999999,Morro do Palácio,Niterói,21/03/2022 20:15,0.0,0.0,0.0,23.2,47.0,51.6,atual,Defesa Civil Niteroi
-11,-22.89655800000001,-43.102017,Pé Pequeno,Niterói,21/03/2022 20:15,0.0,0.0,0.0,25.6,25.6,30.8,atual,Defesa Civil Niteroi
-12,-22.953173517216324,-43.08194159730999,Piratininga,Niterói,21/03/2022 20:15,0.0,0.0,0.0,11.4,12.4,19.4,atual,Defesa Civil Niteroi
-13,-22.953173517216324,-43.08194159730999,Piratininga 2,Niterói,21/03/2022 20:15,0.0,0.0,0.0,11.4,11.4,16.2,atual,Defesa Civil Niteroi
-14,-22.89142,-42.997197,Rio do Ouro,Niterói,21/03/2022 20:15,0.0,0.0,0.2,22.8,22.8,44.2,atual,Defesa Civil Niteroi
-15,-22.91650500000001,-43.09123,São Francisco 1,Niterói,21/03/2022 20:15,0.0,0.0,0.0,19.0,19.0,25.0,atual,Defesa Civil Niteroi
-16,-22.897155000000005,-43.05958,Sapê,Niterói,21/03/2022 20:15,0.0,0.0,0.0,23.2,23.2,44.2,atual,Defesa Civil Niteroi
-17,-22.86391725882606,-43.08125495311178,Tenente Jardim,Niterói,21/03/2022 20:15,0.0,0.0,1.0,15.8,15.8,31.6,atual,Defesa Civil Niteroi
-18,-22.93444093816999,-43.0062389300875,Várzea das Moças,Niterói,21/03/2022 20:15,0.0,0.0,0.0,23.0,23.0,32.6,atual,Defesa Civil Niteroi
-19,-22.89413000000003,-43.109463,Bairro de Fátima,Niterói,21/03/2022 20:15,0.0,0.0,0.0,13.4,14.2,18.2,atual,Defesa Civil Niteroi
-20,-22.880417000000005,-43.076725,Bonfim 2,Niterói,21/03/2022 20:15,0.0,0.0,0.0,14.6,14.6,71.8,atual,Defesa Civil Niteroi
-21,-22.87358300000003,-43.09178799999997,Coronel Leôncio,Niterói,21/03/2022 20:15,0.0,0.0,0.4,19.2,19.2,35.6,atual,Defesa Civil Niteroi
-22,-22.906973,-43.071013,Igrejinha,Niterói,21/03/2022 20:15,0.0,0.0,0.0,20.0,20.0,34.2,atual,Defesa Civil Niteroi
-23,-22.891437000000003,-43.085833,Morro do Bumba,Niterói,21/03/2022 20:15,0.0,0.0,0.2,30.8,30.8,38.6,atual,Defesa Civil Niteroi
-24,-22.873048,-43.068902,Morro do Castro,Niterói,21/03/2022 20:15,0.0,0.0,0.0,0.0,0.0,12.8,atual,Defesa Civil Niteroi
-25,-22.899628,-43.11845999999999,Morro do Estado,Niterói,21/03/2022 20:15,0.0,0.0,0.2,17.2,17.2,24.8,atual,Defesa Civil Niteroi
-26,-22.934162,-43.10028499999999,Preventório,Niterói,21/03/2022 20:15,0.0,0.0,0.2,23.2,23.4,29.4,atual,Defesa Civil Niteroi
-27,-22.876405000000005,-43.04637,Santa Bárbara 2,Niterói,21/03/2022 20:15,0.0,0.0,0.0,15.8,15.8,40.6,atual,Defesa Civil Niteroi
-28,-22.902903,-43.08673799999999,Travessa Beltrão,Niterói,21/03/2022 20:15,0.0,0.0,0.0,28.8,28.8,34.0,atual,Defesa Civil Niteroi
-29,-22.86396,-43.09919,Barreto 1,Niterói,21/03/2022 20:15,0.0,0.0.1,0.4,15.6,15.6.1,20.6,atual,Defesa Civil Niteroi
+90,-22.885602,-43.10485999999999,Boa Vista,Niterói,21/03/2022 20:15,0.0,0.0,0.2,7.8,7.8,10.2,atual,Defesa Civil Niteroi
+91,-22.88261000000001,-43.06575,Caramujo,Niterói,21/03/2022 20:15,0.0,0.0,0.0,15.0,15.0,35.2,atual,Defesa Civil Niteroi
+92,-22.912318000000013,-43.10239199999999,Cavalão,Niterói,21/03/2022 20:15,0.0,0.0,0.0,23.4,23.4,28.8,atual,Defesa Civil Niteroi
+93,-22.93444093816999,-43.0062389300875,Engenho do Mato,Niterói,21/03/2022 20:15,0.0,0.0,0.0,23.0,23.4,53.4,atual,Defesa Civil Niteroi
+94,-22.93444093816999,-43.0062389300875,Itaipú,Niterói,21/03/2022 20:15,0.0,0.0,0.0,9.8,9.8,47.4,atual,Defesa Civil Niteroi
+95,-22.933416930265047,-43.11481475230219,Jurujuba,Niterói,21/03/2022 20:15,0.0,0.0,0.0,22.0,22.0,28.6,atual,Defesa Civil Niteroi
+96,-22.91361200000001,-43.072442,Maceió,Niterói,21/03/2022 20:15,0.0,0.0,0.0,19.6,19.6,36.0,atual,Defesa Civil Niteroi
+97,-22.936875,-43.03176,Maravista,Niterói,21/03/2022 20:15,0.0,0.0,0.0,16.2,17.2,37.8,atual,Defesa Civil Niteroi
+98,-22.88195500000003,-43.031365,Maria Paula,Niterói,21/03/2022 20:15,0.0,0.0,0.4,15.6,16.8,54.2,atual,Defesa Civil Niteroi
+99,-22.884696999999992,-43.12599699999997,Morro da Penha,Niterói,21/03/2022 20:15,0.0,0.0,0.2,10.6,10.6,23.4,atual,Defesa Civil Niteroi
+100,-22.90558200000001,-43.12609199999999,Morro do Palácio,Niterói,21/03/2022 20:15,0.0,0.0,0.0,23.2,47.0,51.6,atual,Defesa Civil Niteroi
+101,-22.89655800000001,-43.102017,Pé Pequeno,Niterói,21/03/2022 20:15,0.0,0.0,0.0,25.6,25.6,30.8,atual,Defesa Civil Niteroi
+102,-22.953173517216324,-43.08194159730999,Piratininga,Niterói,21/03/2022 20:15,0.0,0.0,0.0,11.4,12.4,19.4,atual,Defesa Civil Niteroi
+103,-22.953173517216324,-43.08194159730999,Piratininga 2,Niterói,21/03/2022 20:15,0.0,0.0,0.0,11.4,11.4,16.2,atual,Defesa Civil Niteroi
+104,-22.89142,-42.997197,Rio do Ouro,Niterói,21/03/2022 20:15,0.0,0.0,0.2,22.8,22.8,44.2,atual,Defesa Civil Niteroi
+105,-22.91650500000001,-43.09123,São Francisco 1,Niterói,21/03/2022 20:15,0.0,0.0,0.0,19.0,19.0,25.0,atual,Defesa Civil Niteroi
+106,-22.897155000000005,-43.05958,Sapê,Niterói,21/03/2022 20:15,0.0,0.0,0.0,23.2,23.2,44.2,atual,Defesa Civil Niteroi
+107,-22.86391725882606,-43.08125495311178,Tenente Jardim,Niterói,21/03/2022 20:15,0.0,0.0,1.0,15.8,15.8,31.6,atual,Defesa Civil Niteroi
+108,-22.93444093816999,-43.0062389300875,Várzea das Moças,Niterói,21/03/2022 20:15,0.0,0.0,0.0,23.0,23.0,32.6,atual,Defesa Civil Niteroi
+109,-22.89413000000003,-43.109463,Bairro de Fátima,Niterói,21/03/2022 20:15,0.0,0.0,0.0,13.4,14.2,18.2,atual,Defesa Civil Niteroi
+110,-22.880417000000005,-43.076725,Bonfim 2,Niterói,21/03/2022 20:15,0.0,0.0,0.0,14.6,14.6,71.8,atual,Defesa Civil Niteroi
+111,-22.87358300000003,-43.09178799999997,Coronel Leôncio,Niterói,21/03/2022 20:15,0.0,0.0,0.4,19.2,19.2,35.6,atual,Defesa Civil Niteroi
+112,-22.906973,-43.071013,Igrejinha,Niterói,21/03/2022 20:15,0.0,0.0,0.0,20.0,20.0,34.2,atual,Defesa Civil Niteroi
+113,-22.891437000000003,-43.085833,Morro do Bumba,Niterói,21/03/2022 20:15,0.0,0.0,0.2,30.8,30.8,38.6,atual,Defesa Civil Niteroi
+114,-22.873048,-43.068902,Morro do Castro,Niterói,21/03/2022 20:15,0.0,0.0,0.0,0.0,0.0,12.8,atual,Defesa Civil Niteroi
+115,-22.899628,-43.11845999999999,Morro do Estado,Niterói,21/03/2022 20:15,0.0,0.0,0.2,17.2,17.2,24.8,atual,Defesa Civil Niteroi
+116,-22.934162,-43.10028499999999,Preventório,Niterói,21/03/2022 20:15,0.0,0.0,0.2,23.2,23.4,29.4,atual,Defesa Civil Niteroi
+117,-22.876405000000005,-43.04637,Santa Bárbara 2,Niterói,21/03/2022 20:15,0.0,0.0,0.0,15.8,15.8,40.6,atual,Defesa Civil Niteroi
+118,-22.902903,-43.08673799999999,Travessa Beltrão,Niterói,21/03/2022 20:15,0.0,0.0,0.0,28.8,28.8,34.0,atual,Defesa Civil Niteroi
+119,-22.86396,-43.09919,Barreto 1,Niterói,21/03/2022 20:15,0.0,0.0.1,0.4,15.6,15.6.1,20.6,atual,Defesa Civil Niteroi
+120,-22.885602,-43.10485999999999,Boa Vista,Niterói,23/03/2022 19:45,0.0,0.0,0.0,0.0,11.0,12.0,atual,Defesa Civil Niteroi
+121,-22.88261000000001,-43.06575,Caramujo,Niterói,23/03/2022 19:45,0.0,0.0,0.0,0.0,15.2,25.0,atual,Defesa Civil Niteroi
+122,-22.912318000000013,-43.10239199999999,Cavalão,Niterói,23/03/2022 19:45,0.0,0.0,0.0,0.0,26.8,28.0,atual,Defesa Civil Niteroi
+123,-22.93444093816999,-43.0062389300875,Engenho do Mato,Niterói,23/03/2022 19:45,0.0,0.0,0.0,0.0,24.4,41.4,atual,Defesa Civil Niteroi
+124,-22.93444093816999,-43.0062389300875,Itaipú,Niterói,23/03/2022 19:45,0.0,0.0,0.0,0.0,10.0,28.6,atual,Defesa Civil Niteroi
+125,-22.933416930265047,-43.11481475230219,Jurujuba,Niterói,23/03/2022 19:45,0.0,0.0,0.0,0.2,23.8,24.2,atual,Defesa Civil Niteroi
+126,-22.91361200000001,-43.072442,Maceió,Niterói,23/03/2022 19:45,0.0,0.0,0.0,0.0,23.8,26.4,atual,Defesa Civil Niteroi
+127,-22.936875,-43.03176,Maravista,Niterói,23/03/2022 19:45,0.0,0.0,0.0,0.0,18.0,30.2,atual,Defesa Civil Niteroi
+128,-22.88195500000003,-43.031365,Maria Paula,Niterói,23/03/2022 19:45,0.0,0.0,0.0,0.0,17.4,33.6,atual,Defesa Civil Niteroi
+129,-22.884696999999992,-43.12599699999997,Morro da Penha,Niterói,23/03/2022 19:45,0.0,0.0,0.0,0.0,14.6,23.2,atual,Defesa Civil Niteroi
+130,-22.90558200000001,-43.12609199999999,Morro do Palácio,Niterói,23/03/2022 19:45,0.0,0.0,0.0,0.0,47.0,47.6,atual,Defesa Civil Niteroi
+131,-22.89655800000001,-43.102017,Pé Pequeno,Niterói,23/03/2022 19:45,0.0,0.0,0.0,0.0,30.2,31.6,atual,Defesa Civil Niteroi
+132,-22.953173517216324,-43.08194159730999,Piratininga,Niterói,23/03/2022 19:45,0.0,0.0,0.0,0.0,12.6,15.0,atual,Defesa Civil Niteroi
+133,-22.953173517216324,-43.08194159730999,Piratininga 2,Niterói,23/03/2022 19:45,0.0,0.0,0.0,0.0,11.4,11.6,atual,Defesa Civil Niteroi
+134,-22.89142,-42.997197,Rio do Ouro,Niterói,23/03/2022 19:30,0.0,0.0,0.0,0.0,22.8,32.6,atual,Defesa Civil Niteroi
+135,-22.91650500000001,-43.09123,São Francisco 1,Niterói,23/03/2022 19:45,0.0,0.0,0.0,0.0,20.4,21.4,atual,Defesa Civil Niteroi
+136,-22.897155000000005,-43.05958,Sapê,Niterói,23/03/2022 19:45,0.0,0.0,0.0,0.0,24.0,24.4,atual,Defesa Civil Niteroi
+137,-22.86391725882606,-43.08125495311178,Tenente Jardim,Niterói,23/03/2022 19:45,0.0,0.0,0.0,0.0,16.8,20.2,atual,Defesa Civil Niteroi
+138,-22.93444093816999,-43.0062389300875,Várzea das Moças,Niterói,23/03/2022 19:45,0.0,0.0,0.0,0.0,0.0,32.0,atual,Defesa Civil Niteroi
+139,-22.89413000000003,-43.109463,Bairro de Fátima,Niterói,23/03/2022 19:45,0.0,0.0,0.0,0.0,16.4,18.2,atual,Defesa Civil Niteroi
+140,-22.880417000000005,-43.076725,Bonfim 2,Niterói,23/03/2022 19:45,0.0,0.0,0.0,0.0,15.4,63.8,atual,Defesa Civil Niteroi
+141,-22.87358300000003,-43.09178799999997,Coronel Leôncio,Niterói,23/03/2022 19:45,0.0,0.0,0.0,0.0,20.8,33.8,atual,Defesa Civil Niteroi
+142,-22.906973,-43.071013,Igrejinha,Niterói,23/03/2022 19:45,0.0,0.0,0.0,0.0,20.6,24.8,atual,Defesa Civil Niteroi
+143,-22.891437000000003,-43.085833,Morro do Bumba,Niterói,23/03/2022 19:30,0.0,0.0,0.0,0.0,32.0,34.6,atual,Defesa Civil Niteroi
+144,-22.873048,-43.068902,Morro do Castro,Niterói,23/03/2022 19:45,0.0,0.0,0.0,0.0,1.2,7.8,atual,Defesa Civil Niteroi
+145,-22.899628,-43.11845999999999,Morro do Estado,Niterói,23/03/2022 19:45,0.0,0.0,0.0,0.0,21.8,24.6,atual,Defesa Civil Niteroi
+146,-22.934162,-43.10028499999999,Preventório,Niterói,23/03/2022 19:45,0.0,0.0,0.0,0.0,24.2,25.4,atual,Defesa Civil Niteroi
+147,-22.876405000000005,-43.04637,Santa Bárbara 2,Niterói,23/03/2022 19:45,0.0,0.0,0.0,0.0,17.6,35.4,atual,Defesa Civil Niteroi
+148,-22.902903,-43.08673799999999,Travessa Beltrão,Niterói,23/03/2022 19:45,0.0,0.0,0.0,0.0,30.8,32.6,atual,Defesa Civil Niteroi
+149,-22.86396,-43.09919,Barreto 1,Niterói,23/03/2022 19:45,0.0,0.0.1,0.0.2,0.0.3,16.4,18.6,atual,Defesa Civil Niteroi
+150,-22.885602,-43.10485999999999,Boa Vista,Niterói,23/03/2022 20:00,0.0,0.0,0.0,0.0,11.0,12.0,atual,Defesa Civil Niteroi
+151,-22.88261000000001,-43.06575,Caramujo,Niterói,23/03/2022 20:00,0.0,0.0,0.0,0.0,15.2,25.0,atual,Defesa Civil Niteroi
+152,-22.912318000000013,-43.10239199999999,Cavalão,Niterói,23/03/2022 20:00,0.0,0.0,0.0,0.0,26.8,28.0,atual,Defesa Civil Niteroi
+153,-22.93444093816999,-43.0062389300875,Engenho do Mato,Niterói,23/03/2022 20:00,0.0,0.0,0.0,0.0,24.4,41.4,atual,Defesa Civil Niteroi
+154,-22.93444093816999,-43.0062389300875,Itaipú,Niterói,23/03/2022 20:00,0.0,0.0,0.0,0.0,10.0,28.6,atual,Defesa Civil Niteroi
+155,-22.933416930265047,-43.11481475230219,Jurujuba,Niterói,23/03/2022 20:00,0.0,0.0,0.0,0.2,23.8,24.2,atual,Defesa Civil Niteroi
+156,-22.91361200000001,-43.072442,Maceió,Niterói,23/03/2022 20:00,0.0,0.0,0.0,0.0,23.8,26.4,atual,Defesa Civil Niteroi
+157,-22.936875,-43.03176,Maravista,Niterói,23/03/2022 20:00,0.0,0.0,0.0,0.0,18.0,30.2,atual,Defesa Civil Niteroi
+158,-22.88195500000003,-43.031365,Maria Paula,Niterói,23/03/2022 20:00,0.0,0.0,0.0,0.0,17.4,33.6,atual,Defesa Civil Niteroi
+159,-22.884696999999992,-43.12599699999997,Morro da Penha,Niterói,23/03/2022 20:00,0.0,0.0,0.0,0.0,14.6,23.2,atual,Defesa Civil Niteroi
+160,-22.90558200000001,-43.12609199999999,Morro do Palácio,Niterói,23/03/2022 20:00,0.0,0.0,0.0,0.0,47.0,47.6,atual,Defesa Civil Niteroi
+161,-22.89655800000001,-43.102017,Pé Pequeno,Niterói,23/03/2022 20:00,0.0,0.0,0.0,0.0,30.2,31.6,atual,Defesa Civil Niteroi
+162,-22.953173517216324,-43.08194159730999,Piratininga,Niterói,23/03/2022 20:00,0.0,0.0,0.0,0.0,12.6,15.0,atual,Defesa Civil Niteroi
+163,-22.953173517216324,-43.08194159730999,Piratininga 2,Niterói,23/03/2022 20:00,0.0,0.0,0.0,0.0,11.4,11.6,atual,Defesa Civil Niteroi
+164,-22.89142,-42.997197,Rio do Ouro,Niterói,23/03/2022 20:00,0.0,0.0,0.0,0.0,22.8,32.6,atual,Defesa Civil Niteroi
+165,-22.91650500000001,-43.09123,São Francisco 1,Niterói,23/03/2022 20:00,0.0,0.0,0.0,0.0,20.4,21.4,atual,Defesa Civil Niteroi
+166,-22.897155000000005,-43.05958,Sapê,Niterói,23/03/2022 20:00,0.0,0.0,0.0,0.0,24.0,24.4,atual,Defesa Civil Niteroi
+167,-22.86391725882606,-43.08125495311178,Tenente Jardim,Niterói,23/03/2022 20:00,0.0,0.0,0.0,0.0,16.8,20.2,atual,Defesa Civil Niteroi
+168,-22.93444093816999,-43.0062389300875,Várzea das Moças,Niterói,23/03/2022 20:00,0.0,0.0,0.0,0.0,23.4,32.0,atual,Defesa Civil Niteroi
+169,-22.89413000000003,-43.109463,Bairro de Fátima,Niterói,23/03/2022 20:00,0.0,0.0,0.0,0.0,16.4,18.2,atual,Defesa Civil Niteroi
+170,-22.880417000000005,-43.076725,Bonfim 2,Niterói,23/03/2022 20:00,0.0,0.0,0.0,0.0,15.4,63.8,atual,Defesa Civil Niteroi
+171,-22.87358300000003,-43.09178799999997,Coronel Leôncio,Niterói,23/03/2022 20:00,0.0,0.0,0.0,0.0,20.8,33.8,atual,Defesa Civil Niteroi
+172,-22.906973,-43.071013,Igrejinha,Niterói,23/03/2022 20:00,0.0,0.0,0.0,0.0,20.6,24.8,atual,Defesa Civil Niteroi
+173,-22.891437000000003,-43.085833,Morro do Bumba,Niterói,23/03/2022 20:00,0.0,0.0,0.0,0.0,32.0,34.6,atual,Defesa Civil Niteroi
+174,-22.873048,-43.068902,Morro do Castro,Niterói,23/03/2022 20:00,0.0,0.0,0.0,0.0,1.2,7.8,atual,Defesa Civil Niteroi
+175,-22.899628,-43.11845999999999,Morro do Estado,Niterói,23/03/2022 20:00,0.0,0.0,0.0,0.0,21.8,24.6,atual,Defesa Civil Niteroi
+176,-22.934162,-43.10028499999999,Preventório,Niterói,23/03/2022 20:00,0.0,0.0,0.0,0.0,24.2,25.4,atual,Defesa Civil Niteroi
+177,-22.876405000000005,-43.04637,Santa Bárbara 2,Niterói,23/03/2022 20:00,0.0,0.0,0.0,0.0,17.6,35.4,atual,Defesa Civil Niteroi
+178,-22.902903,-43.08673799999999,Travessa Beltrão,Niterói,23/03/2022 20:00,0.0,0.0,0.0,0.0,30.8,32.6,atual,Defesa Civil Niteroi
+179,-22.86396,-43.09919,Barreto 1,Niterói,23/03/2022 20:00,0.0,0.0.1,0.0.2,0.0.3,16.4,18.6,atual,Defesa Civil Niteroi
+0,-22.885602,-43.10485999999999,Boa Vista,Niterói,23/03/2022 20:00,0.0,0.0,0.0,0.0,11.0,12.0,atual,Defesa Civil Niteroi
+1,-22.88261000000001,-43.06575,Caramujo,Niterói,23/03/2022 20:00,0.0,0.0,0.0,0.0,15.2,25.0,atual,Defesa Civil Niteroi
+2,-22.912318000000013,-43.10239199999999,Cavalão,Niterói,23/03/2022 20:00,0.0,0.0,0.0,0.0,26.8,28.0,atual,Defesa Civil Niteroi
+3,-22.93444093816999,-43.0062389300875,Engenho do Mato,Niterói,23/03/2022 20:00,0.0,0.0,0.0,0.0,24.4,41.4,atual,Defesa Civil Niteroi
+4,-22.93444093816999,-43.0062389300875,Itaipú,Niterói,23/03/2022 20:00,0.0,0.0,0.0,0.0,10.0,28.6,atual,Defesa Civil Niteroi
+5,-22.933416930265047,-43.11481475230219,Jurujuba,Niterói,23/03/2022 20:00,0.0,0.0,0.0,0.2,23.8,24.2,atual,Defesa Civil Niteroi
+6,-22.91361200000001,-43.072442,Maceió,Niterói,23/03/2022 20:00,0.0,0.0,0.0,0.0,23.8,26.4,atual,Defesa Civil Niteroi
+7,-22.936875,-43.03176,Maravista,Niterói,23/03/2022 20:00,0.0,0.0,0.0,0.0,18.0,30.2,atual,Defesa Civil Niteroi
+8,-22.88195500000003,-43.031365,Maria Paula,Niterói,23/03/2022 20:00,0.0,0.0,0.0,0.0,17.4,33.6,atual,Defesa Civil Niteroi
+9,-22.884696999999992,-43.12599699999997,Morro da Penha,Niterói,23/03/2022 20:00,0.0,0.0,0.0,0.0,14.6,23.2,atual,Defesa Civil Niteroi
+10,-22.90558200000001,-43.12609199999999,Morro do Palácio,Niterói,23/03/2022 20:00,0.0,0.0,0.0,0.0,47.0,47.6,atual,Defesa Civil Niteroi
+11,-22.89655800000001,-43.102017,Pé Pequeno,Niterói,23/03/2022 20:00,0.0,0.0,0.0,0.0,30.2,31.6,atual,Defesa Civil Niteroi
+12,-22.953173517216324,-43.08194159730999,Piratininga,Niterói,23/03/2022 20:00,0.0,0.0,0.0,0.0,12.6,15.0,atual,Defesa Civil Niteroi
+13,-22.953173517216324,-43.08194159730999,Piratininga 2,Niterói,23/03/2022 20:00,0.0,0.0,0.0,0.0,11.4,11.6,atual,Defesa Civil Niteroi
+14,-22.89142,-42.997197,Rio do Ouro,Niterói,23/03/2022 20:00,0.0,0.0,0.0,0.0,22.8,32.6,atual,Defesa Civil Niteroi
+15,-22.91650500000001,-43.09123,São Francisco 1,Niterói,23/03/2022 20:00,0.0,0.0,0.0,0.0,20.4,21.4,atual,Defesa Civil Niteroi
+16,-22.897155000000005,-43.05958,Sapê,Niterói,23/03/2022 20:00,0.0,0.0,0.0,0.0,24.0,24.4,atual,Defesa Civil Niteroi
+17,-22.86391725882606,-43.08125495311178,Tenente Jardim,Niterói,23/03/2022 20:00,0.0,0.0,0.0,0.0,16.8,20.2,atual,Defesa Civil Niteroi
+18,-22.93444093816999,-43.0062389300875,Várzea das Moças,Niterói,23/03/2022 20:00,0.0,0.0,0.0,0.0,23.4,32.0,atual,Defesa Civil Niteroi
+19,-22.89413000000003,-43.109463,Bairro de Fátima,Niterói,23/03/2022 20:00,0.0,0.0,0.0,0.0,16.4,18.2,atual,Defesa Civil Niteroi
+20,-22.880417000000005,-43.076725,Bonfim 2,Niterói,23/03/2022 20:00,0.0,0.0,0.0,0.0,15.4,63.8,atual,Defesa Civil Niteroi
+21,-22.87358300000003,-43.09178799999997,Coronel Leôncio,Niterói,23/03/2022 20:00,0.0,0.0,0.0,0.0,20.8,33.8,atual,Defesa Civil Niteroi
+22,-22.906973,-43.071013,Igrejinha,Niterói,23/03/2022 20:00,0.0,0.0,0.0,0.0,20.6,24.8,atual,Defesa Civil Niteroi
+23,-22.891437000000003,-43.085833,Morro do Bumba,Niterói,23/03/2022 20:00,0.0,0.0,0.0,0.0,32.0,34.6,atual,Defesa Civil Niteroi
+24,-22.873048,-43.068902,Morro do Castro,Niterói,23/03/2022 20:00,0.0,0.0,0.0,0.0,1.2,7.8,atual,Defesa Civil Niteroi
+25,-22.899628,-43.11845999999999,Morro do Estado,Niterói,23/03/2022 20:00,0.0,0.0,0.0,0.0,21.8,24.6,atual,Defesa Civil Niteroi
+26,-22.934162,-43.10028499999999,Preventório,Niterói,23/03/2022 20:00,0.0,0.0,0.0,0.0,24.2,25.4,atual,Defesa Civil Niteroi
+27,-22.876405000000005,-43.04637,Santa Bárbara 2,Niterói,23/03/2022 20:00,0.0,0.0,0.0,0.0,17.6,35.4,atual,Defesa Civil Niteroi
+28,-22.902903,-43.08673799999999,Travessa Beltrão,Niterói,23/03/2022 20:00,0.0,0.0,0.0,0.0,30.8,32.6,atual,Defesa Civil Niteroi
+29,-22.86396,-43.09919,Barreto 1,Niterói,23/03/2022 20:00,0.0,0.0.1,0.0.2,0.0.3,16.4,18.6,atual,Defesa Civil Niteroi
