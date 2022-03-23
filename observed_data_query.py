@@ -20,9 +20,7 @@ if str(now.minute) == '0':
         print('No old data found, creating new one')
         concat_data = new_data    
 
-    concat_data = concat_data[['Lat', 'lon', 'estação', 'cidade', 'data', 'chuva 15m', 'chuva 1h',
-       'chuva 4h', 'chuva 24h', 'chuva 96h', 'chuva 30d', 'atual ou atrasado',
-       'fonte do dado']]
+    concat_data = concat_data[['Lat', 'lon', 'estação', 'cidade', 'data', 'chuva 15m', 'chuva 1h', 'chuva 4h', 'chuva 24h', 'chuva 96h', 'chuva 30d', 'atual ou atrasado','fonte do dado']]
     concat_data.to_csv('./files/obs_data/hourly_data.csv')
 
     print(now)
