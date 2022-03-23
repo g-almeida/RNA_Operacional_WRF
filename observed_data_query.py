@@ -6,12 +6,13 @@ For now, the database is a local csv file. Located inside the repository "./file
 """
 
 import datetime
-import API as obs
 import pandas as pd
-
+import sys
+sys.path.append("/home/lammoc/Gabriel/RNA_Operacional_WRF")
+import API as obs
 now = datetime.datetime.now()
 
-if str(now.minute) == '0':
+if str(now.minute) == '1':
     
     new_data = obs.api_niteroi('chuva')#.drop(' ', axis=1)
     try:
