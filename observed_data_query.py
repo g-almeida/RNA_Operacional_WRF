@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """This script is meant to be hourly run on the lab server.
 It will query the API and update the database with the new data.
 
