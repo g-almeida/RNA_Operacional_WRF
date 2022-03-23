@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 def config_file_reading(Config_Path='/home/github/RNA_Operacional_WRF'):
         
     ### Config variables

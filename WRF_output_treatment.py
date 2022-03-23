@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 """
     Script designated to treat the output of the WRF model.
         The Functions in this section are able to select the interval of time. And also formats each of the desired files.
