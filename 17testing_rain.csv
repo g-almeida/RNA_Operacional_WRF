@@ -1,0 +1,31 @@
+,Lat,lon,estação,cidade,data,chuva 15m,chuva 1h,chuva 4h,chuva 24h,chuva 96h,chuva 30d,atual ou atrasado,fonte do dado
+0,-22.89142,-42.997197,Rio do Ouro,Niterói,30/04/2022 17:15,0.2,3.0,69.4,85.6,85.6,188.2,atual,Defesa Civil Niteroi
+1,-22.873048,-43.068902,Morro do Castro,Niterói,30/04/2022 17:15,0.2,3.0,54.4,108.2,108.2,3846.2,atual,Defesa Civil Niteroi
+2,-22.880417000000005,-43.076725,Bonfim 2,Niterói,30/04/2022 17:30,0.0,2.6,43.8,93.0,93.0,185.2,atual,Defesa Civil Niteroi
+3,-22.891437000000003,-43.085833,Morro do Bumba,Niterói,30/04/2022 17:15,0.0,2.6,24.0,119.6,119.6,163.6,atual,Defesa Civil Niteroi
+4,-22.902903,-43.08673799999999,Travessa Beltrão,Niterói,30/04/2022 17:30,0.0,2.6,10.8,64.4,64.4,154.0,atual,Defesa Civil Niteroi
+5,-22.897155000000005,-43.05958,Sapê,Niterói,30/04/2022 17:30,0.0,2.2,44.2,87.8,87.8,198.8,atual,Defesa Civil Niteroi
+6,-22.86391725882606,-43.08125495311178,Tenente Jardim,Niterói,30/04/2022 17:30,0.0,2.2,60.2,126.4,126.4,207.6,atual,Defesa Civil Niteroi
+7,-22.91361200000001,-43.072442,Maceió,Niterói,30/04/2022 17:30,0.0,2.0,6.8,50.0,50.0,116.2,atual,Defesa Civil Niteroi
+8,-22.86396,-43.09919,Barreto 1,Niterói,30/04/2022 17:30,0.2,1.8,48.6,158.2,158.2,172.6,atual,Defesa Civil Niteroi
+9,-22.87358300000003,-43.09178799999997,Coronel Leôncio,Niterói,30/04/2022 17:15,0.2,1.8,47.0,152.4,152.4,12357.6,atual,Defesa Civil Niteroi
+10,-22.88261000000001,-43.06575,Caramujo,Niterói,30/04/2022 17:30,0.0,1.4,52.4,97.0,97.0,221.8,atual,Defesa Civil Niteroi
+11,-22.93444093816999,-43.0062389300875,Várzea das Moças,Niterói,30/04/2022 17:15,0.2,1.4,60.2,79.0,79.2,177.0,atual,Defesa Civil Niteroi
+12,-22.89655800000001,-43.102017,Pé Pequeno,Niterói,30/04/2022 17:30,0.0,1.2,8.4,48.0,48.0,147.6,atual,Defesa Civil Niteroi
+13,-22.93444093816999,-43.0062389300875,Itaipú,Niterói,30/04/2022 17:30,0.4,0.8,2.6,5.6,5.6,228.0,atual,Defesa Civil Niteroi
+14,-22.876405000000005,-43.04637,Santa Bárbara 2,Niterói,30/04/2022 17:30,0.0,0.8,40.6,86.6,86.6,189.2,atual,Defesa Civil Niteroi
+15,-22.89413000000003,-43.109463,Bairro de Fátima,Niterói,30/04/2022 17:30,0.0,0.6,4.4,25.8,25.8,111.4,atual,Defesa Civil Niteroi
+16,-22.899628,-43.11845999999999,Morro do Estado,Niterói,30/04/2022 17:30,0.0,0.6,11.6,25.8,25.8,443.8,atual,Defesa Civil Niteroi
+17,-22.88195500000003,-43.031365,Maria Paula,Niterói,30/04/2022 17:30,0.0,0.4,59.4,100.0,100.0,179.4,atual,Defesa Civil Niteroi
+18,-22.953173517216324,-43.08194159730999,Piratininga,Niterói,30/04/2022 17:30,0.0,0.4,1.0,9.8,9.8,225.4,atual,Defesa Civil Niteroi
+19,-22.93444093816999,-43.0062389300875,Engenho do Mato,Niterói,30/04/2022 17:30,0.0,0.2,21.8,38.6,38.6,188.8,atual,Defesa Civil Niteroi
+20,-22.933416930265047,-43.11481475230219,Jurujuba,Niterói,30/04/2022 17:30,0.0,0.2,2.4,5.4,5.4,207.8,atual,Defesa Civil Niteroi
+21,-22.936875,-43.03176,Maravista,Niterói,30/04/2022 17:30,0.0,0.2,8.6,16.6,16.6,201.2,atual,Defesa Civil Niteroi
+22,-22.90558200000001,-43.12609199999999,Morro do Palácio,Niterói,30/04/2022 17:30,0.0,0.2,2.6,3.8,3.8,67.0,atual,Defesa Civil Niteroi
+23,-22.953173517216324,-43.08194159730999,Piratininga 2,Niterói,30/04/2022 17:30,0.0,0.2,0.8,2.0,2.0,205.2,atual,Defesa Civil Niteroi
+24,-22.934162,-43.10028499999999,Preventório,Niterói,30/04/2022 17:30,0.2,0.2,2.4,4.0,4.0,178.6,atual,Defesa Civil Niteroi
+25,-22.885602,-43.10485999999999,Boa Vista,Niterói,30/04/2022 17:30,0.0,0.0,0.0,45.6,45.6,123.2,atual,Defesa Civil Niteroi
+26,-22.912318000000013,-43.10239199999999,Cavalão,Niterói,30/04/2022 17:30,0.0,0.0,3.2,14.2,14.2,977.4,atual,Defesa Civil Niteroi
+27,-22.884696999999992,-43.12599699999997,Morro da Penha,Niterói,30/04/2022 17:15,0.0,0.0,6.6,39.2,39.2,225.4,atual,Defesa Civil Niteroi
+28,-22.91650500000001,-43.09123,São Francisco 1,Niterói,30/04/2022 17:30,0.0,0.0,5.0,29.2,29.2,113.0,atual,Defesa Civil Niteroi
+29,-22.906972999999997,-43.071013,Igrejinha,Niterói,30/04/2022 17:30,0.0,4.4,17.4,73.0,73.0.1,151.0,atual,Defesa Civil Niteroi
