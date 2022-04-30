@@ -2,7 +2,7 @@
 '''
 Treating observed data
 
-!!! On first moment using the files provided from google drive
+!!! On first moment using the files provided from google drive.
 '''
 
 import pandas as pd
