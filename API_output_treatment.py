@@ -1,48 +1,62 @@
 # -*- coding: utf-8 -*-
 '''
-Treating observed data
-
-!!! On first moment using the files provided from google drive.
+Treating observed data from the API (and from google drive files (optionally))
 '''
 
 import pandas as pd
 import datetime
 
-def leitura_dados_observados_prefeitura(path, sheet_name=None):
+def observed_data_reading(path, station=None, sheet_name=None):
     """
-    Leitura dos dados obsevados passados pela prefeitura
-    Aceita .xlsx e .csv
+    Observed data reading.
+    The file expected for input is the 'hourly_data.csv' wich is being concatenated on lab server.
+
+    Optionally also treats the excel files earlyer downloaded from google drive.
+    
+    So: works with .xlsx e .csv
 
     Parameters
     ----------
-    path : str, path type
+    path : str, path to .csv or .xlsx file
         
+    station : str, station name
+        Ex.: "Barreto 1"
+
     sheet_name : str, optional
+        If the file is an excel file, the sheet name to be read.
         Mês; Ex.: "Outubro" 
 
     Returns
     -------
     hourly_obs_acum01 : pandas.DataFrame
-        Acumulado de hora em hora observados as 00:00
+        Station hourly accumulated data verified at 00:00:00.
 
     """
+    if station==None:
+        print("\n\n ! ERROR ! \nPlease select a station! \nThis function will return its accumulated data.")
+        return 
+
     if path[-4:] == 'xlsx':
         obs = pd.read_excel(path, sheet_name)
+
+        # -------- Excel sheets provided has another format, so we need to change the columns names
+        obs = obs.rename(columns={'Hora Leitura':'data', '01 h':'chuva 1h'})
         
     else:
+        # -------- Read the csv file provided from the API (Here column names already comes with the right name)
         obs = pd.read_csv(path)
-        obs['Hora Leitura'] = pd.to_datetime(obs['Hora Leitura'])
-    
+        
     # Convertendo do fuso de Brasília para UTC (BR + 3hrs)
-    obs['Hora Leitura'] = obs['Hora Leitura'].apply(lambda x: x + datetime.timedelta(hours=3)) 
-    
-    hourly_obs = obs.where(obs['Hora Leitura'].dt.minute==0).dropna()
-    hourly_obs_acum01 = hourly_obs[['Hora Leitura', '01 h']]
-    
-    # Renomeando pros nossos padrões
-    hourly_obs_acum01 = hourly_obs_acum01.rename(columns={'Hora Leitura':'data', '01 h':'chuva 1h'})
+    obs['data'] = pd.to_datetime(obs['data'])
+    obs['data'] = obs['data'].apply(lambda x: x + datetime.timedelta(hours=3)) 
+    obs = API_treatment(obs, station)
+
+
+    hourly_obs = obs.where(obs['data'].dt.minute==0).dropna()
+    hourly_obs_acum01 = hourly_obs[['data', 'chuva 1h']]
     
     return hourly_obs_acum01
+
 
 def float_converter(one):
     ''' Some precipitation values are coming with the '0.0.1' format, so this function
@@ -60,10 +74,11 @@ def float_converter(one):
 
 def API_treatment(obs_df, station=None):
     ''' Treatment designated to data downloaded from API
+        Float error specially in Barreto. Floats with two "."
+        Uses the <float_converter()> function to fix
     '''
     if station != None:
         obs_df = obs_df.where(obs_df['estação']==station).dropna()
-    
     
     df_values = obs_df[['chuva 15m', 'chuva 1h', 'chuva 4h', 'chuva 24h', 'chuva 96h', 'chuva 30d']]
     for cada in df_values:

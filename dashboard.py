@@ -18,8 +18,7 @@ app = dash.Dash(__name__, external_stylesheets=external_stylesheets)
 
 # "data_base" is the market prices provided dataset
 # This first section is adapting the dataset to plot on dashboard
-data_base = pd.read_excel("prices_jan21.xls")
-data_base = data_base.set_index(data_base.date).drop('date',axis=1)
+data_base = pd.read_csv("./files/obs_data/hourly_data.csv")
 
 # "fig0" is the variable with the plot itself
 fig0 = px.scatter(data_base, title='Gráfico do fechamento de 2020 (R$) | (01/10 - 25/11)', trendline='ols')
