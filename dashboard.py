@@ -25,6 +25,7 @@ colors = {
     'title': 'rgb(141,211,199)'
 }
 
+
 #   First section             -------------------------------             
 
 # "data_base" is the market prices provided dataset
@@ -45,17 +46,17 @@ dropdown_options = []
 for cada in station_list:   
     dropdown_options.append({'label': str(cada), 'value': str(cada)})
 
-
+treated_data_dict['Piratininga'].to_csv('WUPpiratining.csv')
 
 #   Third section             -------------------------------
 
 app.layout = html.Div(
-        style={'backgroundColor': colors['background']},
+        #style={'backgroundColor': colors['background']},
         children=[
         html.H1(children='RNA | WRF: Coleta de Dados Chuva observada - Niterói', style={
-            'textAlign': 'center', 'color': colors['title']}),
+            'textAlign': 'center'}),#, 'color': colors['title']}),
         
-        html.Div(children='''Nossa coleta de dados observados engloba as seguintes estações de Niterói:''', style={'color': colors['title']}),
+        html.Div(children='''Nossa coleta de dados observados engloba as seguintes estações de Niterói:'''),
         
         dcc.Dropdown(
             id='demo-dropdown',
@@ -76,11 +77,11 @@ def update_output(value):
     
     var = treated_data_dict[value]
 
-    fig = px.line(var, x=var.index, y='chuva 1h', title='Chuva observada na estação '+value)
-    fig.update_layout(
-        plot_bgcolor=colors['background'],
-        paper_bgcolor=colors['background'],
-        font_color=colors['text'])
+    fig = px.line(var, x='data', y='chuva 1h', title='Chuva observada na estação '+value)
+    #fig.update_layout(
+    #    plot_bgcolor=colors['background'],
+    #    paper_bgcolor=colors['background'],
+    #    font_color=colors['text'])
 
     return dcc.Graph(id='example-graph', figure=fig)
 

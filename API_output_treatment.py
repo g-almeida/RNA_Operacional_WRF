@@ -47,7 +47,7 @@ def observed_data_reading(path, station=None, sheet_name=None):
         obs = pd.read_csv(path)
         
     # Convertendo do fuso de Brasília para UTC (BR + 3hrs)
-    obs['data'] = pd.to_datetime(obs['data'])
+    obs['data'] = pd.to_datetime(obs['data'], infer_datetime_format=True)
     obs['data'] = obs['data'].apply(lambda x: x + datetime.timedelta(hours=3)) 
     obs = API_treatment(obs, station)
 
