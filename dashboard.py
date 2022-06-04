@@ -46,7 +46,7 @@ dropdown_options = []
 for cada in station_list:   
     dropdown_options.append({'label': str(cada), 'value': str(cada)})
 
-treated_data_dict['Piratininga'].to_csv('WUPpiratining.csv')
+#treated_data_dict['Piratininga'].to_csv('WUPpiratining.csv')
 
 #   Third section             -------------------------------
 
