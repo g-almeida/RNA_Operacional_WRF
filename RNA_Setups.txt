@@ -1,5 +1,5 @@
 #Extraction_folder
-extraction_folder,extracted_files
+extraction_folder,extracted_files_teste
 
 #rna_zip_file
 extrai_rna,extrai_rn.zip

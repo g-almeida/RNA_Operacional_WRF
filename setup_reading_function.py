@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
-def config_file_reading(Config_Path='/home/github/RNA_Operacional_WRF'):
-        
+#def config_file_reading(Config_Path='/home/github/RNA_Operacional_WRF'):
+def config_file_reading(Config_Path='./'):
+                
     ### Config variables
     Config_Path=Config_Path
     Config_file='RNA_Setups.txt'
@@ -70,4 +71,4 @@ def config_file_reading(Config_Path='/home/github/RNA_Operacional_WRF'):
                         "pre_input_filename":pre_input_filename}
     return config_dictionary
 
-print(config_file_reading())
+#print(config_file_reading())
