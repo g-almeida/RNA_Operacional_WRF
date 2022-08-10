@@ -1,8 +1,8 @@
 #Extraction_folder
-extraction_folder,extracted_files_teste
+extraction_folder,extracted_files_teste3
 
 #rna_zip_file
-extrai_rna,extrai_rn.zip
+extrai_rna,/home/github/RNA_Operacional_WRF/files/extrai_rn.zip
 
 #Observed_data_path
 Obs_Path,UTC_series_Barreto_18-21.csv

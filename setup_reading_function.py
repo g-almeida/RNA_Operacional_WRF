@@ -10,7 +10,7 @@ def config_file_reading(Config_Path='./'):
     txt_config=list()
 
     New_Dir=0
-    zip_file_name=0
+    zip_file_path=0
     Obs_Path=0
     Dates={}
     pre_input_filename=0
@@ -36,7 +36,7 @@ def config_file_reading(Config_Path='./'):
                 line_count+=1
                 while txt_config[line_count].startswith('#')==False:
                         if txt_config[line_count]!='':
-                            zip_file_name=str(txt_config[line_count].split(',')[1])
+                            zip_file_path=str(txt_config[line_count].split(',')[1])
                         line_count+=1
                         if line_count>=len(txt_config): break
 
@@ -65,7 +65,7 @@ def config_file_reading(Config_Path='./'):
                         if line_count>=len(txt_config): break
 
     config_dictionary = {"New_Dir":New_Dir,
-                        "zip_file_name":zip_file_name,
+                        "zip_file_path":zip_file_path,
                         "Obs_Path":Obs_Path,
                         "Dates":Dates,
                         "pre_input_filename":pre_input_filename}

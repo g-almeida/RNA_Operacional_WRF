@@ -82,15 +82,15 @@ try:
   october_path = './files/' + new_extraction_path + '/'
   os.makedirs(october_path)
 except:
-  print('\n---Jul_OctWRF folder already exists')
+  print('\n---ERROR! Folder already exists')
   exit()
 
 try:
   print("\n--- Entering WRF zip file.")
   # entering the wrf zip file: Ex: 'extrai_rn.zip'
   #wrf_zip = input('Enter the name of the wrf compressed folder. \n (Usually "extrai_rn.zip")')
-  wrf_zip = config_dict['zip_file_name']
-  origin_path = "./files/" + wrf_zip
+  wrf_zip_path = config_dict['zip_file_path']
+ 
   destination_path = "./files/"
   after_zip_path = destination_path + "extrai_rn/"
   os.makedirs(destination_path)
@@ -98,8 +98,7 @@ except:
   print('\n--- Folder extrai_rna already exists')
 
 
-
-with ZipFile(origin_path, 'r') as zipObj:
+with ZipFile(wrf_zip_path, 'r') as zipObj:
   zipObj.extractall(destination_path)
 
 print('\n--- Files unzipped')
@@ -205,7 +204,7 @@ def wrf_formatting(wrf_data, initial_date, final_date):
 print('\n--- Entering observed data.')
 #obs_path = input('Enter the file name of the observed data: \n Usually "UTC_series_Barreto_18-21.csv" ')
 obs_path = config_dict['Obs_Path']
-obs = pd.read_csv('./files/' + obs_path).drop('Unnamed: 0', axis=1)
+obs = pd.read_csv('./files/obs_data/' + obs_path).drop('Unnamed: 0', axis=1)
 obs = obs.rename(columns={'Hora Leitura': 'Data', '01 h':'precipitacao_obsevada'})
 obs = obs.sort_values('Data')
 obs['Horario'] = obs['Data'].astype('datetime64[ns]').dt.time
@@ -271,7 +270,7 @@ for today in missing_dates:
   yesterday = today - datetime.timedelta(days=1)
   missing_dates_nb.update({float(yesterday.strftime('%Y%m%d')) : float(today.strftime('%Y%m%d'))})
 
-
+#   ------------- Attention!!
 # After finding the missing dates, we will create a new dataframe fillin the values with the second day on forecast
 
 corrected_wrf = {}
@@ -340,5 +339,7 @@ New_Aug_Out['temp_prev_ptoNW']=corrected_wrf['temp']['Pto NW'].values
 #pre_input_name = input("All done! \n\nPlease, enter the name of the file you want to save the data: \n (Format example: 'UTC_AugOut_WRF_obs.csv'")
 pre_input_name = config_dict['pre_input_filename']
 New_Aug_Out.to_csv("./files/inputs/pre-input/"+ pre_input_name)
+os.makedirs(october_path + "/input_files" )
+New_Aug_Out.to_csv(october_path + "/input_files/" + pre_input_name)
 print("\n--- File created at: ./files/inputs/pre-input/"+ pre_input_name)
 print("\n--- All Done! ---")
