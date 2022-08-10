@@ -92,10 +92,10 @@ try:
   wrf_zip_path = config_dict['zip_file_path']
  
   destination_path = "./files/"
-  after_zip_path = destination_path + "extrai_rn/"
+  after_zip_path = destination_path + "extrai_rn/" # OBS.: this is necessary because the unzip creates a folder with its name
   os.makedirs(destination_path)
 except:
-  print('\n--- Folder extrai_rna already exists')
+  print('\n--- Folder "./files/" already exists')
 
 
 with ZipFile(wrf_zip_path, 'r') as zipObj:
@@ -112,9 +112,14 @@ for cada in files:
     barreto_list.append(cada)
 
 # This is when the files are filtered by time
-date = datetime.datetime(2021,7,10)
-date2 = datetime.datetime(2021,10,20)
-datefilter = files_date_filter(date, date2, barreto_list)
+datefilter_start_split = config_dict['Dates']['Initial_Date'].split('-')
+datefilter_start = datetime.date(int(datefilter_start_split[0]), int(datefilter_start_split[1]), int(datefilter_start_split[2]))
+
+datefilter_end_split = config_dict['Dates']['Final_Date'].split('-')
+datefilter_end = datetime.date(int(datefilter_end_split[0]), int(datefilter_end_split[1]), int(datefilter_end_split[2]))
+
+
+datefilter = files_date_filter(datefilter_start, datefilter_end, barreto_list)
 
 
 # Moving the filtered files to the folder ./files/OctoberWRF/
@@ -205,7 +210,7 @@ print('\n--- Entering observed data.')
 #obs_path = input('Enter the file name of the observed data: \n Usually "UTC_series_Barreto_18-21.csv" ')
 obs_path = config_dict['Obs_Path']
 obs = pd.read_csv('./files/obs_data/' + obs_path).drop('Unnamed: 0', axis=1)
-obs = obs.rename(columns={'Hora Leitura': 'Data', '01 h':'precipitacao_obsevada'})
+obs = obs.rename(columns={'Hora Leitura': 'Data', '01 h':'precipitacao_observada'})
 obs = obs.sort_values('Data')
 obs['Horario'] = obs['Data'].astype('datetime64[ns]').dt.time
 
@@ -233,7 +238,7 @@ ed_date_split = ed_date_input_.split('-')
 ending_date = datetime.date(int(ed_date_split[0]), int(ed_date_split[1]), int(st_date_split[2]))
 
 
-New_Aug_Out = obs.where((obs['Data']>=starting_date) & (obs['Data']<=ending_date)).dropna()
+observed_filtered_by_date = obs.where((obs['Data']>=starting_date) & (obs['Data']<=ending_date)).dropna()
 
 
     # looking for missing data on wrf data
@@ -263,7 +268,7 @@ def missing_date_finder(wrf_data, obs_data):
   return missing_dates
 
 
-missing_dates = missing_date_finder(vento_daily, New_Aug_Out) # this will be the missing dates
+missing_dates = missing_date_finder(vento_daily, observed_filtered_by_date) # this will be the missing dates
 missing_dates_nb = {} # {yesterday : today}
 
 for today in missing_dates:
@@ -294,52 +299,63 @@ for variable in wrf_dict:
 
 #   ------------- Finally putting WRF and Observed data together
 # *temporary* : deserves a better implementation 
+final_data = observed_filtered_by_date
 
-New_Aug_Out['Barreto_ws10']=corrected_wrf['vento']['Barreto_ws10'].values
-New_Aug_Out['Barreto_wd10']=corrected_wrf['vento']['Barreto_wd10'].values
-New_Aug_Out['Pto N_ws10']=corrected_wrf['vento']['Pto N_ws10'].values
-New_Aug_Out['Pto N_wd10']=corrected_wrf['vento']['Pto N_wd10'].values
-New_Aug_Out['Pto S_ws10']=corrected_wrf['vento']['Pto S_ws10'].values
-New_Aug_Out['Pto S_wd10']=corrected_wrf['vento']['Pto S_wd10'].values
-New_Aug_Out['Pto E_ws10']=corrected_wrf['vento']['Pto E_ws10'].values
-New_Aug_Out['Pto E_wd10']=corrected_wrf['vento']['Pto E_wd10'].values
-New_Aug_Out['Pto W_ws10']=corrected_wrf['vento']['Pto W_ws10'].values
-New_Aug_Out['Pto W_wd10']=corrected_wrf['vento']['Pto W_wd10'].values
-New_Aug_Out['Pto SE_ws10']=corrected_wrf['vento']['Pto SE_ws10'].values
-New_Aug_Out['Pto SE_wd10']=corrected_wrf['vento']['Pto SE_wd10'].values
-New_Aug_Out['Pto NE_ws10']=corrected_wrf['vento']['Pto NE_ws10'].values
-New_Aug_Out['Pto NE_wd10']=corrected_wrf['vento']['Pto NE_wd10'].values
-New_Aug_Out['Pto SW_ws10']=corrected_wrf['vento']['Pto SW_ws10'].values
-New_Aug_Out['Pto SW_wd10']=corrected_wrf['vento']['Pto SW_wd10'].values
-New_Aug_Out['Pto NW_ws10']=corrected_wrf['vento']['Pto NW_ws10'].values
-New_Aug_Out['Pto NW_wd10']=corrected_wrf['vento']['Pto NW_wd10'].values
+final_data['Barreto_ws10']=corrected_wrf['vento']['Barreto_ws10'].values
+final_data['Barreto_wd10']=corrected_wrf['vento']['Barreto_wd10'].values
+final_data['Pto N_ws10']=corrected_wrf['vento']['Pto N_ws10'].values
+final_data['Pto N_wd10']=corrected_wrf['vento']['Pto N_wd10'].values
+final_data['Pto S_ws10']=corrected_wrf['vento']['Pto S_ws10'].values
+final_data['Pto S_wd10']=corrected_wrf['vento']['Pto S_wd10'].values
+final_data['Pto E_ws10']=corrected_wrf['vento']['Pto E_ws10'].values
+final_data['Pto E_wd10']=corrected_wrf['vento']['Pto E_wd10'].values
+final_data['Pto W_ws10']=corrected_wrf['vento']['Pto W_ws10'].values
+final_data['Pto W_wd10']=corrected_wrf['vento']['Pto W_wd10'].values
+final_data['Pto SE_ws10']=corrected_wrf['vento']['Pto SE_ws10'].values
+final_data['Pto SE_wd10']=corrected_wrf['vento']['Pto SE_wd10'].values
+final_data['Pto NE_ws10']=corrected_wrf['vento']['Pto NE_ws10'].values
+final_data['Pto NE_wd10']=corrected_wrf['vento']['Pto NE_wd10'].values
+final_data['Pto SW_ws10']=corrected_wrf['vento']['Pto SW_ws10'].values
+final_data['Pto SW_wd10']=corrected_wrf['vento']['Pto SW_wd10'].values
+final_data['Pto NW_ws10']=corrected_wrf['vento']['Pto NW_ws10'].values
+final_data['Pto NW_wd10']=corrected_wrf['vento']['Pto NW_wd10'].values
 
 
-New_Aug_Out['prec_prev_Barreto']=corrected_wrf['prec']['Barreto'].values
-New_Aug_Out['prec_prev_ptoN']=corrected_wrf['prec']['Pto N'].values
-New_Aug_Out['prec_prev_ptoS']=corrected_wrf['prec']['Pto S'].values
-New_Aug_Out['prec_prev_ptoE']=corrected_wrf['prec']['Pto E'].values
-New_Aug_Out['prec_prev_ptoW']=corrected_wrf['prec']['Pto W'].values
-New_Aug_Out['prec_prev_ptoSE']=corrected_wrf['prec']['Pto SE'].values
-New_Aug_Out['prec_prev_ptoNE']=corrected_wrf['prec']['Pto NE'].values
-New_Aug_Out['prec_prev_ptoSW']=corrected_wrf['prec']['Pto SW'].values
-New_Aug_Out['prec_prev_ptoNW']=corrected_wrf['prec']['Pto NW'].values
+final_data['prec_prev_Barreto']=corrected_wrf['prec']['Barreto'].values
+final_data['prec_prev_ptoN']=corrected_wrf['prec']['Pto N'].values
+final_data['prec_prev_ptoS']=corrected_wrf['prec']['Pto S'].values
+final_data['prec_prev_ptoE']=corrected_wrf['prec']['Pto E'].values
+final_data['prec_prev_ptoW']=corrected_wrf['prec']['Pto W'].values
+final_data['prec_prev_ptoSE']=corrected_wrf['prec']['Pto SE'].values
+final_data['prec_prev_ptoNE']=corrected_wrf['prec']['Pto NE'].values
+final_data['prec_prev_ptoSW']=corrected_wrf['prec']['Pto SW'].values
+final_data['prec_prev_ptoNW']=corrected_wrf['prec']['Pto NW'].values
 
-New_Aug_Out['temp_prev_Barreto']=corrected_wrf['temp']['Barreto'].values
-New_Aug_Out['temp_prev_ptoN']=corrected_wrf['temp']['Pto N'].values
-New_Aug_Out['temp_prev_ptoS']=corrected_wrf['temp']['Pto S'].values
-New_Aug_Out['temp_prev_ptoE']=corrected_wrf['temp']['Pto E'].values
-New_Aug_Out['temp_prev_ptoW']=corrected_wrf['temp']['Pto W'].values
-New_Aug_Out['temp_prev_ptoSE']=corrected_wrf['temp']['Pto SE'].values
-New_Aug_Out['temp_prev_ptoNE']=corrected_wrf['temp']['Pto NE'].values
-New_Aug_Out['temp_prev_ptoSW']=corrected_wrf['temp']['Pto SW'].values
-New_Aug_Out['temp_prev_ptoNW']=corrected_wrf['temp']['Pto NW'].values
+final_data['temp_prev_Barreto']=corrected_wrf['temp']['Barreto'].values
+final_data['temp_prev_ptoN']=corrected_wrf['temp']['Pto N'].values
+final_data['temp_prev_ptoS']=corrected_wrf['temp']['Pto S'].values
+final_data['temp_prev_ptoE']=corrected_wrf['temp']['Pto E'].values
+final_data['temp_prev_ptoW']=corrected_wrf['temp']['Pto W'].values
+final_data['temp_prev_ptoSE']=corrected_wrf['temp']['Pto SE'].values
+final_data['temp_prev_ptoNE']=corrected_wrf['temp']['Pto NE'].values
+final_data['temp_prev_ptoSW']=corrected_wrf['temp']['Pto SW'].values
+final_data['temp_prev_ptoNW']=corrected_wrf['temp']['Pto NW'].values
+
+
+# Removing values under 0.
+str_type_columns = ['Data', 'Horario', 'Datetime']
+for col in final_data.columns:
+    if col not in str_type_columns:
+        # OBS.: Temperatures below 0 must be considered, so the following rule does not apply on temperature columns.
+        if 'temp' not in col: 
+          final_data[col] = final_data[col].apply(lambda x: float(x) if float(x) > 0 else 0)
+
 
 # pre_input_name format example: 'UTC_AugOut_WRF_obs.csv''  - config file
 #pre_input_name = input("All done! \n\nPlease, enter the name of the file you want to save the data: \n (Format example: 'UTC_AugOut_WRF_obs.csv'")
 pre_input_name = config_dict['pre_input_filename']
-New_Aug_Out.to_csv("./files/inputs/pre-input/"+ pre_input_name)
+final_data.to_csv("./files/inputs/pre-input/"+ pre_input_name)
 os.makedirs(october_path + "/input_files" )
-New_Aug_Out.to_csv(october_path + "/input_files/" + pre_input_name)
+final_data.to_csv(october_path + "/input_files/" + pre_input_name)
 print("\n--- File created at: ./files/inputs/pre-input/"+ pre_input_name)
 print("\n--- All Done! ---")

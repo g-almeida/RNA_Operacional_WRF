@@ -1,5 +1,5 @@
 #Extraction_folder
-extraction_folder,extracted_files_teste3
+extraction_folder,extracted_files_teste5
 
 #rna_zip_file
 extrai_rna,/home/github/RNA_Operacional_WRF/files/extrai_rn.zip
