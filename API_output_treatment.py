@@ -8,7 +8,7 @@ import datetime
 
 def observed_data_reading(path, station=None, sheet_name=None):
     """
-    Observed data reading.
+    Observed data reading and UTC conversion.
     The file expected for input is the 'hourly_data.csv' wich is being concatenated on lab server.
 
     Optionally also treats the excel files earlyer downloaded from google drive.

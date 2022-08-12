@@ -10,6 +10,7 @@ import datetime
 import pandas as pd
 from zipfile import ZipFile
 import setup_reading_function as setup
+from API_output_treatment import observed_data_reading
 
 def files_date_filter(start_date, end_date, spot_list):
     '''
@@ -85,58 +86,62 @@ except:
   print('\n---ERROR! Folder already exists')
   exit()
 
-try:
-  print("\n--- Entering WRF zip file.")
-  # entering the wrf zip file: Ex: 'extrai_rn.zip'
-  #wrf_zip = input('Enter the name of the wrf compressed folder. \n (Usually "extrai_rn.zip")')
-  wrf_zip_path = config_dict['zip_file_path']
- 
+# Entering WRF files
+print("\n--- Entering WRF files.")
+# entering the wrf zip file: Ex: 'extrai_rn.zip'
+#wrf_zip = input('Enter the name of the wrf compressed folder. \n (Usually "extrai_rn.zip")')
+wrf_zip_path = config_dict['zip_file_path']
+
+# WRF files entries options:
+# 1 - Zip package
+# 2 - Existing Folder
+
+if ".zip" in wrf_zip_path:  # 1 - Zip package
+  print("\n--- Unzipping the files.")
+
   destination_path = "./files/"
-  after_zip_path = destination_path + "extrai_rn/" # OBS.: this is necessary because the unzip creates a folder with its name
-  os.makedirs(destination_path)
-except:
-  print('\n--- Folder "./files/" already exists')
+  temp_zip_path = destination_path + "extrai_rn/" # OBS.: this is necessary because the unzip creates a folder with its name
+  #os.makedirs(destination_path)
+
+  with ZipFile(wrf_zip_path, 'r') as zipObj:
+    zipObj.extractall(destination_path)
+
+  print('\n--- Files unzipped')
+
+else:  # 2 - Existing Folder
+  temp_zip_path = wrf_zip_path + '/'
+  print('\n--- Moving the files.')
 
 
-with ZipFile(wrf_zip_path, 'r') as zipObj:
-  zipObj.extractall(destination_path)
-
-print('\n--- Files unzipped')
-
-files = os.listdir(after_zip_path)
-#print(files)
-# Filtering Barreto files.
+# Filtering Barreto files. NEXT STEP!!
+files = os.listdir(temp_zip_path)
 barreto_list = []
 for cada in files:
-  if 'Barreto' in cada and 'Zone' not in cada:
+  if 'Barreto' in cada and 'Zone' not in cada: 
     barreto_list.append(cada)
 
-# This is when the files are filtered by time
+# Filtering files by selected timerange
+# This will move from temporary after extraction folder to the instance WRF files folder.
 datefilter_start_split = config_dict['Dates']['Initial_Date'].split('-')
 datefilter_start = datetime.date(int(datefilter_start_split[0]), int(datefilter_start_split[1]), int(datefilter_start_split[2]))
-
 datefilter_end_split = config_dict['Dates']['Final_Date'].split('-')
 datefilter_end = datetime.date(int(datefilter_end_split[0]), int(datefilter_end_split[1]), int(datefilter_end_split[2]))
-
-
 datefilter = files_date_filter(datefilter_start, datefilter_end, barreto_list)
 
-
 # Moving the filtered files to the folder ./files/OctoberWRF/
-try:
-  for file in files:
-    if file in datefilter:
-      # First path is the WRF provided data
-      # Second path is the destination path for the filtered data (station and date)
-      print('moving ' + after_zip_path+file + 'to' + october_path)
-      shutil.move(after_zip_path+ file, october_path)
-except:
-  print('\n--- The files have already been filtered.')
+#try:
+for file in files:
+  if file in datefilter:
+    # First path is the WRF provided data
+    # Second path is the destination path for the filtered data (station and date)
+    print('moving ' + temp_zip_path+file + 'to' + october_path)
+    shutil.copy(temp_zip_path+ file, october_path)
+#except:
+#  print('\n--- The files have been filtered.')
 
 
 # treatment for each file on ./file/OctoberWRF
 for cada in os.listdir(october_path):
-  
   path2 = october_path+cada
   #path2)
   csv = adaptingTXT(path2)
@@ -144,7 +149,11 @@ for cada in os.listdir(october_path):
   csv.to_csv(october_path+cada[:-3]+'csv')
   os.remove(path2)
 
-shutil.rmtree(after_zip_path)
+if ".zip" in wrf_zip_path:
+  shutil.rmtree(temp_zip_path)
+  print('\n--- Removing the temporary extracted folder.')
+
+
 # Check the concatening stuff on filtering notebook on colab from glmalmeida@id.uff.br
 
 
@@ -209,8 +218,10 @@ def wrf_formatting(wrf_data, initial_date, final_date):
 print('\n--- Entering observed data.')
 #obs_path = input('Enter the file name of the observed data: \n Usually "UTC_series_Barreto_18-21.csv" ')
 obs_path = config_dict['Obs_Path']
-obs = pd.read_csv('./files/obs_data/' + obs_path).drop('Unnamed: 0', axis=1)
-obs = obs.rename(columns={'Hora Leitura': 'Data', '01 h':'precipitacao_observada'})
+#obs = pd.read_csv(obs_path).drop('Unnamed: 0', axis=1)
+#obs = obs.rename(columns={'Hora Leitura': 'Data', '01 h':'precipitacao_observada'})
+obs = observed_data_reading(obs_path, station='Barreto 1') # NEXT STEP!!
+obs = obs.rename(columns={'data': 'Data', 'chuva 1h':'precipitacao_observada'})
 obs = obs.sort_values('Data')
 obs['Horario'] = obs['Data'].astype('datetime64[ns]').dt.time
 
