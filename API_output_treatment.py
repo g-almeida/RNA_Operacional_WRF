@@ -6,7 +6,7 @@ Treating observed data from the API (and from google drive files (optionally))
 import pandas as pd
 import datetime
 
-def observed_data_reading(path, station=None, sheet_name=None):
+def observed_data_reading(path, station=None, sheet_name=None, sep=','):
     """
     Observed data reading and UTC conversion.
     The file expected for input is the 'hourly_data.csv' wich is being concatenated on lab server.
@@ -44,7 +44,7 @@ def observed_data_reading(path, station=None, sheet_name=None):
         
     else:
         # -------- Read the csv file provided from the API (Here column names already comes with the right name)
-        obs = pd.read_csv(path)
+        obs = pd.read_csv(path, sep=sep)
         
     # Convertendo do fuso de Brasília para UTC (BR + 3hrs)
     obs['data'] = pd.to_datetime(obs['data'], infer_datetime_format=True)
@@ -73,7 +73,7 @@ def float_converter(one):
     return fixed_float
 
 def API_treatment(obs_df, station=None):
-    ''' Treatment designated to data downloaded from API
+    ''' Treatment to data downloaded from API
         Float error specially in Barreto. Floats with two "."
         Uses the <float_converter()> function to fix
     '''

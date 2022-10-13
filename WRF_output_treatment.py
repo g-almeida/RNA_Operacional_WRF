@@ -252,8 +252,11 @@ ending_date = datetime.date(int(ed_date_split[0]), int(ed_date_split[1]), int(st
 observed_filtered_by_date = obs.where((obs['Data']>=starting_date) & (obs['Data']<=ending_date)).dropna()
 
 
-    # looking for missing data on wrf data
-
+                ###############################################################
+                    ################## WRF - MISSING DATES ####################
+                    # 1) Look for missing data on wrf data 
+                    # 2) Replace with the day before forecast
+                ###############################################################
 
 def missing_date_finder(wrf_data, obs_data):
   """Função designada para verificar os dias faltantes no WRF a partir do arquivo de dados observados.
@@ -279,6 +282,9 @@ def missing_date_finder(wrf_data, obs_data):
   return missing_dates
 
 
+#   ------------- Attention!!
+  # 1) Look for missing data on wrf data
+
 missing_dates = missing_date_finder(vento_daily, observed_filtered_by_date) # this will be the missing dates
 missing_dates_nb = {} # {yesterday : today}
 
@@ -286,8 +292,10 @@ for today in missing_dates:
   yesterday = today - datetime.timedelta(days=1)
   missing_dates_nb.update({float(yesterday.strftime('%Y%m%d')) : float(today.strftime('%Y%m%d'))})
 
+
 #   ------------- Attention!!
-# After finding the missing dates, we will create a new dataframe fillin the values with the second day on forecast
+  # 2) Replace with the day before forecast
+  # After finding the missing dates, we will create a new dataframe fillin the values with the second day on forecast
 
 corrected_wrf = {}
 for variable in wrf_dict:
@@ -307,6 +315,9 @@ for variable in wrf_dict:
   corrected_wrf.update({variable : variable_concat})
 
 
+                ###############################################################
+                ########### Finally putting WRF and Observed data together ####
+                ###############################################################
 
 #   ------------- Finally putting WRF and Observed data together
 # *temporary* : deserves a better implementation 
@@ -352,6 +363,10 @@ final_data['temp_prev_ptoNE']=corrected_wrf['temp']['Pto NE'].values
 final_data['temp_prev_ptoSW']=corrected_wrf['temp']['Pto SW'].values
 final_data['temp_prev_ptoNW']=corrected_wrf['temp']['Pto NW'].values
 
+
+                ################################
+                ##### Final Considerations #####
+                ################################
 
 # Removing values under 0.
 str_type_columns = ['Data', 'Horario', 'Datetime']
