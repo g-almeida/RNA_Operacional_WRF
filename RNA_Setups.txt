@@ -1,11 +1,11 @@
 #Extraction_folder
-extraction_folder,extracted_files_teste5
+extraction_folder,extracted_files_teste8
 
 #rna_zip_file
 extrai_rna,/home/data/PMN/WRF_extrai_rn2
 
 #Observed_data_path
-Obs_Path,/home/data/PMN/hourly_data_Backup.csv
+Obs_Path,/home/github/RNA_Operacional_WRF/files/series_Barreto 1_18-21.csv
 
 #Dates
 Initial_Date,2021-08-04

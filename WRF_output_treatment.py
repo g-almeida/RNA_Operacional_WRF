@@ -10,7 +10,7 @@ import datetime
 import pandas as pd
 from zipfile import ZipFile
 import setup_reading_function as setup
-from API_output_treatment import observed_data_reading
+from API_output_treatment import inmet_observed_data_reading
 
 def files_date_filter(start_date, end_date, spot_list):
     '''
@@ -220,7 +220,7 @@ print('\n--- Entering observed data.')
 obs_path = config_dict['Obs_Path']
 #obs = pd.read_csv(obs_path).drop('Unnamed: 0', axis=1)
 #obs = obs.rename(columns={'Hora Leitura': 'Data', '01 h':'precipitacao_observada'})
-obs = observed_data_reading(obs_path, station='Barreto 1') # NEXT STEP!!
+obs = inmet_observed_data_reading(obs_path, station='Barreto 1') # NEXT STEP!!
 obs = obs.rename(columns={'data': 'Data', 'chuva 1h':'precipitacao_observada'})
 obs = obs.sort_values('Data')
 obs['Horario'] = obs['Data'].astype('datetime64[ns]').dt.time
