@@ -65,7 +65,6 @@ def adaptingTXT(path):
   return data
 
 
-
                 ###############################################################
                 ###################### Files Selection   ######################
                     # Filters by:    
@@ -115,7 +114,6 @@ def files_selection(station, config_dict):
   # WRF files entries options:
   # 1 - Zip package
   # 2 - Existing Folder
-
   if ".zip" in wrf_zip_path:  # 1 - Zip package
     print("\n--- Unzipping the files.")
 
@@ -133,7 +131,7 @@ def files_selection(station, config_dict):
     print('\n--- Moving the files.')
 
 
-  # Filtering Barreto files. NEXT STEP!!
+  # Filtering Station files. NEXT STEP!!
   files = os.listdir(temp_zip_path)
   barreto_list = []
   for cada in files:
@@ -186,7 +184,7 @@ new_path = files_selection(station=station, config_dict=config_dict)
                     #                           } = Final Data.
                     #     B) OBSERVED Data ----/
                 ###############################################################
-
+                
 # Check the concatening studies on filtering notebook on colab from glmalmeida@id.uff.br
 
 # barreto is the spot variable 
