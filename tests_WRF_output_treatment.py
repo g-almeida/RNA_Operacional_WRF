@@ -12,43 +12,66 @@ from zipfile import ZipFile
 import setup_reading_function as setup
 from API_output_treatment import inmet_observed_data_reading
 
-def files_date_filter(start_date, end_date, spot_list):
-    '''
-    Filters data for starting and ending dates.
-    '''
-    b_prec = [] # lista dos arquivos de chuva em barreto
-    b_vent = [] # lista dos arquivos de vento em barreto
-    others = [] # lista dos restantes
-    for x in spot_list:
-      if 'prec' in x:
-        b_prec.append(x)
-      elif 'vent' in x:
-        b_vent.append(x)
-      else:
-        others.append(x)
+#  -----------   Files treatment Utilities
 
-    datefilter=[]
-    while start_date <= end_date:
-      datestr = start_date.strftime("%Y-%m-%d").replace('-','')
+def files_date_filter(start_date, end_date, spot_list) -> list:
+  """Filters data for starting and ending dates.
+
+  Parameters
+  ----------
+  start_date : datetime
       
-      for cada in others:
-        if datestr in cada:
-          datefilter.append(cada)      
-      for cada in b_prec:
-        if datestr in cada:
-          datefilter.append(cada)    
-      for cada in b_vent:
-        if datestr in cada:
-          datefilter.append(cada)  
+  end_date : datetime
+      _description_
+  spot_list : list
+      _description_
 
-      start_date+=datetime.timedelta(days=1)
+  Returns
+  -------
+  list
+      List of files between start_date and end_date.
+  """
+  b_prec = [] # lista dos arquivos de chuva em barreto
+  b_vent = [] # lista dos arquivos de vento em barreto
+  others = [] # lista dos restantes
+  for x in spot_list:
+    if 'prec' in x:
+      b_prec.append(x)
+    elif 'vent' in x:
+      b_vent.append(x)
+    else:
+      others.append(x)
 
-    return datefilter
+  datefilter=[]
+  while start_date <= end_date:
+    datestr = start_date.strftime("%Y-%m-%d").replace('-','')
+    
+    for cada in others:
+      if datestr in cada:
+        datefilter.append(cada)      
+    for cada in b_prec:
+      if datestr in cada:
+        datefilter.append(cada)    
+    for cada in b_vent:
+      if datestr in cada:
+        datefilter.append(cada)  
 
+    start_date+=datetime.timedelta(days=1)
 
-#  -----------   Files treatment
+  return datefilter
 
-def adaptingTXT(path):
+def adaptingTXT(path) -> pd.DataFrame:
+  """Utilities for WRF output (forecast data). 
+  Reading and formatting ".txt" data
+
+  Parameters:
+  -----------
+      path (str): WRF output file
+
+  Returns:
+  --------
+      pd.DataFrame: WRF output file formatted as pandas DataFrame
+  """
   data = pd.read_csv(path, sep='\s+')
   pt_cols=['DATA', 'HORA','Barreto','Pto N','Pto S','Pto E','Pto W','Pto SE','Pto NE','Pto SW','Pto NW']
   vent_cols=['DATA',    'HORA',     'Barreto_ws10', 'Barreto_wd10', 'Pto N_ws10',   'Pto N_wd10',   'Pto S_ws10',   'Pto S_wd10',   'Pto E_ws10',   'Pto E_wd10',   'Pto W_ws10',   'Pto W_wd10',   'Pto SE_ws10',  'Pto SE_wd10' , 'Pto NE_ws10' , 'Pto NE_wd10'  ,'Pto SW_ws10'  ,'Pto SW_wd10','Pto NW_ws10', 'Pto NW_wd10']
@@ -67,12 +90,11 @@ def adaptingTXT(path):
 
                 ###############################################################
                 ###################### Files Selection   ######################
-                    # Filters by:    
+                    # Filters WRF data by:    
                     #     1) Station     |     2) Time_range
                 ###############################################################
 
-
-def files_selection(station, config_dict):  
+def files_selection(station, config_dict) -> str:  
   """
   1) Data will be unzipped from extrai_rna.zip to ./files/extrai_rna/ 
   2) Filtered for the specified station
@@ -89,7 +111,7 @@ def files_selection(station, config_dict):
 
   Returns
   -------
-  str 
+  new_path : str 
       New WRF selected files directory path. Already filtered by date and station
   """
   station_dict = {'Barreto 1':'Barreto'} # To find files by name on WRF extraction folder
@@ -179,7 +201,7 @@ new_path = files_selection(station=station, config_dict=config_dict)
 
 
                 ###############################################################
-                ###################### Bringing Data  ######################
+                ###################### Bringing Data  #########################
                     #     A) WRF outuput ------\
                     #                           } = Final Data.
                     #     B) OBSERVED Data ----/
@@ -203,7 +225,7 @@ for x in barreto:
     b_temp.append(x)
 
 
-def concatening(lista, path):
+def concatening(lista, path) -> pd.DataFrame:
   to_concat = []
   for cada in lista:
     to_concat.append(pd.read_csv(path+cada))
@@ -221,7 +243,22 @@ temp_daily = temp_full.where(temp_full['HORA']<25).dropna()
 wrf_dict = {'vento': [vento_full, vento_daily], 'prec': [prec_full, prec_daily], 'temp': [temp_full, temp_daily]}
 
 def wrf_formatting(wrf_data, initial_date, final_date):
+  """Adjusting to fit with the observed data.
 
+  Parameters
+  ----------
+  wrf_data : pd.DataFrame
+      
+  initial_date : datetime
+      
+  final_date : datetime
+      
+
+  Returns
+  -------
+  pd.DataFrame
+      WRF_data already selected between initial and final date from observed data.
+  """
   wrf_data = wrf_data.reset_index(drop=True)
 
   wrf_data['Data'] = wrf_data['DATA'].apply(lambda x: datetime.date(int(str(x)[:4]), int(str(x)[4:6]), int(str(x)[6:8])))
@@ -297,11 +334,13 @@ def missing_date_finder(wrf_data, obs_data):
   """Função designada para verificar os dias faltantes no WRF a partir do arquivo de dados observados.
       Note que fará o recorte baseado na lista de datas do arquivo de dados observados. Então ele funcionará como uma espécie de máscara
 
-  Args:
+  Parameters:
+  -------
       wrf_data (pd.DataFrame): [description]
       obs_data (pd.DataFrame): [description]
 
   Returns:
+  --------
       list: Lista das datas faltantes no WRF.
   """
   initial_date = obs_data.sort_values('Datetime')['Datetime'].iloc[0]
@@ -376,7 +415,6 @@ final_data['Pto SW_ws10']=corrected_wrf['vento']['Pto SW_ws10'].values
 final_data['Pto SW_wd10']=corrected_wrf['vento']['Pto SW_wd10'].values
 final_data['Pto NW_ws10']=corrected_wrf['vento']['Pto NW_ws10'].values
 final_data['Pto NW_wd10']=corrected_wrf['vento']['Pto NW_wd10'].values
-
 
 final_data['prec_prev_Barreto']=corrected_wrf['prec']['Barreto'].values
 final_data['prec_prev_ptoN']=corrected_wrf['prec']['Pto N'].values
