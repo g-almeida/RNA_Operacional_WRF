@@ -14,7 +14,7 @@ from API_output_treatment import observed_data_reading
 
 #  -----------   Files treatment Utilities
 
-def files_date_filter(start_date, end_date, spot_list) -> list:
+def files_date_filter(start_date, end_date, spot_list) -> list:     # Util
   """Filters data for starting and ending dates.
 
   Parameters
@@ -60,7 +60,7 @@ def files_date_filter(start_date, end_date, spot_list) -> list:
 
   return datefilter
 
-def adaptingTXT(path, station_str) -> pd.DataFrame:
+def adaptingTXT(path, station_str) -> pd.DataFrame:                 # Util
   """Utilities for WRF output (forecast data). 
   Reading and formatting ".txt" data
 
@@ -87,7 +87,7 @@ def adaptingTXT(path, station_str) -> pd.DataFrame:
   
   return data
 
-def files_selection(station, config_dict) -> str:  
+def files_selection(station, config_dict) -> str:                   # Util
   """
   1) Data will be unzipped from extrai_rna.zip to ./files/extrai_rna/ 
   2) Filtered for the specified station
@@ -207,14 +207,14 @@ def files_selection(station, config_dict) -> str:
 
   return new_path, dict_wrf_obsStation[station]
 
-def concatening(lista, path) -> pd.DataFrame:
+def concatening(lista, path) -> pd.DataFrame:                       # Util
   to_concat = []
   for cada in lista:
     to_concat.append(pd.read_csv(path+cada))
 
   return pd.concat(to_concat)
 
-def wrf_formatting(wrf_data, initial_date, final_date):
+def wrf_formatting(wrf_data, initial_date, final_date):             # WRF
   """Adjusting to fit with the observed data.
 
   Parameters
@@ -249,7 +249,7 @@ def wrf_formatting(wrf_data, initial_date, final_date):
 
   return wrf_data
 
-def bringing_observed_data(observed_path, st_date, ed_date):
+def bringing_observed_data(observed_path, st_date, ed_date):        # OBS
   """
   Brings in the observed data and filters date as setup conditions.
 
@@ -285,6 +285,7 @@ def bringing_observed_data(observed_path, st_date, ed_date):
   
   return filtering_by_date
 
+# ------------------------- Functions to put data together | START -----------------------
 def missing_date_finder(wrf_data, obs_data):
   """
       Função designada para verificar os dias faltantes no WRF a partir do arquivo de dados observados.
@@ -355,6 +356,7 @@ def filling_missing_forecast(missing_dates_list, wrf_vars, starting_date, ending
       
   return corrected_wrf
 
+# ------------------------- Functions to put data together | END -------------------------
 def main(config_dict:dict, station:str):
 
                   ###############################################################
@@ -505,9 +507,12 @@ def main(config_dict:dict, station:str):
   print("\n--- File created at: ./files/inputs/pre-input/"+ pre_input_name)
 
   # Removing WRF files extracted files:
-  for file in os.listdir(new_path):
-      if file != 'input_files':
-          os.remove(new_path+file)
+  #for file in os.listdir(new_path):
+ #     if file != 'input_files':
+#          os.remove(new_path+file)
+
+  # Removing extracted_files folder
+  shutil.rmtree(new_path)
 
   print("\n--- All Done! ---")
 
@@ -517,8 +522,8 @@ print("""\n  ____  _   _    _              _        _    __  __ __  __  ___   __
  |  _ <| |\  |/ ___ \  |_____| | |___ / ___ \| |  | | |  | | |_| | |___  | |_| |  _| |  _|  
  |_| \_\_| \_/_/   \_\         |_____/_/   \_\_|  |_|_|  |_|\___/ \____|  \___/|_|   |_|    
                                                                                             """)
-                                                                                            
+
 config_dict = setup.config_file_reading()
-station = 'Travessa Beltrão'
+station = 'Igrejinha'
 
 main(config_dict=config_dict, station=station)

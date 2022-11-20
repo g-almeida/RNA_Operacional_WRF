@@ -47,8 +47,6 @@ def inmet_observed_data_reading(path, station=None):
 
     return obs_rain
 
-
-
 def observed_data_reading(path, station=None, sheet_name=None, sep=',', st_date=None, ed_date=None):
     """
     Observed data reading and UTC conversion.
@@ -209,29 +207,5 @@ def API_treatment(obs_df, station=None, st_date=None, ed_date=None):
     obs_df = filling_nan_observed_data(obs_df=obs_df, st_date=st_date, ed_date=ed_date)
     
     return obs_df
-#   ------ Concatening provided past data downloaded from Google Drive
-'''
-novembro18_maio21 = leitura_dados_observados('./files/series_Barreto 1_18-21.csv')
-junho21 = leitura_dados_observados('./files/Barreto 1.xlsx', 'Junho')
-julho21 = leitura_dados_observados('./files/Barreto 1.xlsx', 'Julho')
-agosto21 = leitura_dados_observados('./files/Barreto 1.xlsx', 'Agosto')
-setembro21 = leitura_dados_observados('./files/Barreto 1.xlsx', 'Setembro')
-outubro21 = leitura_dados_observados('./files/Barreto 1.xlsx', 'Outubro')
-novembro21 = leitura_dados_observados('./files/Barreto 1.xlsx', 'Novembro')
 
-concat_list = [novembro18_maio21, junho21, julho21, agosto21, setembro21, outubro21, novembro21]
-
-full = pd.concat(concat_list)
-full.to_csv('./files/full_series_Barreto_18-21.csv')
-'''
-#  ------ Bringing the API and concatening with the old files
-
-# For this to work, we will need values for december-21, january-22, february-22. 
-# Actual data until the API date, otherwise we will have dates with missing values.
-'''
-from API import api_niteroi
-
-precip_now = api_niteroi('chuva') # this returns a dataframe
-'''
-# next step will be to concat the dataframes ( full + precip_now )
 
