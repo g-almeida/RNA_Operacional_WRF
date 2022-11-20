@@ -4,7 +4,7 @@ Treating observed data from the API (and from google drive files (optionally))
 '''
 
 import pandas as pd
-import datetime
+import datetime as dt
 import numpy as np
 import warnings
 warnings.filterwarnings("ignore")
@@ -49,7 +49,7 @@ def inmet_observed_data_reading(path, station=None):
 
 
 
-def observed_data_reading(path, station=None, sheet_name=None, sep=','):
+def observed_data_reading(path, station=None, sheet_name=None, sep=',', st_date=None, ed_date=None):
     """
     Observed data reading and UTC conversion.
     The file expected for input is the 'hourly_data.csv' wich is being concatenated on lab server.
@@ -68,6 +68,12 @@ def observed_data_reading(path, station=None, sheet_name=None, sep=','):
     sheet_name : str, optional
         If the file is an excel file, the sheet name to be read.
         Mês; Ex.: "Outubro" 
+    
+    st_date : datetime.date, 
+        initial date, by default starting_date
+    
+    ed_date : datetime.date, 
+        final date, by default ending_date
 
     Returns
     -------
@@ -91,8 +97,8 @@ def observed_data_reading(path, station=None, sheet_name=None, sep=','):
         
     # Convertendo do fuso de Brasília para UTC (BR + 3hrs)
     obs['data'] = pd.to_datetime(obs['data'], infer_datetime_format=True)
-    obs['data'] = obs['data'].apply(lambda x: x + datetime.timedelta(hours=3)) 
-    obs = API_treatment(obs, station)
+    obs['data'] = obs['data'].apply(lambda x: x + dt.timedelta(hours=3)) 
+    obs = API_treatment(obs, station, st_date, ed_date)
 
 
     hourly_obs = obs.where(obs['data'].dt.minute==0).dropna()
@@ -114,17 +120,93 @@ def float_converter(one):
         
     return fixed_float
 
-def API_treatment(obs_df, station=None):
-    ''' Treatment to data downloaded from API
-        Float error specially in Barreto. Floats with two "."
-        Uses the <float_converter()> function to fix
-    '''
+def filling_nan_observed_data(obs_df:pd.DataFrame, st_date:dt.datetime.date, ed_date:dt.datetime.date):
+    """
+    Filling null data with the next day observed values.
+
+    Parameters
+    ----------
+    obs_df : pd.DataFrame
+        observed data
+    st_date : dt.datetime.date
+        initial date, by default starting_date
+    ed_date : dt.datetime.date
+        final date, by default ending_date
+    """
+
+    primeira_data = st_date
+    ultima_data = ed_date
+
+    # criando lista de datas que deveriam existir entre a primeira e a ultima
+    datas_no_meio = []
+    while primeira_data <= ultima_data:
+        primeira_data = pd.to_datetime(primeira_data)
+        datas_no_meio.append(primeira_data)
+        primeira_data += dt.timedelta(hours=1)
+
+    # verificando as datas no observado que nao estão na lista de datas que deveriam existir
+    missing_observed_dates = []
+    for date in datas_no_meio:
+        if date not in obs_df['data'].unique():
+            missing_observed_dates.append(date)
+
+    # Avaliando a quantidade de datas que faltaram dados
+    days_list_t = []
+    for cada in missing_observed_dates:
+        days_list_t.append(dt.datetime(cada.year, cada.month, cada.day))
+
+    len_total_dates = len(obs_df['data'].dt.date.unique())
+    len_missing_dates = len(pd.Series(days_list_t).unique())
+
+    if len_missing_dates/len_total_dates > 0.2:
+        return print('Abortando pois há mais de 20% de falha no dado observado')
+    
+    else:
+        print('\n--- Em um total de: '+ str(len_total_dates) +' datas.' )
+        print('\n--- Foram encontradas: '+ str(len_missing_dates) +' falhas. \nVamos preencher então com os valores observados à frente.' )
+
+        obs_df = obs_df.set_index('data',drop=False)
+        new_df = pd.DataFrame(np.nan, index=missing_observed_dates, columns=obs_df.columns)
+        new_df['data'] = new_df.index
+        
+        joined = pd.concat([obs_df, new_df]).sort_index()
+        # Premissa: Se nao sei se está chovendo, vale a chuva da hr da frente. Preferi pra rede tentar antecipar
+        filled_joined = joined.fillna(method='backfill')
+
+        return filled_joined
+
+def API_treatment(obs_df, station=None, st_date=None, ed_date=None):
+    """
+    Treatment to data downloaded from API
+    A) Float error specially in Barreto. Floats with two "."
+        - Uses the <float_converter()> function to fix
+
+    B) Missing_observed_data
+        - Fills with data on next day
+
+    Parameters
+    ----------
+    obs_df : pd.DataFrame
+        observed data
+    station : str, optional
+        filters for the station in question, by default None
+    st_date : datetime.date, 
+        initial date, by default starting_date
+    ed_date : datetime.date, 
+        final date, by default ending_date
+    Returns
+    -------
+    pd.DataFrame
+        Station filtered and treated observed_data
+    """
     if station != None:
         obs_df = obs_df.where(obs_df['estação']==station).dropna()
     
     df_values = obs_df[['chuva 15m', 'chuva 1h', 'chuva 4h', 'chuva 24h', 'chuva 96h', 'chuva 30d']]
     for cada in df_values:
         obs_df[cada] = df_values[cada].apply(lambda x: float_converter(x))
+    
+    obs_df = filling_nan_observed_data(obs_df=obs_df, st_date=st_date, ed_date=ed_date)
     
     return obs_df
 #   ------ Concatening provided past data downloaded from Google Drive

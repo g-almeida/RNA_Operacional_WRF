@@ -10,7 +10,7 @@ import datetime
 import pandas as pd
 from zipfile import ZipFile
 import setup_reading_function as setup
-from API_output_treatment import inmet_observed_data_reading
+from API_output_treatment import observed_data_reading
 
 #  -----------   Files treatment Utilities
 
@@ -31,8 +31,8 @@ def files_date_filter(start_date, end_date, spot_list) -> list:
   list
       List of files between start_date and end_date.
   """
-  b_prec = [] # lista dos arquivos de chuva em barreto
-  b_vent = [] # lista dos arquivos de vento em barreto
+  b_prec = [] # lista dos arquivos de chuva na estação  
+  b_vent = [] # lista dos arquivos de vento na estação 
   others = [] # lista dos restantes
   for x in spot_list:
     if 'prec' in x:
@@ -60,7 +60,7 @@ def files_date_filter(start_date, end_date, spot_list) -> list:
 
   return datefilter
 
-def adaptingTXT(path) -> pd.DataFrame:
+def adaptingTXT(path, station_str) -> pd.DataFrame:
   """Utilities for WRF output (forecast data). 
   Reading and formatting ".txt" data
 
@@ -73,8 +73,8 @@ def adaptingTXT(path) -> pd.DataFrame:
       pd.DataFrame: WRF output file formatted as pandas DataFrame
   """
   data = pd.read_csv(path, sep='\s+')
-  pt_cols=['DATA', 'HORA','Barreto','Pto N','Pto S','Pto E','Pto W','Pto SE','Pto NE','Pto SW','Pto NW']
-  vent_cols=['DATA',    'HORA',     'Barreto_ws10', 'Barreto_wd10', 'Pto N_ws10',   'Pto N_wd10',   'Pto S_ws10',   'Pto S_wd10',   'Pto E_ws10',   'Pto E_wd10',   'Pto W_ws10',   'Pto W_wd10',   'Pto SE_ws10',  'Pto SE_wd10' , 'Pto NE_ws10' , 'Pto NE_wd10'  ,'Pto SW_ws10'  ,'Pto SW_wd10','Pto NW_ws10', 'Pto NW_wd10']
+  pt_cols=['DATA', 'HORA',station_str,'Pto N','Pto S','Pto E','Pto W','Pto SE','Pto NE','Pto SW','Pto NW']
+  vent_cols=['DATA',    'HORA',     station_str+'_ws10', station_str+'_wd10', 'Pto N_ws10',   'Pto N_wd10',   'Pto S_ws10',   'Pto S_wd10',   'Pto E_ws10',   'Pto E_wd10',   'Pto W_ws10',   'Pto W_wd10',   'Pto SE_ws10',  'Pto SE_wd10' , 'Pto NE_ws10' , 'Pto NE_wd10'  ,'Pto SW_ws10'  ,'Pto SW_wd10','Pto NW_ws10', 'Pto NW_wd10']
 
   try:
     data.drop(['Pto.8', 'SE_ws10', 'Pto.9', 'SE_wd10', 'Pto.10', 'NE_ws10', 'Pto.11',
@@ -114,7 +114,8 @@ def files_selection(station, config_dict) -> str:
   new_path : str 
       New WRF selected files directory path. Already filtered by date and station
   """
-  station_dict = {'Barreto 1':'Barreto'} # To find files by name on WRF extraction folder
+  # To find files by name on WRF extraction folder. 
+  station_dict = {'Barreto 1':'Barreto'} # Structure is: {'name_on_observed_data':'name_on_wrf_file'}
 
   print("\n--- Creating directory for extraction of the files.")
   #new_extraction_path = input('Enter the dir name for new extraction folder: ')
@@ -184,7 +185,7 @@ def files_selection(station, config_dict) -> str:
   for cada in os.listdir(new_path):
     path2 = new_path+cada
     #path2)
-    csv = adaptingTXT(path2)
+    csv = adaptingTXT(path2, station_dict[station])
     print('transforming ' + path2 +"to" + new_path + cada[:-3]+'.csv')
     csv.to_csv(new_path+cada[:-3]+'csv')
     os.remove(path2)
@@ -288,41 +289,56 @@ def wrf_formatting(wrf_data, initial_date, final_date):
 
 # obs_path = 'UTC_series_Barreto_18-21.csv' - config file
 print('\n--- Entering observed data.')
-#obs_path = input('Enter the file name of the observed data: \n Usually "UTC_series_Barreto_18-21.csv" ')
 obs_path = config_dict['Obs_Path']
-#obs = pd.read_csv(obs_path).drop('Unnamed: 0', axis=1)
-#obs = obs.rename(columns={'Hora Leitura': 'Data', '01 h':'precipitacao_observada'})
-obs = inmet_observed_data_reading(obs_path, station='Barreto 1') # NEXT STEP!!
-obs = obs.rename(columns={'data': 'Data', 'chuva 1h':'precipitacao_observada'})
-obs = obs.sort_values('Data')
-obs['Horario'] = obs['Data'].astype('datetime64[ns]').dt.time
 
-obs['Data'] = obs['Data'].astype('datetime64[ns]').dt.date
-
-
-obs['DATA-HORA'] = obs['Data'].astype(str) + ' ' + obs['Horario'].astype(str)
-obs['Datetime'] = obs['DATA-HORA'].apply(lambda x: datetime.datetime(int(x[:4]), int(x[5:7]), int(x[8:10]), int(x.split(' ')[1].split(':')[0])))
-obs = obs.drop('DATA-HORA', axis=1)
-obs.sort_values('Datetime', inplace=True)
-
-
-    # dates input - config file
+# dates input - config file
       # example: initial date=2021-08-04, final_date=2021-10-20
 print('\n--- Entering dates.')
-#st_date_input_ = input('Enter the initial date for observed data (yyyy-mm-dd): ')
 st_date_input_ = config_dict['Dates']['Initial_Date']
 st_date_split = st_date_input_.split('-')
 starting_date = datetime.date(int(st_date_split[0]), int(st_date_split[1]), int(st_date_split[2]))
 
-
-#ed_date_input_ = input('Enter the final date for observed data (yyyy-mm-dd): ')
 ed_date_input_ = config_dict['Dates']['Final_Date']
 ed_date_split = ed_date_input_.split('-')
 ending_date = datetime.date(int(ed_date_split[0]), int(ed_date_split[1]), int(st_date_split[2]))
 
+def bringing_observed_data(observed_path=obs_path, st_date=starting_date, ed_date=ending_date):
+  """
+  Brings in the observed data and filters date as setup conditions.
 
-observed_filtered_by_date = obs.where((obs['Data']>=starting_date) & (obs['Data']<=ending_date)).dropna()
+  Parameters
+  ----------
+  observed_path : _type_, optional
+      _description_, by default obs_path
+  st_date : datetime.date, 
+      initial date, by default starting_date
+  ed_date : datetime.date, 
+      final date, by default ending_date
 
+  Returns
+  -------
+  pd.DataFrame
+      observed data filtered by date specified on RNA_Setups.txt
+  """
+  #obs = pd.read_csv(obs_path).drop('Unnamed: 0', axis=1)
+  #obs = obs.rename(columns={'Hora Leitura': 'Data', '01 h':'precipitacao_observada'})
+  obs = observed_data_reading(observed_path, station='Barreto 1', st_date=st_date, ed_date=ed_date) # NEXT STEP!!
+  obs = obs.rename(columns={'data': 'Data', 'chuva 1h':'precipitacao_observada'})
+
+  obs = obs.sort_values('Data')
+  obs['Horario'] = obs['Data'].astype('datetime64[ns]').dt.time
+  obs['Data'] = obs['Data'].astype('datetime64[ns]').dt.date
+
+  obs['DATA-HORA'] = obs['Data'].astype(str) + ' ' + obs['Horario'].astype(str)
+  obs['Datetime'] = obs['DATA-HORA'].apply(lambda x: datetime.datetime(int(x[:4]), int(x[5:7]), int(x[8:10]), int(x.split(' ')[1].split(':')[0])))
+  obs = obs.drop('DATA-HORA', axis=1)
+  obs = obs.sort_values('Datetime')
+
+  filtering_by_date = obs.where((obs['Data']>=st_date) & (obs['Data']<=ed_date)).dropna()
+  
+  return filtering_by_date
+
+observed_filtered_by_date = bringing_observed_data()
 
                 ###############################################################
                     ################## WRF - MISSING DATES ####################
@@ -330,14 +346,18 @@ observed_filtered_by_date = obs.where((obs['Data']>=starting_date) & (obs['Data'
                     # 2) Replace with the day before forecast
                 ###############################################################
 
+#   ------------- Attention!!
+  # 1) Look for missing data on wrf data
+
 def missing_date_finder(wrf_data, obs_data):
-  """Função designada para verificar os dias faltantes no WRF a partir do arquivo de dados observados.
+  """
+      Função designada para verificar os dias faltantes no WRF a partir do arquivo de dados observados.
       Note que fará o recorte baseado na lista de datas do arquivo de dados observados. Então ele funcionará como uma espécie de máscara
 
   Parameters:
-  -------
-      wrf_data (pd.DataFrame): [description]
-      obs_data (pd.DataFrame): [description]
+  ----------
+      wrf_data (pd.DataFrame): forecast data
+      obs_data (pd.DataFrame): observed data
 
   Returns:
   --------
@@ -355,43 +375,60 @@ def missing_date_finder(wrf_data, obs_data):
         
   return missing_dates
 
-
-#   ------------- Attention!!
-  # 1) Look for missing data on wrf data
-
 missing_dates = missing_date_finder(vento_daily, observed_filtered_by_date) # this will be the missing dates
-missing_dates_nb = {} # {yesterday : today}
 
-for today in missing_dates:
-  yesterday = today - datetime.timedelta(days=1)
-  missing_dates_nb.update({float(yesterday.strftime('%Y%m%d')) : float(today.strftime('%Y%m%d'))})
+def filling_missing_forecast(missing_dates_list, wrf_vars) -> dict:
+  """
+      Função para preencher os dias faltantes na previsão.
+
+  Parameters:
+  ----------
+      missing_dates_list (list): forecast data
+      wrf_vars (dictionary): dict of {Daily 48h WRF Forecast Data : Daily 24h WRF Forecast Data}
+
+  Returns:
+  --------
+      dict: Dicionário com os valores faltantes preenchidos e cada chave é uma variável atmosférica.
+  """
+  
+  missing_dates_nb = {} # {yesterday : today}
+  for today in missing_dates_list:
+    yesterday = today - datetime.timedelta(days=1)
+    missing_dates_nb.update({float(yesterday.strftime('%Y%m%d')) : float(today.strftime('%Y%m%d'))})
 
 
 #   ------------- Attention!!
-  # 2) Replace with the day before forecast
+  # 2) Replace with the forecast of day before
   # After finding the missing dates, we will create a new dataframe fillin the values with the second day on forecast
 
-corrected_wrf = {}
-for variable in wrf_dict:
-  missing_vento = wrf_dict[variable][0].where(wrf_dict[variable][0]['DATA'].isin(missing_dates_nb)).dropna() # buscando no dado completo, os dias anteriores aos faltantes
-  missing_vento = missing_vento.where(missing_vento['HORA']>=25).dropna().reset_index(drop=True) # pegando desses dias anteriores, apenas as horas depois das 23 
-  missing_vento['HORA'] = missing_vento['HORA'].apply(lambda x: x-24) # ajustando os horários
+  corrected_wrf = {}
+ 
+  for variable in wrf_vars.keys():
+    missing_vento = wrf_vars[variable][0].where(wrf_vars[variable][0]['DATA'].isin(missing_dates_nb)).dropna() # buscando no dado completo, os dias anteriores aos faltantes
+    missing_vento = missing_vento.where(missing_vento['HORA']>=25).dropna().reset_index(drop=True) # pegando desses dias anteriores, apenas as horas depois das 23 
+    missing_vento['HORA'] = missing_vento['HORA'].apply(lambda x: x-24) # ajustando os horários
 
-  for cada in missing_dates_nb:
-      missing_vento = missing_vento.replace(cada, missing_dates_nb[cada])
-  missing_vento = wrf_formatting(missing_vento, initial_date=starting_date, final_date=ending_date)
+    for cada in missing_dates_nb:
+        missing_vento = missing_vento.replace(cada, missing_dates_nb[cada])
+    missing_vento = wrf_formatting(missing_vento, initial_date=starting_date, final_date=ending_date)
 
-  full_wrf = wrf_formatting(wrf_dict[variable][1], initial_date=starting_date, final_date=ending_date)
+    full_wrf = wrf_formatting(wrf_vars[variable][1], initial_date=starting_date, final_date=ending_date)
 
-  variable_concat = pd.concat([missing_vento, full_wrf]).drop('Unnamed: 0', axis=1).dropna().sort_values('Datetime')
+    variable_concat = pd.concat([missing_vento, full_wrf]).drop('Unnamed: 0', axis=1).dropna().sort_values('Datetime')
 
-# corrected_wrf is a dictionary with the missing values filled and each key is an atmospheric variable
-  corrected_wrf.update({variable : variable_concat})
+  # corrected_wrf is a dictionary with the missing values filled and each key is an atmospheric variable
+    corrected_wrf.update({variable : variable_concat})
+      
+  return corrected_wrf
+
+
+corrected_wrf = filling_missing_forecast(missing_dates, wrf_dict)
 
 
                 ###############################################################
                 ########### Finally putting WRF and Observed data together ####
                 ###############################################################
+
 
 #   ------------- Finally putting WRF and Observed data together
 # *temporary* : deserves a better implementation 
