@@ -12,6 +12,13 @@ from zipfile import ZipFile
 import setup_reading_function as setup
 from API_output_treatment import observed_data_reading
 
+print("""\n  ____  _   _    _              _        _    __  __ __  __  ___   ____   _   _ _____ _____ 
+ |  _ \| \ | |  / \            | |      / \  |  \/  |  \/  |/ _ \ / ___| | | | |  ___|  ___|
+ | |_) |  \| | / _ \    _____  | |     / _ \ | |\/| | |\/| | | | | |     | | | | |_  | |_   
+ |  _ <| |\  |/ ___ \  |_____| | |___ / ___ \| |  | | |  | | |_| | |___  | |_| |  _| |  _|  
+ |_| \_\_| \_/_/   \_\         |_____/_/   \_\_|  |_|_|  |_|\___/ \____|  \___/|_|   |_|    
+                                                                                            """)
+
 #  -----------   Files treatment Utilities
 
 def files_date_filter(start_date, end_date, spot_list) -> list:
@@ -87,13 +94,6 @@ def adaptingTXT(path, station_str) -> pd.DataFrame:
   
   return data
 
-
-                ###############################################################
-                ###################### Files Selection   ######################
-                    # Filters WRF data by:    
-                    #     1) Station     |     2) Time_range
-                ###############################################################
-
 def files_selection(station, config_dict) -> str:  
   """
   1) Data will be unzipped from extrai_rna.zip to ./files/extrai_rna/ 
@@ -113,9 +113,27 @@ def files_selection(station, config_dict) -> str:
   -------
   new_path : str 
       New WRF selected files directory path. Already filtered by date and station
+  wrf_station_name : str
+      Name of station on wrf formating
   """
   # To find files by name on WRF extraction folder. 
-  station_dict = {'Barreto 1':'Barreto'} # Structure is: {'name_on_observed_data':'name_on_wrf_file'}
+  
+  dict_wrf_obsStation = {'Pé Pequeno':'Pequeno', 'Bonfim 2': 'Bonfim', 
+       'Várzea das Moças':'VdasMocas', 'Tenente Jardim':'TJardim',
+       'Engenho do Mato':'EngMato', 'Preventório':'Prevent', 
+       'Igrejinha':'Igrejinha', 'Caramujo':'Caramujo',
+       'Boa Vista':'BoaVista', 'Barreto 1':'Barreto', 
+       'Piratininga':'Piratininga', 'Maria Paula':'MPaula',
+       'Piratininga 2':'Piratin2', 'Itaipú':'Itaipu', 
+       'Maravista':'Maravista', 'São Francisco 1':'SaoFranc',
+       'Jurujuba':'Jurujuba', 'Morro do Palácio':'MdoPalacio',
+        'Morro do Estado':'MdoEstado','Morro da Penha':'MdaPenha', 
+        'Rio do Ouro':'RiodoOuro', 'Sapê':'Sape', 
+        'Bairro de Fátima':'BFatima',
+       'Morro do Castro':'MdoCastro', 'Travessa Beltrão':'TBeltrao',
+        'Cavalão':'Cavalao', 'Santa Bárbara 2':'StaBarbara', 
+        'Morro do Bumba':'MdoBumba', 
+        'Maceió':'Maceio', 'Coronel Leôncio':'CLeoncio'} # Structure is: {'name_on_observed_data':'name_on_wrf_file'}
 
   print("\n--- Creating directory for extraction of the files.")
   #new_extraction_path = input('Enter the dir name for new extraction folder: ')
@@ -158,7 +176,7 @@ def files_selection(station, config_dict) -> str:
   files = os.listdir(temp_zip_path)
   barreto_list = []
   for cada in files:
-    if station_dict[station] in cada and 'Zone' not in cada: 
+    if dict_wrf_obsStation[station] in cada and 'Zone' not in cada: 
       barreto_list.append(cada)
 
   # Filtering files by selected timerange
@@ -175,7 +193,7 @@ def files_selection(station, config_dict) -> str:
     if file in datefilter:
       # First path is the WRF provided data
       # Second path is the destination path for the filtered data (station and date)
-      print('moving ' + temp_zip_path+file + 'to' + new_path)
+      #print('moving ' + temp_zip_path+file + 'to' + new_path)
       shutil.copy(temp_zip_path+ file, new_path)
   #except:
   #  print('\n--- The files have been filtered.')
@@ -185,8 +203,8 @@ def files_selection(station, config_dict) -> str:
   for cada in os.listdir(new_path):
     path2 = new_path+cada
     #path2)
-    csv = adaptingTXT(path2, station_dict[station])
-    print('transforming ' + path2 +"to" + new_path + cada[:-3]+'.csv')
+    csv = adaptingTXT(path2, dict_wrf_obsStation[station])
+    #print('transforming ' + path2 +"to" + new_path + cada[:-3]+'.csv')
     csv.to_csv(new_path+cada[:-3]+'csv')
     os.remove(path2)
 
@@ -194,37 +212,7 @@ def files_selection(station, config_dict) -> str:
     shutil.rmtree(temp_zip_path)
     print('\n--- Removing the temporary extracted folder.')
 
-  return new_path
-
-config_dict = setup.config_file_reading()
-station='Barreto 1'
-new_path = files_selection(station=station, config_dict=config_dict)
-
-
-                ###############################################################
-                ###################### Bringing Data  #########################
-                    #     A) WRF outuput ------\
-                    #                           } = Final Data.
-                    #     B) OBSERVED Data ----/
-                ###############################################################
-                
-# Check the concatening studies on filtering notebook on colab from glmalmeida@id.uff.br
-
-# barreto is the spot variable 
-# "new_path" is the inputed path for the files before stratification
-
-barreto = os.listdir(new_path)
-b_prec = [] # lista dos arquivos de chuva em barreto
-b_vent = [] # lista dos arquivos de vento em barreto
-b_temp = [] # lista dos restantes
-for x in barreto:
-  if 'prec' in x:
-    b_prec.append(x)
-  elif 'vent' in x:
-    b_vent.append(x)
-  else:
-    b_temp.append(x)
-
+  return new_path, dict_wrf_obsStation[station]
 
 def concatening(lista, path) -> pd.DataFrame:
   to_concat = []
@@ -232,16 +220,6 @@ def concatening(lista, path) -> pd.DataFrame:
     to_concat.append(pd.read_csv(path+cada))
 
   return pd.concat(to_concat)
-
-vento_full = concatening(b_vent, new_path)
-prec_full = concatening(b_prec, new_path)
-temp_full = concatening(b_temp, new_path)
-
-vento_daily = vento_full.where(vento_full['HORA']<25).dropna()
-prec_daily = prec_full.where(prec_full['HORA']<25).dropna()
-temp_daily = temp_full.where(temp_full['HORA']<25).dropna()
-
-wrf_dict = {'vento': [vento_full, vento_daily], 'prec': [prec_full, prec_daily], 'temp': [temp_full, temp_daily]}
 
 def wrf_formatting(wrf_data, initial_date, final_date):
   """Adjusting to fit with the observed data.
@@ -278,31 +256,7 @@ def wrf_formatting(wrf_data, initial_date, final_date):
 
   return wrf_data
 
-
-                ###############################################################
-                ###################### OBSERVED - DATA  #######################
-                    #     1) API - Prefeitura  
-                    #           ou
-                    #     2) API - INMET
-                ###############################################################
-
-
-# obs_path = 'UTC_series_Barreto_18-21.csv' - config file
-print('\n--- Entering observed data.')
-obs_path = config_dict['Obs_Path']
-
-# dates input - config file
-      # example: initial date=2021-08-04, final_date=2021-10-20
-print('\n--- Entering dates.')
-st_date_input_ = config_dict['Dates']['Initial_Date']
-st_date_split = st_date_input_.split('-')
-starting_date = datetime.date(int(st_date_split[0]), int(st_date_split[1]), int(st_date_split[2]))
-
-ed_date_input_ = config_dict['Dates']['Final_Date']
-ed_date_split = ed_date_input_.split('-')
-ending_date = datetime.date(int(ed_date_split[0]), int(ed_date_split[1]), int(st_date_split[2]))
-
-def bringing_observed_data(observed_path=obs_path, st_date=starting_date, ed_date=ending_date):
+def bringing_observed_data(observed_path, st_date, ed_date):
   """
   Brings in the observed data and filters date as setup conditions.
 
@@ -338,17 +292,6 @@ def bringing_observed_data(observed_path=obs_path, st_date=starting_date, ed_dat
   
   return filtering_by_date
 
-observed_filtered_by_date = bringing_observed_data()
-
-                ###############################################################
-                    ################## WRF - MISSING DATES ####################
-                    # 1) Look for missing data on wrf data 
-                    # 2) Replace with the day before forecast
-                ###############################################################
-
-#   ------------- Attention!!
-  # 1) Look for missing data on wrf data
-
 def missing_date_finder(wrf_data, obs_data):
   """
       Função designada para verificar os dias faltantes no WRF a partir do arquivo de dados observados.
@@ -374,8 +317,6 @@ def missing_date_finder(wrf_data, obs_data):
         missing_dates.append(cada)
         
   return missing_dates
-
-missing_dates = missing_date_finder(vento_daily, observed_filtered_by_date) # this will be the missing dates
 
 def filling_missing_forecast(missing_dates_list, wrf_vars) -> dict:
   """
@@ -422,6 +363,84 @@ def filling_missing_forecast(missing_dates_list, wrf_vars) -> dict:
   return corrected_wrf
 
 
+                ###############################################################
+                ###################### Files Selection   ######################
+                    # Filters WRF data by:    
+                    #     1) Station     |     2) Time_range
+                ###############################################################
+
+
+config_dict = setup.config_file_reading()
+station = 'Travessa Beltrão'
+new_path, wrf_station_name = files_selection(station=station, config_dict=config_dict)
+
+
+                ###############################################################
+                ###################### Bringing Data  #########################
+                    #     A) WRF outuput ------\
+                    #                           } = Final Data.
+                    #     B) OBSERVED Data ----/
+                ###############################################################
+                
+# Check the concatening studies on filtering notebook on colab from glmalmeida@id.uff.br
+
+# barreto is the spot variable 
+# "new_path" is the inputed path for the files before stratification
+
+barreto = os.listdir(new_path)
+b_prec = [] # lista dos arquivos de chuva em barreto
+b_vent = [] # lista dos arquivos de vento em barreto
+b_temp = [] # lista dos restantes
+for x in barreto:
+  if 'prec' in x:
+    b_prec.append(x)
+  elif 'vent' in x:
+    b_vent.append(x)
+  else:
+    b_temp.append(x)
+
+
+vento_full = concatening(b_vent, new_path)
+prec_full = concatening(b_prec, new_path)
+temp_full = concatening(b_temp, new_path)
+
+vento_daily = vento_full.where(vento_full['HORA']<25).dropna()
+prec_daily = prec_full.where(prec_full['HORA']<25).dropna()
+temp_daily = temp_full.where(temp_full['HORA']<25).dropna()
+
+wrf_dict = {'vento': [vento_full, vento_daily], 'prec': [prec_full, prec_daily], 'temp': [temp_full, temp_daily]}
+
+
+# obs_path = 'UTC_series_Barreto_18-21.csv' - config file
+print('\n--- Entering observed data.')
+obs_path = config_dict['Obs_Path']
+
+# dates input - config file
+      # example: initial date=2021-08-04, final_date=2021-10-20
+print('\n--- Entering dates.')
+st_date_input_ = config_dict['Dates']['Initial_Date']
+st_date_split = st_date_input_.split('-')
+starting_date = datetime.date(int(st_date_split[0]), int(st_date_split[1]), int(st_date_split[2]))
+
+ed_date_input_ = config_dict['Dates']['Final_Date']
+ed_date_split = ed_date_input_.split('-')
+ending_date = datetime.date(int(ed_date_split[0]), int(ed_date_split[1]), int(st_date_split[2]))
+
+
+observed_filtered_by_date = bringing_observed_data(observed_path=obs_path, st_date=starting_date, ed_date=ending_date)
+
+                ###############################################################
+                    ################## WRF - MISSING DATES ####################
+                    # 1) Look for missing data on wrf data 
+                    # 2) Replace with the day before forecast
+                ###############################################################
+
+#   ------------- Attention!!
+  # 1) Look for missing data on wrf data
+
+
+missing_dates = missing_date_finder(vento_daily, observed_filtered_by_date) # this will be the missing dates
+
 corrected_wrf = filling_missing_forecast(missing_dates, wrf_dict)
 
 
@@ -434,8 +453,8 @@ corrected_wrf = filling_missing_forecast(missing_dates, wrf_dict)
 # *temporary* : deserves a better implementation 
 final_data = observed_filtered_by_date
 
-final_data['Barreto_ws10']=corrected_wrf['vento']['Barreto_ws10'].values
-final_data['Barreto_wd10']=corrected_wrf['vento']['Barreto_wd10'].values
+final_data[wrf_station_name +'_ws10']=corrected_wrf['vento'][wrf_station_name +'_ws10'].values
+final_data[wrf_station_name +'_wd10']=corrected_wrf['vento'][wrf_station_name +'_wd10'].values
 final_data['Pto N_ws10']=corrected_wrf['vento']['Pto N_ws10'].values
 final_data['Pto N_wd10']=corrected_wrf['vento']['Pto N_wd10'].values
 final_data['Pto S_ws10']=corrected_wrf['vento']['Pto S_ws10'].values
@@ -453,7 +472,7 @@ final_data['Pto SW_wd10']=corrected_wrf['vento']['Pto SW_wd10'].values
 final_data['Pto NW_ws10']=corrected_wrf['vento']['Pto NW_ws10'].values
 final_data['Pto NW_wd10']=corrected_wrf['vento']['Pto NW_wd10'].values
 
-final_data['prec_prev_Barreto']=corrected_wrf['prec']['Barreto'].values
+final_data['prec_prev_'+ wrf_station_name]=corrected_wrf['prec'][wrf_station_name].values
 final_data['prec_prev_ptoN']=corrected_wrf['prec']['Pto N'].values
 final_data['prec_prev_ptoS']=corrected_wrf['prec']['Pto S'].values
 final_data['prec_prev_ptoE']=corrected_wrf['prec']['Pto E'].values
@@ -463,7 +482,7 @@ final_data['prec_prev_ptoNE']=corrected_wrf['prec']['Pto NE'].values
 final_data['prec_prev_ptoSW']=corrected_wrf['prec']['Pto SW'].values
 final_data['prec_prev_ptoNW']=corrected_wrf['prec']['Pto NW'].values
 
-final_data['temp_prev_Barreto']=corrected_wrf['temp']['Barreto'].values
+final_data['temp_prev_'+ wrf_station_name]=corrected_wrf['temp'][wrf_station_name].values
 final_data['temp_prev_ptoN']=corrected_wrf['temp']['Pto N'].values
 final_data['temp_prev_ptoS']=corrected_wrf['temp']['Pto S'].values
 final_data['temp_prev_ptoE']=corrected_wrf['temp']['Pto E'].values
@@ -486,12 +505,15 @@ for col in final_data.columns:
         if 'temp' not in col: 
           final_data[col] = final_data[col].apply(lambda x: float(x) if float(x) > 0 else 0)
 
-
-# pre_input_name format example: 'UTC_AugOut_WRF_obs.csv''  - config file
-#pre_input_name = input("All done! \n\nPlease, enter the name of the file you want to save the data: \n (Format example: 'UTC_AugOut_WRF_obs.csv'")
-pre_input_name = config_dict['pre_input_filename']
+pre_input_name = config_dict['pre_input_filename'].split('.')[0] + '_' + station + '.csv'
 final_data.to_csv("./files/inputs/pre-input/"+ pre_input_name)
 os.makedirs(new_path + "/input_files" )
 final_data.to_csv(new_path + "/input_files/" + pre_input_name)
 print("\n--- File created at: ./files/inputs/pre-input/"+ pre_input_name)
+
+# Removing WRF files extracted files:
+for file in os.listdir(new_path):
+    if file != 'input_files':
+        os.remove(new_path+file)
+
 print("\n--- All Done! ---")
