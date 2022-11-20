@@ -1,5 +1,5 @@
 #Extraction_folder
-extraction_folder,extracted_files_teste8
+extraction_folder,temp_extracted_files
 
 #rna_zip_file
 extrai_rna,/home/data/PMN/WRF_extrai_rn2
