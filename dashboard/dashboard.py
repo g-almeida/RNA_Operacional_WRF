@@ -105,8 +105,8 @@ def launch_dashboard():
         value_str = dict_wrf_obsStation[value]
         
         
-        fig0 = px.line(var, x='Data', y='precipitacao_observada', title='Chuva observada na estação '+value) # observed plot
-        fig1 = px.line(var, x='Data', y='prec_prev_'+value_str, title='Previsão de Chuva - WRF na estação '+value) # forecast plot
+        fig0 = px.line(var, x=var['Data'], y=var['precipitacao_observada'], title='Chuva observada na estação '+value) # observed plot
+        fig0.add_scatter(x=var['Data'], y=var['prec_prev_'+value_str], name='WRF Forecast for '+value)#, title='Previsão de Chuva - WRF na estação '+value) # forecast plot
         #fig.update_layout(
         #    plot_bgcolor=colors['background'],
         #    paper_bgcolor=colors['background'],
@@ -114,8 +114,8 @@ def launch_dashboard():
         #px.line(var, x='Data', y='prec_prev_'+value)
 
         obs_graph = dcc.Graph(id='observed-graph', figure=fig0)
-        wrf_graph = dcc.Graph(id='forecast-graph', figure=fig1)
-        return obs_graph, wrf_graph
+        #wrf_graph = dcc.Graph(id='forecast-graph', figure=fig1)
+        return obs_graph#, wrf_graph
 
     #if __name__ == '__main__':
     #    print("checked for name == __main__")
