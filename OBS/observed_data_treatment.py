@@ -8,7 +8,7 @@ import datetime
                       #     B) OBSERVED Data ----/
                   ###############################################################
                   
-def bringing_observed_data(observed_path, st_date, ed_date):        # OBS
+def bringing_observed_data(observed_path, st_date, ed_date, station):        # OBS
   """
   Brings in the observed data and filters date as setup conditions.
 
@@ -28,7 +28,7 @@ def bringing_observed_data(observed_path, st_date, ed_date):        # OBS
   """
   #obs = pd.read_csv(obs_path).drop('Unnamed: 0', axis=1)
   #obs = obs.rename(columns={'Hora Leitura': 'Data', '01 h':'precipitacao_observada'})
-  obs = observed_data_reading(observed_path, station='Barreto 1', st_date=st_date, ed_date=ed_date) # NEXT STEP!!
+  obs = observed_data_reading(observed_path, station=station, st_date=st_date, ed_date=ed_date) # NEXT STEP!!
   obs = obs.rename(columns={'data': 'Data', 'chuva 1h':'precipitacao_observada'})
 
   obs = obs.sort_values('Data')

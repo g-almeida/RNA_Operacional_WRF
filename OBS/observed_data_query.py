@@ -9,7 +9,7 @@ import datetime
 import pandas as pd
 import sys
 sys.path.append("/home/lammoc/Gabriel/RNA_Operacional_WRF")
-import API as obs
+import API as api
 now = datetime.datetime.now()
 
 # needs to be set for working properly on cron
@@ -18,7 +18,7 @@ path = '/home/lammoc/Gabriel/RNA_Operacional_WRF/files/obs_data/hourly_data.csv'
 # commented due to application on CRON
 #if str(now.minute) == '1':
     
-new_data = obs.api_niteroi('chuva')#.drop(' ', axis=1)
+new_data = api.api_niteroi('chuva')#.drop(' ', axis=1)
 try:
 	old_data = pd.read_csv(path)        
 	concat_data = pd.concat([old_data, new_data])

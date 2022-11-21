@@ -98,7 +98,6 @@ def observed_data_reading(path, station=None, sheet_name=None, sep=',', st_date=
     obs['data'] = obs['data'].apply(lambda x: x + dt.timedelta(hours=3)) 
     obs = API_treatment(obs, station, st_date, ed_date)
 
-
     hourly_obs = obs.where(obs['data'].dt.minute==0).dropna()
     hourly_obs_acum01 = hourly_obs[['data', 'chuva 1h']]
     

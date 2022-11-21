@@ -69,5 +69,5 @@ def getting_today_precipitation(estacao):
 
 
 hour = datetime.datetime.now().hour
-hourly_barreto = api_niteroi('chuva')
-hourly_barreto.to_csv(str(hour) + 'testing_rain.csv')
+hourly_rain = api_niteroi('chuva')
+hourly_rain.to_csv(str(hour) + 'testing_rain.csv')

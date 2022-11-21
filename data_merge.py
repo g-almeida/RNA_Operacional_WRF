@@ -14,6 +14,7 @@ import setup_reading_function as setup
 import utilities as util
 import WRF.WRF_output_treatment as WRF_treat
 import OBS.observed_data_treatment as OBS_treat
+import dashboard.dashboard as dashboard
 
 # ------------------------- Functions to put data together | START -----------------------
 def missing_date_finder(wrf_data, obs_data):
@@ -152,7 +153,7 @@ def main(config_dict:dict, station:str):
   ending_date = datetime.date(int(ed_date_split[0]), int(ed_date_split[1]), int(st_date_split[2]))
 
 
-  observed_filtered_by_date = OBS_treat.bringing_observed_data(observed_path=obs_path, st_date=starting_date, ed_date=ending_date)
+  observed_filtered_by_date = OBS_treat.bringing_observed_data(observed_path=obs_path, st_date=starting_date, ed_date=ending_date, station=station)
 
                   ###############################################################
                       ################## WRF - MISSING DATES ####################
@@ -254,6 +255,8 @@ print("""\n  ____  _   _    _              _        _    __  __ __  __  ___   __
                                                                                             """)
 
 config_dict = setup.config_file_reading()
-station = 'Piratininga 2'
+station = 'Pé Pequeno'
 
 main(config_dict=config_dict, station=station)
+
+dashboard.launch_dashboard()
