@@ -1,5 +1,4 @@
 # -*- coding: utf-8 -*-
-#def config_file_reading(Config_Path='/home/github/RNA_Operacional_WRF'):
 def config_file_reading(Config_Path='./'):
                 
     ### Config variables
@@ -71,4 +70,3 @@ def config_file_reading(Config_Path='./'):
                         "pre_input_filename":pre_input_filename}
     return config_dictionary
 
-#print(config_file_reading())

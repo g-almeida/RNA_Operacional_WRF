@@ -10,10 +10,9 @@ import datetime
 import pandas as pd
 from zipfile import ZipFile
 import setup_reading_function as setup
-#from API_output_treatment import observed_data_reading
 import utilities as util
 import WRF.WRF_output_treatment as WRF_treat
-import OBS.observed_data_treatment as OBS_treat
+import OBS.API_output_treatment as OBS_treat
 import dashboard.dashboard as dashboard
 
 # ------------------------- Functions to put data together | START -----------------------
@@ -255,7 +254,7 @@ print("""\n  ____  _   _    _              _        _    __  __ __  __  ___   __
                                                                                             """)
 
 config_dict = setup.config_file_reading()
-station = 'Pé Pequeno'
+station = 'Maceió'
 
 main(config_dict=config_dict, station=station)
 

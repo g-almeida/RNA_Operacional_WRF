@@ -134,7 +134,7 @@ def files_selection(station, config_dict) -> str:                   # Util
     new_path = './files/' + new_extraction_path + '/'
     os.makedirs(new_path)
   except:
-    print('\n---ERROR! Folder already exists')
+    print('\n---ERROR! Folder already exists. You may have to delete ./files/temp_extracted_files directory.')
     exit()
 
   # Entering WRF files
