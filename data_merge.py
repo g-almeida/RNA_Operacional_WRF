@@ -44,8 +44,8 @@ def missing_date_finder(wrf_data, obs_data):
 
 def filling_missing_forecast(missing_dates_list, wrf_vars, starting_date, ending_date) -> dict:
   """
-      Função para preencher os dias faltantes na previsão.
-
+      Função para preencher os dias faltantes na previsão com os dados da previsão anterior.
+      
   Parameters:
   ----------
       missing_dates_list (list): forecast data
