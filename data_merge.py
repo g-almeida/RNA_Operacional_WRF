@@ -125,15 +125,16 @@ def main(config_dict:dict, station:str):
       b_temp.append(x)
 
 
-  vento_full = util.concatening(b_vent, new_path)
+  #vento_full = util.concatening(b_vent, new_path)
   prec_full = util.concatening(b_prec, new_path)
   temp_full = util.concatening(b_temp, new_path)
 
-  vento_daily = vento_full.where(vento_full['HORA']<25).dropna()
+  #vento_daily = vento_full.where(vento_full['HORA']<25).dropna()
   prec_daily = prec_full.where(prec_full['HORA']<25).dropna()
   temp_daily = temp_full.where(temp_full['HORA']<25).dropna()
 
-  wrf_dict = {'vento': [vento_full, vento_daily], 'prec': [prec_full, prec_daily], 'temp': [temp_full, temp_daily]}
+  #wrf_dict = {'vento': [vento_full, vento_daily], 'prec': [prec_full, prec_daily], 'temp': [temp_full, temp_daily]}
+  wrf_dict = {'prec': [prec_full, prec_daily], 'temp': [temp_full, temp_daily]}
 
   print("\n--- |OBS| ")
   # obs_path = 'UTC_series_Barreto_18-21.csv' - config file
@@ -165,7 +166,7 @@ def main(config_dict:dict, station:str):
     # 1) Look for missing data on wrf data
 
 
-  missing_dates = missing_date_finder(vento_daily, observed_filtered_by_date) # this will be the missing dates
+  missing_dates = missing_date_finder(prec_daily, observed_filtered_by_date) # this will be the missing dates
 
   corrected_wrf = filling_missing_forecast(missing_dates, wrf_dict, starting_date, ending_date)
 
@@ -177,47 +178,47 @@ def main(config_dict:dict, station:str):
 
   #   ------------- Finally putting WRF and Observed data together
   # *temporary* : deserves a better implementation 
-  final_data = observed_filtered_by_date
 
-  final_data[wrf_station_name +'_ws10']=corrected_wrf['vento'][wrf_station_name +'_ws10'].values
-  final_data[wrf_station_name +'_wd10']=corrected_wrf['vento'][wrf_station_name +'_wd10'].values
-  final_data['Pto N_ws10']=corrected_wrf['vento']['Pto N_ws10'].values
-  final_data['Pto N_wd10']=corrected_wrf['vento']['Pto N_wd10'].values
-  final_data['Pto S_ws10']=corrected_wrf['vento']['Pto S_ws10'].values
-  final_data['Pto S_wd10']=corrected_wrf['vento']['Pto S_wd10'].values
-  final_data['Pto E_ws10']=corrected_wrf['vento']['Pto E_ws10'].values
-  final_data['Pto E_wd10']=corrected_wrf['vento']['Pto E_wd10'].values
-  final_data['Pto W_ws10']=corrected_wrf['vento']['Pto W_ws10'].values
-  final_data['Pto W_wd10']=corrected_wrf['vento']['Pto W_wd10'].values
-  final_data['Pto SE_ws10']=corrected_wrf['vento']['Pto SE_ws10'].values
-  final_data['Pto SE_wd10']=corrected_wrf['vento']['Pto SE_wd10'].values
-  final_data['Pto NE_ws10']=corrected_wrf['vento']['Pto NE_ws10'].values
-  final_data['Pto NE_wd10']=corrected_wrf['vento']['Pto NE_wd10'].values
-  final_data['Pto SW_ws10']=corrected_wrf['vento']['Pto SW_ws10'].values
-  final_data['Pto SW_wd10']=corrected_wrf['vento']['Pto SW_wd10'].values
-  final_data['Pto NW_ws10']=corrected_wrf['vento']['Pto NW_ws10'].values
-  final_data['Pto NW_wd10']=corrected_wrf['vento']['Pto NW_wd10'].values
+  print(observed_filtered_by_date)
+  final_data = observed_filtered_by_date.drop(['Data','Horario'],axis=1)
+  print(final_data)
+  final_data['Datetime'] = final_data['Datetime'].astype(str)
+  
+  # For unknown reason, pandas required to use pd.concat for datetime merging...
+  # So, we manipulated to str
+  corrected_wrf['prec'] = corrected_wrf['prec'].astype(str).drop(['Data','Horario'],axis=1)
+  corrected_wrf['temp'] = corrected_wrf['temp'].astype(str).drop(['Data','Horario'],axis=1)
 
-  final_data['prec_prev_'+ wrf_station_name]=corrected_wrf['prec'][wrf_station_name].values
-  final_data['prec_prev_ptoN']=corrected_wrf['prec']['Pto N'].values
-  final_data['prec_prev_ptoS']=corrected_wrf['prec']['Pto S'].values
-  final_data['prec_prev_ptoE']=corrected_wrf['prec']['Pto E'].values
-  final_data['prec_prev_ptoW']=corrected_wrf['prec']['Pto W'].values
-  final_data['prec_prev_ptoSE']=corrected_wrf['prec']['Pto SE'].values
-  final_data['prec_prev_ptoNE']=corrected_wrf['prec']['Pto NE'].values
-  final_data['prec_prev_ptoSW']=corrected_wrf['prec']['Pto SW'].values
-  final_data['prec_prev_ptoNW']=corrected_wrf['prec']['Pto NW'].values
+  # Setting column names:
+  corrected_wrf['prec'].rename(columns={
+    wrf_station_name:'prec_prev_'+ wrf_station_name,
+    'Pto N':'prec_prev_ptoN',
+    'Pto S':'prec_prev_ptoS',
+    'Pto E':'prec_prev_ptoE',
+    'Pto W':'prec_prev_ptoW',
+    'Pto SE':'prec_prev_ptoSE',
+    'Pto NE':'prec_prev_ptoNE',
+    'Pto SW':'prec_prev_ptoSW',
+    'Pto NW':'prec_prev_ptoNW'}, inplace=True)
+  
+  corrected_wrf['temp'].rename(columns={
+    wrf_station_name:'temp_prev_'+ wrf_station_name,
+    'Pto N':'temp_prev_ptoN',
+    'Pto S':'temp_prev_ptoS',
+    'Pto E':'temp_prev_ptoE',
+    'Pto W':'temp_prev_ptoW',
+    'Pto SE':'temp_prev_ptoSE',
+    'Pto NE':'temp_prev_ptoNE',
+    'Pto SW':'temp_prev_ptoSW',
+    'Pto NW':'temp_prev_ptoNW'}, inplace=True)
 
-  final_data['temp_prev_'+ wrf_station_name]=corrected_wrf['temp'][wrf_station_name].values
-  final_data['temp_prev_ptoN']=corrected_wrf['temp']['Pto N'].values
-  final_data['temp_prev_ptoS']=corrected_wrf['temp']['Pto S'].values
-  final_data['temp_prev_ptoE']=corrected_wrf['temp']['Pto E'].values
-  final_data['temp_prev_ptoW']=corrected_wrf['temp']['Pto W'].values
-  final_data['temp_prev_ptoSE']=corrected_wrf['temp']['Pto SE'].values
-  final_data['temp_prev_ptoNE']=corrected_wrf['temp']['Pto NE'].values
-  final_data['temp_prev_ptoSW']=corrected_wrf['temp']['Pto SW'].values
-  final_data['temp_prev_ptoNW']=corrected_wrf['temp']['Pto NW'].values
-
+  # merging precipitation
+  final_data = pd.merge(final_data, corrected_wrf['prec'], on='Datetime')
+  # merging temperature
+  final_data = pd.merge(final_data, corrected_wrf['temp'], on='Datetime')
+  # merging wind (no need to adjust colum names)
+  #final_data = pd.merge(final_data, corrected_wrf['vent'], on='Datetime')
+  
 
                   ################################
                   ##### Final Considerations #####
