@@ -180,7 +180,7 @@ def main(config_dict:dict, station:str):
   # *temporary* : deserves a better implementation 
 
   print(observed_filtered_by_date)
-  final_data = observed_filtered_by_date.drop(['Data','Horario'],axis=1)
+  final_data = observed_filtered_by_date.drop(['Horario'],axis=1)
   print(final_data)
   final_data['Datetime'] = final_data['Datetime'].astype(str)
   
@@ -231,6 +231,7 @@ def main(config_dict:dict, station:str):
           # OBS.: Temperatures below 0 must be considered, so the following rule does not apply on temperature columns.
           if 'temp' not in col: 
             final_data[col] = final_data[col].apply(lambda x: float(x) if float(x) > 0 else 0)
+            final_data[col] = final_data[col].apply(lambda x: 0 if float(x) > 500 else float(x))
 
   pre_input_name = config_dict['pre_input_filename'].split('.')[0] + '_' + station + '.csv'
   final_data.to_csv("files/inputs/pre-input/"+ pre_input_name)
@@ -259,5 +260,5 @@ config_dict = setup.config_file_reading()
 station = 'Maceió'
 
 main(config_dict=config_dict, station=station)
-
+print("Running Maceió for wet period")
 dashboard.launch_dashboard()
