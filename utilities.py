@@ -134,11 +134,12 @@ def files_selection(station, config_dict) -> str:                   # Util
     new_path = './files/' + new_extraction_path + '/'
     os.makedirs(new_path)
   except:
-    print('\n---ERROR! Folder already exists. You may have to delete ./files/temp_extracted_files directory.')
+    print('\n |ERROR|: Folder already exists. You may have to delete ./files/temp_extracted_files directory.')
     exit()
 
   # Entering WRF files
-  print("\n--- Entering WRF files.")
+  print("\n--- |WRF| ")
+  print("   --- (WRF) Entering WRF files.")
   # entering the wrf zip file: Ex: 'extrai_rn.zip'
   #wrf_zip = input('Enter the name of the wrf compressed folder. \n (Usually "extrai_rn.zip")')
   wrf_zip_path = config_dict['zip_file_path']
@@ -147,7 +148,7 @@ def files_selection(station, config_dict) -> str:                   # Util
   # 1 - Zip package
   # 2 - Existing Folder
   if ".zip" in wrf_zip_path:  # 1 - Zip package
-    print("\n--- Unzipping the files.")
+    print("   --- (WRF) Unzipping the files.")
 
     destination_path = "./files/"
     temp_zip_path = destination_path + "extrai_rn/" # OBS.: this is necessary because the unzip creates a folder with its name
@@ -156,11 +157,11 @@ def files_selection(station, config_dict) -> str:                   # Util
     with ZipFile(wrf_zip_path, 'r') as zipObj:
       zipObj.extractall(destination_path)
 
-    print('\n--- Files unzipped')
+    print('   --- (WRF) Files unzipped')
 
   else:  # 2 - Existing Folder
     temp_zip_path = wrf_zip_path + '/'
-    print('\n--- Moving the files.')
+    print('   --- (WRF) Moving the files.')
 
 
   # Filtering Station files. NEXT STEP!!
@@ -201,7 +202,7 @@ def files_selection(station, config_dict) -> str:                   # Util
 
   if ".zip" in wrf_zip_path:
     shutil.rmtree(temp_zip_path)
-    print('\n--- Removing the temporary extracted folder.')
+    print('   --- (WRF) Removing the temporary extracted folder.')
 
   return new_path, dict_wrf_obsStation[station]
 

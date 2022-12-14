@@ -13,7 +13,7 @@ import API as api
 now = datetime.datetime.now()
 
 # needs to be set for working properly on cron
-path = '/home/lammoc/Gabriel/RNA_Operacional_WRF/files/obs_data/hourly_data.csv'
+path = 'files/obs_data/hourly_data.csv'
 
 # commented due to application on CRON
 #if str(now.minute) == '1':

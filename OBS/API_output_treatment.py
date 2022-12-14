@@ -159,8 +159,8 @@ def filling_nan_observed_data(obs_df:pd.DataFrame, st_date:dt.datetime.date, ed_
         return print("More than 20% failures on observed data. | Aborting!")
     
     else:
-        print('\n--- In a total of '+ str(len_total_dates) +' dates.' )
-        print("\n--- We have found: "+ str(len_missing_dates) +" failures. \nWe'll be filling with observed data of the next days." )
+        print('\n   --- (OBS) In a total of '+ str(len_total_dates) +' dates.' )
+        print("   --- (OBS) We have found: "+ str(len_missing_dates) +" failures. \n             We'll be filling with observed data of the next days." )
 
         obs_df = obs_df.set_index('data',drop=False)
         new_df = pd.DataFrame(np.nan, index=missing_observed_dates, columns=obs_df.columns)

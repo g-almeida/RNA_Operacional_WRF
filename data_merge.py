@@ -135,14 +135,15 @@ def main(config_dict:dict, station:str):
 
   wrf_dict = {'vento': [vento_full, vento_daily], 'prec': [prec_full, prec_daily], 'temp': [temp_full, temp_daily]}
 
-
+  print("\n--- |OBS| ")
   # obs_path = 'UTC_series_Barreto_18-21.csv' - config file
-  print('\n--- Entering observed data.')
+  
+  print('   --- (OBS) Entering observed data.')
   obs_path = config_dict['Obs_Path']
 
   # dates input - config file
         # example: initial date=2021-08-04, final_date=2021-10-20
-  print('\n--- Entering dates.')
+  print('   --- (OBS) Entering dates.')
   st_date_input_ = config_dict['Dates']['Initial_Date']
   st_date_split = st_date_input_.split('-')
   starting_date = datetime.date(int(st_date_split[0]), int(st_date_split[1]), int(st_date_split[2]))
@@ -231,7 +232,7 @@ def main(config_dict:dict, station:str):
             final_data[col] = final_data[col].apply(lambda x: float(x) if float(x) > 0 else 0)
 
   pre_input_name = config_dict['pre_input_filename'].split('.')[0] + '_' + station + '.csv'
-  final_data.to_csv("./files/inputs/pre-input/"+ pre_input_name)
+  final_data.to_csv("files/inputs/pre-input/"+ pre_input_name)
   os.makedirs(new_path + "/input_files" )
   final_data.to_csv(new_path + "/input_files/" + pre_input_name)
   print("\n--- File created at: ./files/inputs/pre-input/"+ pre_input_name)
