@@ -14,6 +14,7 @@ import utilities as util
 import WRF.WRF_output_treatment as WRF_treat
 import OBS.API_output_treatment as OBS_treat
 import dashboard.dashboard as dashboard
+#import pickle 
 
 # ------------------------- Functions to put data together | START -----------------------
 def missing_date_finder(wrf_data, obs_data):
@@ -53,7 +54,7 @@ def filling_missing_forecast(missing_dates_list, wrf_vars, starting_date, ending
 
   Returns:
   --------
-      dict: Dicionário com os valores faltantes preenchidos e cada chave é uma variável atmosférica.
+      dict: Dicionário com os valores faltantes preenchidos, cada chave é o DataFrame de uma variável atmosférica.
   """
   
   missing_dates_nb = {} # {yesterday : today}
@@ -62,19 +63,22 @@ def filling_missing_forecast(missing_dates_list, wrf_vars, starting_date, ending
     missing_dates_nb.update({float(yesterday.strftime('%Y%m%d')) : float(today.strftime('%Y%m%d'))})
 
 
-#   ------------- Attention!!
+  #   ------------- Attention!!
   # 2) Replace with the forecast of day before
   # After finding the missing dates, we will create a new dataframe fillin the values with the second day on forecast
 
   corrected_wrf = {}
- 
+
   for variable in wrf_vars.keys():
     missing_vento = wrf_vars[variable][0].where(wrf_vars[variable][0]['DATA'].isin(missing_dates_nb)).dropna() # buscando no dado completo, os dias anteriores aos faltantes
     missing_vento = missing_vento.where(missing_vento['HORA']>=25).dropna().reset_index(drop=True) # pegando desses dias anteriores, apenas as horas depois das 23 
-    missing_vento['HORA'] = missing_vento['HORA'].apply(lambda x: x-24) # ajustando os horários
-
-    for cada in missing_dates_nb:
-        missing_vento = missing_vento.replace(cada, missing_dates_nb[cada])
+    
+    missing_vento['HORA'] = missing_vento['HORA'].apply(lambda x: x-24) # TIME CHANGE!! ***
+    # !!!ATTENTION!!! : At this point variable missing_vento is with the wrong dates! Next step will adjust them!!
+    for previous_forecast_date in missing_vento['DATA'].unique():
+      missing_vento = missing_vento.replace(previous_forecast_date, missing_dates_nb[previous_forecast_date])
+        
+  
     missing_vento = WRF_treat.wrf_formatting(missing_vento, initial_date=starting_date, final_date=ending_date)
 
     full_wrf = WRF_treat.wrf_formatting(wrf_vars[variable][1], initial_date=starting_date, final_date=ending_date)
@@ -165,7 +169,6 @@ def main(config_dict:dict, station:str):
   #   ------------- Attention!!
     # 1) Look for missing data on wrf data
 
-
   missing_dates = missing_date_finder(prec_daily, observed_filtered_by_date) # this will be the missing dates
 
   corrected_wrf = filling_missing_forecast(missing_dates, wrf_dict, starting_date, ending_date)
@@ -179,16 +182,14 @@ def main(config_dict:dict, station:str):
   #   ------------- Finally putting WRF and Observed data together
   # *temporary* : deserves a better implementation 
 
-  print(observed_filtered_by_date)
   final_data = observed_filtered_by_date.drop(['Horario'],axis=1)
-  print(final_data)
   final_data['Datetime'] = final_data['Datetime'].astype(str)
   
   # For unknown reason, pandas required to use pd.concat for datetime merging...
   # So, we manipulated to str
   corrected_wrf['prec'] = corrected_wrf['prec'].astype(str).drop(['Data','Horario'],axis=1)
   corrected_wrf['temp'] = corrected_wrf['temp'].astype(str).drop(['Data','Horario'],axis=1)
-
+  
   # Setting column names:
   corrected_wrf['prec'].rename(columns={
     wrf_station_name:'prec_prev_'+ wrf_station_name,
@@ -211,6 +212,7 @@ def main(config_dict:dict, station:str):
     'Pto NE':'temp_prev_ptoNE',
     'Pto SW':'temp_prev_ptoSW',
     'Pto NW':'temp_prev_ptoNW'}, inplace=True)
+
 
   # merging precipitation
   final_data = pd.merge(final_data, corrected_wrf['prec'], on='Datetime')
@@ -260,5 +262,5 @@ config_dict = setup.config_file_reading()
 station = 'Maceió'
 
 main(config_dict=config_dict, station=station)
-print("Running Maceió for wet period")
+
 dashboard.launch_dashboard()

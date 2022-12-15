@@ -25,7 +25,7 @@ def wrf_formatting(wrf_data, initial_date, final_date):             # WRF
       WRF_data already selected between initial and final date from observed data.
   """
   wrf_data = wrf_data.reset_index(drop=True)
-
+  
   wrf_data['Data'] = wrf_data['DATA'].apply(lambda x: datetime.date(int(str(x)[:4]), int(str(x)[4:6]), int(str(x)[6:8])))
   wrf_data['Horario'] = wrf_data['HORA'].apply(lambda x: datetime.time(int(x-1)))  
 
