@@ -212,3 +212,18 @@ def concatening(lista, path) -> pd.DataFrame:                       # Util
     to_concat.append(pd.read_csv(path+cada))
 
   return pd.concat(to_concat)
+
+
+def float_converter(one):
+    ''' Some precipitation values are coming with the '0.0.1' format, so this function
+        drops the last '.' and converts the value to float type.
+        
+    '''
+    try:
+        fixed_float = float(one)
+    except:
+        separ = one.split('.')
+        comma = one.split('.')[0]+'.'
+        fixed_float = float(comma+''.join(one.split('.')[1:]))
+        
+    return fixed_float

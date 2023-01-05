@@ -2,26 +2,12 @@
 '''
 Treating observed data from the API (and from google drive files (optionally))
 '''
-
+import utilities as util
 import pandas as pd
 import datetime as dt
 import numpy as np
 import warnings
 warnings.filterwarnings("ignore")
-
-def float_converter(one):
-    ''' Some precipitation values are coming with the '0.0.1' format, so this function
-        drops the last '.' and converts the value to float type.
-        
-    '''
-    try:
-        fixed_float = float(one)
-    except:
-        separ = one.split('.')
-        comma = one.split('.')[0]+'.'
-        fixed_float = float(comma+''.join(one.split('.')[1:]))
-        
-    return fixed_float
 
 class ObservedData:
     """
@@ -116,7 +102,7 @@ class ObservedData:
         
         df_values = obs_df[['chuva 15m', 'chuva 1h', 'chuva 4h', 'chuva 24h', 'chuva 96h', 'chuva 30d']]
         for cada in df_values:
-            obs_df[cada] = df_values[cada].apply(lambda x: float_converter(x))
+            obs_df[cada] = df_values[cada].apply(lambda x: util.float_converter(x))
         
         #after_filled = filling_nan_observed_data(obs_df=obs_df, st_date=self.st_date, ed_date=self.ed_date)  
 
