@@ -2,10 +2,10 @@
 extraction_folder,temp_extracted_files
 
 #rna_zip_file
-extrai_rna,C:\Users\a711301\LocalGab\UFF\PMN\data\extrai_rn
+extrai_rna,/home/data/PMN/WRF_extrai_rn
 
 #Observed_data_path
-Obs_Path,C:\Users\a711301\LocalGab\UFF\PMN\data\hourly_observed_2020-2022.csv
+Obs_Path,/home/github/RNA_Operacional_WRF/files/obs_precip_SourcesConcatenated_on_11.csv
 
 #Dates
 Initial_Date,2021-7-9
