@@ -92,6 +92,31 @@ def filling_missing_forecast(missing_dates_list, wrf_vars, starting_date, ending
       
   return corrected_wrf
 
+def removing_outliers(final_data):
+  """
+  This function removes outliers from the input data.
+
+  Parameters:
+  ----------
+      final_data (pd.DataFrame)
+
+  Returns:
+  --------
+      final_data (pd.DataFrame): DataFrame without outliers
+  """
+  print("\n--- Removing outliers ---")
+
+  # Removing values under 0.
+  str_type_columns = ['Data', 'Horario', 'Datetime']
+  for col in final_data.columns:
+      if col not in str_type_columns:
+          # OBS.: Temperatures below 0 must be considered, so the following rule does not apply on temperature columns.
+          if 'temp' not in col: 
+            final_data[col] = final_data[col].apply(lambda x: float(x) if float(x) > 0 else 0)
+            final_data[col] = final_data[col].apply(lambda x: 0 if float(x) > 500 else float(x))
+
+  return final_data
+
 # ------------------------- Functions to put data together | END -------------------------
 
 def main(config_dict:dict, station:str):
@@ -222,23 +247,19 @@ def main(config_dict:dict, station:str):
   #final_data = pd.merge(final_data, corrected_wrf['vent'], on='Datetime')
   
 
-                  ################################
-                  ##### Final Considerations #####
-                  ################################
+  # final considerantions
+  final_data = removing_outliers(final_data)
 
-  # Removing values under 0.
-  str_type_columns = ['Data', 'Horario', 'Datetime']
-  for col in final_data.columns:
-      if col not in str_type_columns:
-          # OBS.: Temperatures below 0 must be considered, so the following rule does not apply on temperature columns.
-          if 'temp' not in col: 
-            final_data[col] = final_data[col].apply(lambda x: float(x) if float(x) > 0 else 0)
-            final_data[col] = final_data[col].apply(lambda x: 0 if float(x) > 500 else float(x))
+                  ################################
+                  ##### Exporting Final Data #####
+                  ################################
 
   pre_input_name = config_dict['pre_input_filename'].split('.')[0] + '_' + station + '.csv'
+  
   final_data.to_csv("files/inputs/pre-input/"+ pre_input_name)
   os.makedirs(new_path + "/input_files" )
   final_data.to_csv(new_path + "/input_files/" + pre_input_name)
+
   print("\n--- File created at: ./files/inputs/pre-input/"+ pre_input_name)
 
   # Removing WRF files extracted files:
@@ -250,6 +271,8 @@ def main(config_dict:dict, station:str):
   shutil.rmtree(new_path)
 
   print("\n--- All Done! ---")
+
+
 
 print("""\n  ____  _   _    _              _        _    __  __ __  __  ___   ____   _   _ _____ _____ 
  |  _ \| \ | |  / \            | |      / \  |  \/  |  \/  |/ _ \ / ___| | | | |  ___|  ___|
