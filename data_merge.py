@@ -282,6 +282,8 @@ print("""\n  ____  _   _    _              _        _    __  __ __  __  ___   __
                                                                                             """)
 
 config_dict = setup.config_file_reading()
+
+# Choose the desired station
 station = 'Maceió'
 
 main(config_dict=config_dict, station=station)
