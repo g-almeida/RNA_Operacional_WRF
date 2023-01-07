@@ -17,7 +17,7 @@ import dashboard.dashboard as dashboard
 #import pickle 
 
 # ------------------------- Functions to put data together | START -----------------------
-def missing_date_finder(wrf_data, obs_data):
+def missing_date_finder(wrf_data, starting_date, ending_date):
   """
       Função designada para verificar os dias faltantes no WRF a partir do arquivo de dados observados.
       Note que fará o recorte baseado na lista de datas do arquivo de dados observados. Então ele funcionará como uma espécie de máscara
@@ -31,16 +31,18 @@ def missing_date_finder(wrf_data, obs_data):
   --------
       list: Lista das datas faltantes no WRF.
   """
-  initial_date = obs_data.sort_values('Datetime')['Datetime'].iloc[0]
-  final_date = obs_data.sort_values('Datetime')['Datetime'].iloc[-1]
+  wrf_data = WRF_treat.wrf_formatting(wrf_data, starting_date, ending_date)
 
-  wrf_data = WRF_treat.wrf_formatting(wrf_data, initial_date, final_date)
+  full_datelist = list()
+  while starting_date <= ending_date:
+    starting_date += datetime.timedelta(days=1)
+    full_datelist.append(starting_date)
 
   missing_dates = []
-  for cada in list(obs_data['Data']):
+  for cada in full_datelist:
     if cada not in list(wrf_data['Data']) and cada not in missing_dates:
         missing_dates.append(cada)
-        
+  
   return missing_dates
 
 def filling_missing_forecast(missing_dates_list, wrf_vars, starting_date, ending_date) -> dict:
@@ -168,11 +170,9 @@ def main(config_dict:dict, station:str):
 
   #   ------------- Attention!!
     # 1) Look for missing data on wrf data
-
-  missing_dates = missing_date_finder(prec_daily, observed_filtered_by_date) # this will be the missing dates
+  missing_dates = missing_date_finder(prec_daily, starting_date, ending_date) # this will be the missing dates
 
   corrected_wrf = filling_missing_forecast(missing_dates, wrf_dict, starting_date, ending_date)
-
 
                   ###############################################################
                   ########### Finally putting WRF and Observed data together ####
