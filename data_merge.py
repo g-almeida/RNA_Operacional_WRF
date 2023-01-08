@@ -119,30 +119,37 @@ def removing_outliers(final_data):
 
 # ------------------------- Functions to put data together | END -------------------------
 
-def main(config_dict:dict, station:str):
+def main(config_dict:dict, station:str, test_set=False):
 
                   ###############################################################
                   ###################### Files Selection   ######################
                       # Filters WRF data by:    
                       #     1) Station     |     2) Time_range
                   ###############################################################
-
-
+  
   new_path, wrf_station_name = util.files_selection(station=station, config_dict=config_dict)
-
 
                   ###############################################################
                   ###################### Bringing Data  #########################
-                      #     A) WRF outuput ------\
+                      #     A) WRF output ------\
                       #                           } = Final Data.
                       #     B) OBSERVED Data ----/
                   ###############################################################
-                  
-  # Check the concatening studies on filtering notebook on colab from glmalmeida@id.uff.br
 
+  # dates input - config file
+        # example: initial date=2021-08-04, final_date=2021-10-20
+  st_date_input_ = config_dict['Dates']['Initial_Date']
+  st_date_split = st_date_input_.split('-')
+  starting_date = datetime.date(int(st_date_split[0]), int(st_date_split[1]), int(st_date_split[2]))
+
+  ed_date_input_ = config_dict['Dates']['Final_Date']
+  ed_date_split = ed_date_input_.split('-')
+  ending_date = datetime.date(int(ed_date_split[0]), int(ed_date_split[1]), int(st_date_split[2]))
+
+  #   ------------- A) WRF output
+  
   # barreto is the spot variable 
   # "new_path" is the inputed path for the files before stratification
-
   barreto = os.listdir(new_path)
   b_prec = [] # lista dos arquivos de chuva em barreto
   b_vent = [] # lista dos arquivos de vento em barreto
@@ -167,49 +174,17 @@ def main(config_dict:dict, station:str):
   #wrf_dict = {'vento': [vento_full, vento_daily], 'prec': [prec_full, prec_daily], 'temp': [temp_full, temp_daily]}
   wrf_dict = {'prec': [prec_full, prec_daily], 'temp': [temp_full, temp_daily]}
 
-  print("\n--- |OBS| ")
-  # obs_path = 'UTC_series_Barreto_18-21.csv' - config file
-  
-  print('   --- (OBS) Entering observed data.')
-  obs_path = config_dict['Obs_Path']
-
-  # dates input - config file
-        # example: initial date=2021-08-04, final_date=2021-10-20
-  print('   --- (OBS) Entering dates.')
-  st_date_input_ = config_dict['Dates']['Initial_Date']
-  st_date_split = st_date_input_.split('-')
-  starting_date = datetime.date(int(st_date_split[0]), int(st_date_split[1]), int(st_date_split[2]))
-
-  ed_date_input_ = config_dict['Dates']['Final_Date']
-  ed_date_split = ed_date_input_.split('-')
-  ending_date = datetime.date(int(ed_date_split[0]), int(ed_date_split[1]), int(st_date_split[2]))
-
-
-  observed_filtered_by_date = OBS_treat.bringing_observed_data(observed_path=obs_path, st_date=starting_date, ed_date=ending_date, station=station)
-
                   ###############################################################
                       ################## WRF - MISSING DATES ####################
                       # 1) Look for missing data on wrf data 
                       # 2) Replace with the day before forecast
                   ###############################################################
 
-  #   ------------- Attention!!
     # 1) Look for missing data on wrf data
-  missing_dates = missing_date_finder(prec_daily, starting_date, ending_date) # this will be the missing dates
+  missing_dates = missing_date_finder(prec_daily, starting_date, ending_date) # this will be a list w/ the missing dates
 
   corrected_wrf = filling_missing_forecast(missing_dates, wrf_dict, starting_date, ending_date)
 
-                  ###############################################################
-                  ########### Finally putting WRF and Observed data together ####
-                  ###############################################################
-
-
-  #   ------------- Finally putting WRF and Observed data together
-  # *temporary* : deserves a better implementation 
-
-  final_data = observed_filtered_by_date.drop(['Horario'],axis=1)
-  final_data['Datetime'] = final_data['Datetime'].astype(str)
-  
   # For unknown reason, pandas required to use pd.concat for datetime merging...
   # So, we manipulated to str
   corrected_wrf['prec'] = corrected_wrf['prec'].astype(str).drop(['Data','Horario'],axis=1)
@@ -239,10 +214,45 @@ def main(config_dict:dict, station:str):
     'Pto NW':'temp_prev_ptoNW'}, inplace=True)
 
 
-  # merging precipitation
-  final_data = pd.merge(final_data, corrected_wrf['prec'], on='Datetime')
-  # merging temperature
-  final_data = pd.merge(final_data, corrected_wrf['temp'], on='Datetime')
+  # merging precipitation and temperature
+  wrf_data = pd.merge(corrected_wrf['prec'], corrected_wrf['temp'], on='Datetime')
+  
+  if test_set==True:
+    # final considerantions
+    wrf_data = removing_outliers(wrf_data).set_index('Datetime')
+
+
+    pre_input_name = config_dict['pre_input_filename'].split('.')[0] + '_' + station + '.csv'  
+    wrf_data.to_csv("files/inputs/testSet/"+ pre_input_name)
+    os.makedirs(new_path + "/testSet_input_files" )
+    wrf_data.to_csv(new_path + "/testSet_input_files/" + pre_input_name)
+
+    # Removing extracted_files folder
+    shutil.rmtree(new_path)
+    return print("\n--- File created at: ./files/inputs/testSet/"+ pre_input_name)
+      
+  
+  #   ------------- B) Observed Data
+
+  print("\n--- |OBS| ")
+  # obs_path = 'UTC_series_Barreto_18-21.csv' - config file
+  
+  print('   --- (OBS) Entering observed data.')
+  obs_path = config_dict['Obs_Path']
+
+  observed_filtered_by_date = OBS_treat.bringing_observed_data(observed_path=obs_path, st_date=starting_date, ed_date=ending_date, station=station)
+
+  # For unknown reason, pandas required to use pd.concat for datetime merging...
+  # So, we manipulated to str
+  observed_filtered_by_date = observed_filtered_by_date.drop(['Horario'],axis=1)
+  observed_filtered_by_date['Datetime'] = observed_filtered_by_date['Datetime'].astype(str)
+  
+                  ###############################################################
+                  ########### Finally putting WRF and Observed data together ####
+                  ###############################################################
+
+  # merging observed data
+  final_data = pd.merge(observed_filtered_by_date, wrf_data, on='Datetime')
   # merging wind (no need to adjust colum names)
   #final_data = pd.merge(final_data, corrected_wrf['vent'], on='Datetime')
   
@@ -261,11 +271,6 @@ def main(config_dict:dict, station:str):
   final_data.to_csv(new_path + "/input_files/" + pre_input_name)
 
   print("\n--- File created at: ./files/inputs/pre-input/"+ pre_input_name)
-
-  # Removing WRF files extracted files:
-  #for file in os.listdir(new_path):
- #     if file != 'input_files':
-#          os.remove(new_path+file)
 
   # Removing extracted_files folder
   shutil.rmtree(new_path)
@@ -286,6 +291,6 @@ config_dict = setup.config_file_reading()
 # Choose the desired station
 station = 'Maceió'
 
-main(config_dict=config_dict, station=station)
+main(config_dict=config_dict, station=station, test_set=True)
 
 dashboard.launch_dashboard()
