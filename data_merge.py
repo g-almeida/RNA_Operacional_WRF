@@ -11,88 +11,13 @@ import pandas as pd
 from zipfile import ZipFile
 import setup_reading_function as setup
 import utilities as util
+import WRF.extraction as extract
 import WRF.WRF_output_treatment as WRF_treat
 import OBS.API_output_treatment as OBS_treat
 import dashboard.dashboard as dashboard
 #import pickle 
 
-# ------------------------- Functions to put data together | START -----------------------
-def missing_date_finder(wrf_data, starting_date, ending_date):
-  """
-      Função designada para verificar os dias faltantes no WRF a partir do arquivo de dados observados.
-      Note que fará o recorte baseado na lista de datas do arquivo de dados observados. Então ele funcionará como uma espécie de máscara
-
-  Parameters:
-  ----------
-      wrf_data (pd.DataFrame): forecast data
-      obs_data (pd.DataFrame): observed data
-
-  Returns:
-  --------
-      list: Lista das datas faltantes no WRF.
-  """
-  wrf_data = WRF_treat.wrf_formatting(wrf_data, starting_date, ending_date)
-
-  full_datelist = list()
-  while starting_date <= ending_date:
-    starting_date += datetime.timedelta(days=1)
-    full_datelist.append(starting_date)
-
-  missing_dates = []
-  for cada in full_datelist:
-    if cada not in list(wrf_data['Data']) and cada not in missing_dates:
-        missing_dates.append(cada)
-  
-  return missing_dates
-
-def filling_missing_forecast(missing_dates_list, wrf_vars, starting_date, ending_date) -> dict:
-  """
-      Função para preencher os dias faltantes na previsão com os dados da previsão anterior.
-      
-  Parameters:
-  ----------
-      missing_dates_list (list): forecast data
-      wrf_vars (dictionary): dict of {Daily 48h WRF Forecast Data : Daily 24h WRF Forecast Data}
-
-  Returns:
-  --------
-      dict: Dicionário com os valores faltantes preenchidos, cada chave é o DataFrame de uma variável atmosférica.
-  """
-  
-  missing_dates_nb = {} # {yesterday : today}
-  for today in missing_dates_list:
-    yesterday = today - datetime.timedelta(days=1)
-    missing_dates_nb.update({float(yesterday.strftime('%Y%m%d')) : float(today.strftime('%Y%m%d'))})
-
-
-  #   ------------- Attention!!
-  # 2) Replace with the forecast of day before
-  # After finding the missing dates, we will create a new dataframe fillin the values with the second day on forecast
-
-  corrected_wrf = {}
-
-  for variable in wrf_vars.keys():
-    missing_vento = wrf_vars[variable][0].where(wrf_vars[variable][0]['DATA'].isin(missing_dates_nb)).dropna() # buscando no dado completo, os dias anteriores aos faltantes
-    missing_vento = missing_vento.where(missing_vento['HORA']>=25).dropna().reset_index(drop=True) # pegando desses dias anteriores, apenas as horas depois das 23 
-    
-    missing_vento['HORA'] = missing_vento['HORA'].apply(lambda x: x-24) # TIME CHANGE!! ***
-    # !!!ATTENTION!!! : At this point variable missing_vento is with the wrong dates! Next step will adjust them!!
-    for previous_forecast_date in missing_vento['DATA'].unique():
-      missing_vento = missing_vento.replace(previous_forecast_date, missing_dates_nb[previous_forecast_date])
-        
-  
-    missing_vento = WRF_treat.wrf_formatting(missing_vento, initial_date=starting_date, final_date=ending_date)
-
-    full_wrf = WRF_treat.wrf_formatting(wrf_vars[variable][1], initial_date=starting_date, final_date=ending_date)
-
-    variable_concat = pd.concat([missing_vento, full_wrf]).drop('Unnamed: 0', axis=1).dropna().sort_values('Datetime')
-
-  # corrected_wrf is a dictionary with the missing values filled and each key is an atmospheric variable
-    corrected_wrf.update({variable : variable_concat})
-      
-  return corrected_wrf
-
-def removing_outliers(final_data):
+def removing_false_data(final_data):
   """
   This function removes outliers from the input data.
 
@@ -117,17 +42,7 @@ def removing_outliers(final_data):
 
   return final_data
 
-# ------------------------- Functions to put data together | END -------------------------
-
 def main(config_dict:dict, station:str, test_set=False):
-
-                  ###############################################################
-                  ###################### Files Selection   ######################
-                      # Filters WRF data by:    
-                      #     1) Station     |     2) Time_range
-                  ###############################################################
-  
-  new_path, wrf_station_name = util.files_selection(station=station, config_dict=config_dict)
 
                   ###############################################################
                   ###################### Bringing Data  #########################
@@ -136,90 +51,27 @@ def main(config_dict:dict, station:str, test_set=False):
                       #     B) OBSERVED Data ----/
                   ###############################################################
 
-  # dates input - config file
-        # example: initial date=2021-08-04, final_date=2021-10-20
-  st_date_input_ = config_dict['Dates']['Initial_Date']
-  st_date_split = st_date_input_.split('-')
-  starting_date = datetime.date(int(st_date_split[0]), int(st_date_split[1]), int(st_date_split[2]))
-
-  ed_date_input_ = config_dict['Dates']['Final_Date']
-  ed_date_split = ed_date_input_.split('-')
-  ending_date = datetime.date(int(ed_date_split[0]), int(ed_date_split[1]), int(st_date_split[2]))
-
-  #   ------------- A) WRF output
+  wrf_dict, wrf_station_name, starting_date, ending_date, new_path = extract.wrf_files_extraction(config_dict, station)
   
-  # barreto is the spot variable 
-  # "new_path" is the inputed path for the files before stratification
-  barreto = os.listdir(new_path)
-  b_prec = [] # lista dos arquivos de chuva em barreto
-  b_vent = [] # lista dos arquivos de vento em barreto
-  b_temp = [] # lista dos restantes
-  for x in barreto:
-    if 'prec' in x:
-      b_prec.append(x)
-    elif 'vent' in x:
-      b_vent.append(x)
-    else:
-      b_temp.append(x)
-
-
-  #vento_full = util.concatening(b_vent, new_path)
-  prec_full = util.concatening(b_prec, new_path)
-  temp_full = util.concatening(b_temp, new_path)
-
-  #vento_daily = vento_full.where(vento_full['HORA']<25).dropna()
-  prec_daily = prec_full.where(prec_full['HORA']<25).dropna()
-  temp_daily = temp_full.where(temp_full['HORA']<25).dropna()
-
-  #wrf_dict = {'vento': [vento_full, vento_daily], 'prec': [prec_full, prec_daily], 'temp': [temp_full, temp_daily]}
-  wrf_dict = {'prec': [prec_full, prec_daily], 'temp': [temp_full, temp_daily]}
-
                   ###############################################################
                       ################## WRF - MISSING DATES ####################
                       # 1) Look for missing data on wrf data 
                       # 2) Replace with the day before forecast
                   ###############################################################
 
-    # 1) Look for missing data on wrf data
-  missing_dates = missing_date_finder(prec_daily, starting_date, ending_date) # this will be a list w/ the missing dates
+    # 1) Look for missing data on wrf 
+  missing_dates = WRF_treat.WRF_DailyVar(wrf_dict['prec'][1], starting_date, ending_date).missing_date_finder() # this will be a list w/ the missing dates
 
-  corrected_wrf = filling_missing_forecast(missing_dates, wrf_dict, starting_date, ending_date)
+  # The WRF_DailyFilled instance, consists in the final DataFrame (all variables concatenated)
+  # with forecast data corrected based on the day before forecast.
+  corrected_wrf = WRF_treat.WRF_DailyFilled(missing_dates, wrf_dict, starting_date, ending_date, wrf_station_name)
+  wrf_data = corrected_wrf.daily_df
 
-  # For unknown reason, pandas required to use pd.concat for datetime merging...
-  # So, we manipulated to str
-  corrected_wrf['prec'] = corrected_wrf['prec'].astype(str).drop(['Data','Horario'],axis=1)
-  corrected_wrf['temp'] = corrected_wrf['temp'].astype(str).drop(['Data','Horario'],axis=1)
-  
-  # Setting column names:
-  corrected_wrf['prec'].rename(columns={
-    wrf_station_name:'prec_prev_'+ wrf_station_name,
-    'Pto N':'prec_prev_ptoN',
-    'Pto S':'prec_prev_ptoS',
-    'Pto E':'prec_prev_ptoE',
-    'Pto W':'prec_prev_ptoW',
-    'Pto SE':'prec_prev_ptoSE',
-    'Pto NE':'prec_prev_ptoNE',
-    'Pto SW':'prec_prev_ptoSW',
-    'Pto NW':'prec_prev_ptoNW'}, inplace=True)
-  
-  corrected_wrf['temp'].rename(columns={
-    wrf_station_name:'temp_prev_'+ wrf_station_name,
-    'Pto N':'temp_prev_ptoN',
-    'Pto S':'temp_prev_ptoS',
-    'Pto E':'temp_prev_ptoE',
-    'Pto W':'temp_prev_ptoW',
-    'Pto SE':'temp_prev_ptoSE',
-    'Pto NE':'temp_prev_ptoNE',
-    'Pto SW':'temp_prev_ptoSW',
-    'Pto NW':'temp_prev_ptoNW'}, inplace=True)
-
-
-  # merging precipitation and temperature
-  wrf_data = pd.merge(corrected_wrf['prec'], corrected_wrf['temp'], on='Datetime')
-  
-  if test_set==True:
-    # final considerantions
-    wrf_data = removing_outliers(wrf_data).set_index('Datetime')
+  # This section is only used when we're creating the test set for the neural network
+  # The test set does not consider the observed data, so we end up the script before gets to it.
+  if test_set==True: 
+    # final considerations
+    wrf_data = removing_false_data(wrf_data).set_index('Datetime')
 
 
     pre_input_name = config_dict['pre_input_filename'].split('.')[0] + '_' + station + '.csv'  
@@ -229,7 +81,8 @@ def main(config_dict:dict, station:str, test_set=False):
 
     # Removing extracted_files folder
     shutil.rmtree(new_path)
-    return print("\n--- File created at: ./files/inputs/testSet/"+ pre_input_name)
+    print("\n--- File created at: ./files/inputs/testSet/"+ pre_input_name)
+    return print("\n--- This won't be seen on dashboard. For that, you'll need to set parameter testSet=False instead")
       
   
   #   ------------- B) Observed Data
@@ -258,7 +111,7 @@ def main(config_dict:dict, station:str, test_set=False):
   
 
   # final considerantions
-  final_data = removing_outliers(final_data)
+  final_data = removing_false_data(final_data)
 
                   ################################
                   ##### Exporting Final Data #####
@@ -269,7 +122,6 @@ def main(config_dict:dict, station:str, test_set=False):
   final_data.to_csv("files/inputs/pre-input/"+ pre_input_name)
   os.makedirs(new_path + "/input_files" )
   final_data.to_csv(new_path + "/input_files/" + pre_input_name)
-
   print("\n--- File created at: ./files/inputs/pre-input/"+ pre_input_name)
 
   # Removing extracted_files folder
@@ -289,8 +141,8 @@ print("""\n  ____  _   _    _              _        _    __  __ __  __  ___   __
 config_dict = setup.config_file_reading()
 
 # Choose the desired station
-station = 'Maceió'
+station = 'Jurujuba'
 
-main(config_dict=config_dict, station=station, test_set=True)
+main(config_dict=config_dict, station=station, test_set=False)
 
 dashboard.launch_dashboard()
