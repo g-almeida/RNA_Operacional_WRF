@@ -1,0 +1,18 @@
+[tool.poetry]
+name = "rna-operacional-wrf"
+version = "0.1.0"
+description = ""
+authors = ["Gabriel Almeida <gabrielalmeida9831@gmail.com>"]
+readme = "README.md"
+packages = [{include = "rna_operacional_wrf"}]
+
+[tool.poetry.dependencies]
+python = "^3.9"
+pandas = "^1.5.2"
+dash = "^2.7.1"
+statsmodels = "^0.13.5"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
