@@ -131,7 +131,7 @@ def files_selection(station, config_dict) -> str:                   # Util
   new_extraction_path = config_dict['New_Dir']
 
   try:
-    new_path = './files/' + new_extraction_path + '/'
+    new_path = '../files/' + new_extraction_path + '/'
     os.makedirs(new_path)
   except:
     print('\n |ERROR|: Folder already exists. You may have to delete ./files/temp_extracted_files directory.')
@@ -150,7 +150,7 @@ def files_selection(station, config_dict) -> str:                   # Util
   if ".zip" in wrf_zip_path:  # 1 - Zip package
     print("   --- (WRF) Unzipping the files.")
 
-    destination_path = "./files/"
+    destination_path = "../files/"
     temp_zip_path = destination_path + "extrai_rn/" # OBS.: this is necessary because the unzip creates a folder with its name
     #os.makedirs(destination_path)
 

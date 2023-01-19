@@ -108,7 +108,7 @@ class ObservedData:
 
         self.df = obs_df 
     
-    def filling_nan_observed_data(self):
+    def filling_nan_observed_data(self, filling_obs_database):
         """
         Filling null data with the next day observed values.
 
@@ -147,7 +147,7 @@ class ObservedData:
         len_total_dates = len(obs_df['data'].dt.date.unique())
         len_missing_dates = len(pd.Series(days_list_t).unique())
 
-        if len_missing_dates/len_total_dates > 0.2:
+        if len_missing_dates/len_total_dates > 0.2 and filling_obs_database==False:
             return print("More than 20% failures on observed data. | Aborting!")
         
         else:
@@ -171,7 +171,7 @@ class ObservedData:
                       #     B) OBSERVED Data ----/
                   ###############################################################
                   
-def bringing_observed_data(observed_path, st_date, ed_date, station):        # OBS
+def bringing_observed_data(observed_path, st_date, ed_date, station, filling_obs_database=False):        # OBS
   """
   Brings in the observed data to the main script <data_merge.py> already filtered by date as setup conditions
   Initializing the observed object (ObservedData)
@@ -194,7 +194,7 @@ def bringing_observed_data(observed_path, st_date, ed_date, station):        # O
   #obs = obs.rename(columns={'Hora Leitura': 'Data', '01 h':'precipitacao_observada'})
   obs = ObservedData(observed_path, station=station, st_date=st_date, ed_date=ed_date) # NEXT STEP!!
   obs.API_treatment()
-  obs.filling_nan_observed_data()
+  obs.filling_nan_observed_data(filling_obs_database)
   obs = obs.df
   
   hourly_obs = obs.where(obs['data'].dt.minute==0).dropna()

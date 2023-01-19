@@ -42,7 +42,7 @@ def removing_false_data(final_data):
 
   return final_data
 
-def main(config_dict:dict, station:str, test_set=False):
+def main(config_dict:dict, station:str, test_set=False, export=True):
 
                   ###############################################################
                   ###################### Bringing Data  #########################
@@ -67,22 +67,29 @@ def main(config_dict:dict, station:str, test_set=False):
   corrected_wrf = WRF_treat.WRF_DailyFilled(missing_dates, wrf_dict, starting_date, ending_date, wrf_station_name)
   wrf_data = corrected_wrf.daily_df
 
+  for column in wrf_data:
+    if column != 'Datetime':
+      wrf_data[column]=wrf_data[column].astype(float)
+
   # This section is only used when we're creating the test set for the neural network
   # The test set does not consider the observed data, so we end up the script before gets to it.
-  if test_set==True: 
+  if test_set==True:
+    export=False 
     # final considerations
     wrf_data = removing_false_data(wrf_data).set_index('Datetime')
 
-
     pre_input_name = config_dict['pre_input_filename'].split('.')[0] + '_' + station + '.csv'  
-    wrf_data.to_csv("files/inputs/testSet/"+ pre_input_name)
+    wrf_data.to_csv("../files/inputs/testSet/"+ pre_input_name)
     os.makedirs(new_path + "/testSet_input_files" )
     wrf_data.to_csv(new_path + "/testSet_input_files/" + pre_input_name)
 
     # Removing extracted_files folder
     shutil.rmtree(new_path)
-    print("\n--- File created at: ./files/inputs/testSet/"+ pre_input_name)
-    return print("\n--- This won't be seen on dashboard. For that, you'll need to set parameter testSet=False instead")
+    print("\n--- File created at: ./RNA_Operacional_WRF/files/inputs/testSet/"+ pre_input_name)
+    print("\n--- This won't be seen on dashboard. For that, you'll need to set parameter testSet=False instead")
+    
+    print("\n--- All Done! ---")
+    return wrf_data
       
   
   #   ------------- B) Observed Data
@@ -119,29 +126,30 @@ def main(config_dict:dict, station:str, test_set=False):
 
   pre_input_name = config_dict['pre_input_filename'].split('.')[0] + '_' + station + '.csv'
   
-  final_data.to_csv("files/inputs/pre-input/"+ pre_input_name)
-  os.makedirs(new_path + "/input_files" )
-  final_data.to_csv(new_path + "/input_files/" + pre_input_name)
-  print("\n--- File created at: ./files/inputs/pre-input/"+ pre_input_name)
+  if export==True:
+    final_data.to_csv("../files/inputs/pre-input/"+ pre_input_name)
+    os.makedirs(new_path + "/input_files" )
+    final_data.to_csv(new_path + "/input_files/" + pre_input_name)
+    print("\n--- File created at: RNA_Operacional_WRF/files/inputs/pre-input/"+ pre_input_name)
 
   # Removing extracted_files folder
   shutil.rmtree(new_path)
 
   print("\n--- All Done! ---")
+  return final_data
 
 
+# print("""\n ____  _   _    _              _        _    __  __ __  __  ___   ____   _   _ _____ _____             
+# |  _ \| \ | |  / \            | |      / \  |  \/  |  \/  |/ _ \ / ___| | | | |  ___|  ___|             
+# | |_) |  \| | / _ \    _____  | |     / _ \ | |\/| | |\/| | | | | |     | | | | |_  | |_                
+# |  _ <| |\  |/ ___ \  |_____| | |___ / ___ \| |  | | |  | | |_| | |___  | |_| |  _| |  _|               
+# |_| \_\_| \_/_/   \_\         |_____/_/   \_\_|  |_|_|  |_|\___/ \____|  \___/|_|   |_|                                                                                                            """)
 
-print("""\n ____  _   _    _              _        _    __  __ __  __  ___   ____   _   _ _____ _____             
-|  _ \| \ | |  / \            | |      / \  |  \/  |  \/  |/ _ \ / ___| | | | |  ___|  ___|             
-| |_) |  \| | / _ \    _____  | |     / _ \ | |\/| | |\/| | | | | |     | | | | |_  | |_                
-|  _ <| |\  |/ ___ \  |_____| | |___ / ___ \| |  | | |  | | |_| | |___  | |_| |  _| |  _|               
-|_| \_\_| \_/_/   \_\         |_____/_/   \_\_|  |_|_|  |_|\___/ \____|  \___/|_|   |_|                                                                                                            """)
+# config_dict = setup.config_file_reading()
 
-config_dict = setup.config_file_reading()
+# # Choose the desired station
+# station = 'Jurujuba'
 
-# Choose the desired station
-station = 'Jurujuba'
+# data = main(config_dict=config_dict, station=station, test_set=True)
 
-main(config_dict=config_dict, station=station, test_set=False)
-
-dashboard.launch_dashboard()
+#dashboard.launch_dashboard()

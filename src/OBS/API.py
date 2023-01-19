@@ -26,7 +26,7 @@ def api_niteroi(api_type='chuva'):
     with open(api_type + '.csv', 'w') as f:
         f.write(api.text)
 
-    data=pd.read_csv(api_type + '.csv', sep=';') 
+    data=pd.read_csv(api_type + '.csv', sep=';', encoding='latin-1') 
     
     if api_type == 'chuva':
         new_column_names = ['Lat','lon', 'estação', 'cidade', 'data', 'chuva 15m', 'chuva 1h', 'chuva 4h', 'chuva 24h', 'chuva 96h', 'chuva 30d', 'atual ou atrasado', 'fonte do dado']
@@ -68,6 +68,6 @@ def getting_today_precipitation(estacao):
     return precip_24_value
 
 
-hour = datetime.datetime.now().hour
-hourly_rain = api_niteroi('chuva')
-hourly_rain.to_csv(str(hour) + 'testing_rain.csv')
+# hour = datetime.datetime.now().hour
+# hourly_rain = api_niteroi('chuva')
+# hourly_rain.to_csv(str(hour) + 'testing_rain.csv')

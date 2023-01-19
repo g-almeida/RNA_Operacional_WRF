@@ -54,7 +54,7 @@ def launch_dashboard():
 
 
     #path = ".././files/old_files/obs_data/hourly_data.csv"
-    path = "files/inputs/pre-input"
+    path = "../files/inputs/pre-input"
     station_dict = {}
     for cada in os.listdir(path):
         file_name = cada.split('.')[0] # removing ".csv" from string
