@@ -1,4 +1,4 @@
-Datetime,prec_prev_Jurujuba,prec_prev,prec_prev_ptoS,prec_prev_ptoE,prec_prev_ptoW,prec_prev_ptoSE,prec_prev,prec_prev_ptoSW,prec_prev,temp_prev_Jurujuba,temp_prev,temp_prev_ptoS,temp_prev_ptoE,temp_prev_ptoW,temp_prev_ptoSE,temp_prev,temp_prev_ptoSW,temp_prev
+Datetime,prec_prev,prec_prev_ptoN,prec_prev_ptoS,prec_prev_ptoE,prec_prev_ptoW,prec_prev_ptoSE,prec_prev_ptoNE,prec_prev_ptoSW,prec_prev_ptoNW,temp_prev,temp_prev_ptoN,temp_prev_ptoS,temp_prev_ptoE,temp_prev_ptoW,temp_prev_ptoSE,temp_prev_ptoNE,temp_prev_ptoSW,temp_prev_ptoNW
 2021-07-09 00:00:00,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,19.7121,19.6565,19.7668,19.6821,19.7411,19.7385,19.6247,19.7942,19.6873
 2021-07-09 01:00:00,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,18.9438,17.5558,16.3694,15.9997,19.1392,16.2869,16.433,16.6469,18.2476
 2021-07-09 02:00:00,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,18.3356,16.9345,15.7879,15.3529,18.5475,16.041,15.831,16.1615,17.5873

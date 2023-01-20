@@ -72,7 +72,7 @@ def concat_wrf_dataframes(csv_folder: os.PathLike) -> pd.DataFrame:
 
 class Preprocessing:
 
-    def __init__(self, dataframe: pd.DataFrame) -> None:
+    def __init__(self, dataframe: pd.DataFrame, station: str) -> None:
         """
         Attributes
         ----------
@@ -85,6 +85,7 @@ class Preprocessing:
                 axis=1,
                 inplace=True
             )
+        self.station = station
 
     def get_station_name(self) -> str:
         """
@@ -106,7 +107,7 @@ class Preprocessing:
         along its string.
         """
         # Get the pluviometric station name
-        station_name = self.get_station_name()
+        station_name = self.station
         for col in self.dataframe.columns:
             if station_name in col:
                 reference_index = col.rfind('_')

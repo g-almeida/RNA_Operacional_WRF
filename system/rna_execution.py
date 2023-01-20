@@ -24,7 +24,7 @@ class ImportTestSet(Import):
 class ImportRNA(Import):
     def file_read(self):
         print("veio até o pickle load")
-        return pickle.load(open(f'{self.path}/rna_{self.station}.sav', 'rb'))
+        return pickle.load(open(f'{self.path}/{self.file}', 'rb'))
 
 
 for test_file in test_file_list:

@@ -1,6 +1,29 @@
 import setup_reading_function as setup
 from data_merge import main
 from RNA.preprocessing.preprocessing import Preprocessing
+from abc import ABC, abstractmethod
+import pickle
+import pandas as pd
+
+class Import(ABC):
+    def __init__(self, path, file):
+        self.path = path
+        self.file = file
+        self.station = file.split('.')[0].split('_')[-1]
+
+    @abstractmethod
+    def file_read(self):
+        pass
+
+class ImportTestSet(Import): # Not used, since this script runs the generation of the TestSet 
+    def file_read(self):
+        return pd.read_csv(f'{self.path}/{self.file}')
+
+class ImportRNA(Import):
+    def file_read(self):
+        print("veio até o pickle load")
+        return pickle.load(open(f'{self.path}/{self.file}', 'rb'))
+
 
 print("""\n ____  _   _    _              _        _    __  __ __  __  ___   ____   _   _ _____ _____             
 |  _ \| \ | |  / \            | |      / \  |  \/  |  \/  |/ _ \ / ___| | | | |  ___|  ___|             
@@ -15,42 +38,36 @@ station_list = ['Jurujuba']
 for station in station_list:
     data = main(config_dict=config_dict, station=station, test_set=True)
     
-    data.to_csv(r"C:\Users\a711301\LocalGab\local_environment\github\RNA_Operacional_WRF\src\gab\data.csv")
-    
     string = ' PREPROCESSING DATA '
     print(f'\n{string:-^120}\n')
 
     # Creating and Instantiating ``Preprocessing`` object
     print('-- Creating a Preprocessing object...')
-    preprocessing = Preprocessing(dataframe=data)
+    preprocessing = Preprocessing(dataframe=data, station=station)
     print('-- Done! Objected created!\n')
-
-    preprocessing.dataframe.to_csv(r"C:\Users\a711301\LocalGab\local_environment\github\RNA_Operacional_WRF\src\gab\obj.csv")
 
     # Drop wind-related features
     print('-- Dropping the wind-related features from dataframe...')
     preprocessing.drop_wind_features()
     print('-- Done! WRF wind-related outputs dropped!\n')
 
-    preprocessing.dataframe.to_csv(r"C:\Users\a711301\LocalGab\local_environment\github\RNA_Operacional_WRF\src\gab\dropwind.csv")
-
     # Rename the columns that contain the pluviometric station name
     print('-- Renaming columns...')
     preprocessing.rename_columns_with_station_name()
     print('-- Done! Set standardized column names!\n')
-
-    preprocessing.dataframe.to_csv(r"C:\Users\a711301\LocalGab\local_environment\github\RNA_Operacional_WRF\src\gab\rename.csv")
 
     # Replace negatives values by ZERO
     print('-- Replacing negative values by ZERO...')
     preprocessing.replace_negative_values(by=0)
     print('-- Done! Negative values sucessfully replaced!\n')
 
-    preprocessing.dataframe.to_csv(r"C:\Users\a711301\LocalGab\local_environment\github\RNA_Operacional_WRF\src\gab\negative.csv")
-
     print('-- Applying time shift on dataframe...')
-    # Include the past 2 hours observed precipitation means
-    preprocessing.backward_shift(shift=2)
+    # # Include the past 2 hours observed precipitation means
+    # try:
+    #     preprocessing.backward_shift(shift=2)
+    # except Exception as e:
+    #     print("\n\n-- |ERROR| Observed data not available yet.")
+    #     raise e
     # Include the WRF precipitation forecasts for the next 4 hours
     preprocessing.forward_shift(shift=4)
     print(
@@ -59,4 +76,12 @@ for station in station_list:
         'and the WRF precipitation forecasts for the next 4 hours\n'
     )
 
-    print(preprocessing.dataframe)
+    testSet = preprocessing.dataframe
+
+    print(f'\n--- Executing Neural network model for: {station}')
+
+    rna = ImportRNA(path='../files/models', file=f'rna_{station}.sav').file_read()
+
+    rna.predict(testSet)
+
+    
