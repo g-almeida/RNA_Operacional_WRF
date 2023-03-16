@@ -1,6 +1,7 @@
 import setup_reading_function as setup
 from data_merge import main
 from RNA.preprocessing.preprocessing import Preprocessing
+import OBS.API_output_treatment as OBS_treat
 from abc import ABC, abstractmethod
 import pickle
 import pandas as pd
@@ -33,11 +34,16 @@ print("""\n ____  _   _    _              _        _    __  __ __  __  ___   ___
 
 config_dict = setup.config_file_reading()
 
+if OBS_treat.checking_observed_data_availability(config_dict['Obs_Path']) == False:
+    raise BaseException("Observed Data from last 2 hours are not available yet.")
+    exit()
+
+
 # Choose the desired station
 station_list = ['Jurujuba']
 for station in station_list:
     data = main(config_dict=config_dict, station=station, test_set=True)
-    
+
     string = ' PREPROCESSING DATA '
     print(f'\n{string:-^120}\n')
 
@@ -62,12 +68,12 @@ for station in station_list:
     print('-- Done! Negative values sucessfully replaced!\n')
 
     print('-- Applying time shift on dataframe...')
-    # # Include the past 2 hours observed precipitation means
-    # try:
-    #     preprocessing.backward_shift(shift=2)
-    # except Exception as e:
-    #     print("\n\n-- |ERROR| Observed data not available yet.")
-    #     raise e
+    # Include the past 2 hours observed precipitation means
+    try:
+        preprocessing.backward_shift(shift=2)
+    except Exception as e:
+        print("\n\n-- |ERROR| Observed data not available yet.")
+        raise e
     # Include the WRF precipitation forecasts for the next 4 hours
     preprocessing.forward_shift(shift=4)
     print(
@@ -79,6 +85,7 @@ for station in station_list:
     testSet = preprocessing.dataframe
 
     print(f'\n--- Executing Neural network model for: {station}')
+    preprocessing.dataframe.to_csv(f"{station}_pre_process.csv")
 
     rna = ImportRNA(path='../files/models', file=f'rna_{station}.sav').file_read()
 

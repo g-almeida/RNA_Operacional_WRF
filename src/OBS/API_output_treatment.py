@@ -214,3 +214,20 @@ def bringing_observed_data(observed_path, st_date, ed_date, station, filling_obs
   filtering_by_date = obs.where((obs['Data']>=st_date) & (obs['Data']<=ed_date)).dropna()
   
   return filtering_by_date
+
+def hour_rounder(t):
+    # Rounds to nearest hour by adding a timedelta hour if minute >= 30
+    return (t.replace(second=0, microsecond=0, minute=0, hour=t.hour)
+               +dt.timedelta(hours=t.minute//30))
+
+def checking_observed_data_availability(path:str) -> bool:
+    obs_data = pd.read_csv(path)
+    obs_data['data'] = pd.to_datetime(obs_data['data'], format="%d/%m/%Y %H:%M")
+    last_2_dates = obs_data.iloc[-5:]['data']
+
+    last_1h = dt.datetime.now() - dt.timedelta(hours=1)
+    last_2h = dt.datetime.now() - dt.timedelta(hours=2)
+    rounded_last_1h = hour_rounder(last_1h)
+    rounded_last_2h = hour_rounder(last_2h)
+
+    return rounded_last_1h in list(last_2_dates) and rounded_last_2h in list(last_2_dates)
